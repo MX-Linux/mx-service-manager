@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 26 Aug 2023 20:55:12 -0400
+Source: mx-service-manager
+Architecture: source
+Version: 0.23.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-service-manager (0.23.8) mx; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ aafd6f251bf05d63480e0a496ae4cbeaf8e8efc0 1164 mx-service-manager_0.23.8.dsc
+ e2c0f0df494f56e60a0dae27111a0390fa13b966 19632 mx-service-manager_0.23.8.tar.xz
+ e95db2017a8fe99aac76701482d5585600c6b6c9 10983 mx-service-manager_0.23.8_amd64.buildinfo
+Checksums-Sha256:
+ 3f6af225b8451daeb1555db5c3c368ca121cb39b9dce2f5510dfe1e04574e9b3 1164 mx-service-manager_0.23.8.dsc
+ 813eff845b16be22de9f2d18fb7d57603f21c5c7eb887ced1694339f296545a1 19632 mx-service-manager_0.23.8.tar.xz
+ f71f4ae2f8a2e5e399f0cf805ead2702cd7ec5fe3ce2028ce491b52a943ab23d 10983 mx-service-manager_0.23.8_amd64.buildinfo
+Files:
+ df75db44e8231f10e937b128195a12c9 1164 admin optional mx-service-manager_0.23.8.dsc
+ ee29e8de7132c49244c23e35e8d3d190 19632 admin optional mx-service-manager_0.23.8.tar.xz
+ ff1ccb418cf6fa7679550ab3bb2416fc 10983 admin optional mx-service-manager_0.23.8_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTq05sTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumE7pB/9wLIV2xyPeysMXebK/FlMHp9ZXa2dW
+Ke5Zvu64BSafw0TVn1brTUprUQdZ4Xf3UUbopO6q66zZzoITxwdBKVnKlAvq/gjY
+1Uzvv94XkkOuU9yD1PeuAhAA64nyzq4qQR0PK5cYxjJQM2sJioTdjqxYWebL9emj
+zx12uteQUo5xxx2cAwjFz6jAxymwTKeO4IlfR4SCRefX7qdz1gKPB3DZmpCi8aEz
+ENp2Y+afZtVENJ195cdJDiks8EG3bOcdOv02/+wVBDSOZ+06kslL1XLk3YEJAPDf
+jo2G+6B0jpkX9vnH4hsHVxTO6aBRXVe0ZfXg95aS5wze0TPhx1wwsDY3
+=GYKH
+-----END PGP SIGNATURE-----

@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Sat, 26 Aug 2023 20:55:12 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: i386
+Version: 0.23.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (0.23.8) mx; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ 75057d7584af602aab35e2a62f0e0323190c4ad3 10114 mx-service-manager_0.23.8_i386.buildinfo
+ f80497233761933f20949b26b0f3ccab55a953ad 40996 mx-service-manager_0.23.8_i386.deb
+Checksums-Sha256:
+ 709dd2b988c43aa175b7d415765274c737ce9822f54719c15387908c6d64d191 10114 mx-service-manager_0.23.8_i386.buildinfo
+ 701913f6e447b66123ad104850e8ecd6a587800bdd73b6f2e885126d945520be 40996 mx-service-manager_0.23.8_i386.deb
+Files:
+ b4a9cbd89ea402b07eaeb1c2849bca84 10114 admin optional mx-service-manager_0.23.8_i386.buildinfo
+ dd1d1fac57802e3b97fc5bd4f82c0dc4 40996 admin optional mx-service-manager_0.23.8_i386.deb
