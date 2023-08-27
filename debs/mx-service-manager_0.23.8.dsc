@@ -12,20 +12,20 @@ Build-Depends: debhelper (>= 10), qtbase5-dev, qttools5-dev-tools
 Package-List:
  mx-service-manager deb admin optional arch=any
 Checksums-Sha1:
- e2c0f0df494f56e60a0dae27111a0390fa13b966 19632 mx-service-manager_0.23.8.tar.xz
+ 48e20888683145535f614aca70deaf317caff5b0 27624 mx-service-manager_0.23.8.tar.xz
 Checksums-Sha256:
- 813eff845b16be22de9f2d18fb7d57603f21c5c7eb887ced1694339f296545a1 19632 mx-service-manager_0.23.8.tar.xz
+ a2a1b7702846a76b82a6ab028064b964442f0fffedec5860af45ee7678576856 27624 mx-service-manager_0.23.8.tar.xz
 Files:
- ee29e8de7132c49244c23e35e8d3d190 19632 mx-service-manager_0.23.8.tar.xz
+ fe453ed7e8851607e4328139941d60d7 27624 mx-service-manager_0.23.8.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTq05oTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumD4cB/9sPHYrjBDvyEA9A7Je23JP8+63PyvU
-u0D21FNKb/BX6efrEVq8HJsgkbYsH8SoepL4c0foL+rbq+v1izMMLQAWrPPvNeBZ
-Xfxm4pF6nl22mT6I/y2qjfQMtkHiuVBZAZLwtn9Ebd+alzg6iT68eQJ41Z0AiTHa
-j1Zk7NReA9nW/d5B75sNHYOecxpWwElffQAuvXxNkiGEShgUpkd9IL3zXMcqQ3ID
-WORcC+GyqI7wZKMCwYQIqKXbKnMefjtDA6ozmCqLzidJ/PMobJW0wrEhj7X80smo
-N3xP6eHPPGhdlkPAcDGSRXwLG2BvQQfWf2cYv52aWX4YHNbZuYgMoSaC
-=shee
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTrz60THGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumKgKCACp6CVaR+UXP69axdf6xaxdBvX3JW/5
+GhW4g8KpvoYBkafXcOq2UDqp+IrmC99DJIMvKbzu3zkVo2VbMeNP0muNpzbA2IZM
+2+kQ3c15O9dgPC0oZjkKf3y4FvS367K+7nHcmwK6LLB1kbq0G+cq8HhXmsUcAdtj
+s8VElIiOWXZ/5PB4d91CHsbAE4czbJDH0wNE8gob2NegIVws9kuVTDx2ZPKzVk12
+2z1CMLSDTekQiPN/8wofVaahX4Pn/s4KvRal6Ol/fXHuPepahReR7NE6ZekoZaM/
+Qq3IoQCw990oZKYR3EFXyN0C10rLsTEz3mzvvcYqQTDAo8hYkz6JANPU
+=hIAR
 -----END PGP SIGNATURE-----
