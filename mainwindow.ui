@@ -218,7 +218,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="labelCount">
      <property name="text">
-      <string>Count of total services, X services running</string>
+      <string>Loading...</string>
      </property>
     </widget>
    </item>

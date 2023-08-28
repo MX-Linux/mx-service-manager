@@ -27,6 +27,7 @@
 #include <QScreen>
 #include <QScrollBar>
 #include <QTextStream>
+#include <QTimer>
 
 #include "about.h"
 #include "service.h"
@@ -56,8 +57,12 @@ MainWindow::MainWindow(QWidget *parent)
     }
     QPalette palette = ui->listServices->palette();
     defaultForeground = palette.color(QPalette::Text);
-    listServices();
-    displayServices();
+
+    ui->listServices->addItem(tr("Loading..."));
+    QTimer::singleShot(0, this, [this] {
+        listServices();
+        displayServices();
+    });
 }
 
 MainWindow::~MainWindow()
@@ -134,7 +139,7 @@ void MainWindow::listServices()
 {
     services.clear();
     const QStringList listServices = cmd.getCmdOut("service --status-all").split("\n");
-    // services.reserve(listServices.count());
+    services.reserve(listServices.count());
     for (const auto &item : listServices) {
         auto *service = new Service(item.section("]  ", 1), item.trimmed().startsWith("[ + ]"));
         services << QSharedPointer<Service>(service);
