@@ -75,16 +75,22 @@ bool Service::isEnabled() const
     return enabled;
 }
 
-bool Service::start(const QString &name)
+bool Service::start()
 {
-    Cmd cmd;
-    return cmd.run("service " + name + " start");
+    if (cmd.run("service " + name + " start")) {
+        setRunning(true);
+        return true;
+    }
+    return false;
 }
 
-bool Service::stop(const QString &name)
+bool Service::stop()
 {
-    Cmd cmd;
-    return cmd.run("service " + name + " stop");
+    if (cmd.run("service " + name + " stop")) {
+        setRunning(false);
+        return true;
+    }
+    return false;
 }
 
 void Service::setEnabled(bool enabled)
@@ -127,23 +133,35 @@ QString Service::getInfoFromFile(const QString &name)
     return info;
 }
 
-bool Service::enable(const QString &name)
+bool Service::enable()
 {
-    Cmd cmd;
     if (getInit() == "systemd") {
-        return cmd.run("systemctl enable " + name);
+        if (cmd.run("systemctl enable " + name)) {
+            setEnabled(true);
+            return true;
+        }
     } else {
         cmd.run("sudo update-rc.d " + name + " defaults");
-        return cmd.run("sudo update-rc.d " + name + " enable");
+        if (cmd.run("sudo update-rc.d " + name + " enable")) {
+            setEnabled(true);
+            return true;
+        }
     }
+    return false;
 }
 
-bool Service::disable(const QString &name)
+bool Service::disable()
 {
-    Cmd cmd;
     if (getInit() == "systemd") {
-        return cmd.run("systemctl disable " + name);
+        if (cmd.run("systemctl disable " + name)) {
+            setEnabled(false);
+            return true;
+        }
     } else {
-        return cmd.run("sudo update-rc.d " + name + " remove");
+        if (cmd.run("sudo update-rc.d " + name + " remove")) {
+            setEnabled(false);
+            return true;
+        }
     }
+    return false;
 }

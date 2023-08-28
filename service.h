@@ -25,6 +25,8 @@
 #include <QObject>
 #include <QString>
 
+#include "cmd.h"
+
 class Service
 {
 public:
@@ -37,15 +39,16 @@ public:
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
     static QString getInfoFromFile(const QString &name);
-    static bool disable(const QString &name);
-    static bool enable(const QString &name);
-    static bool start(const QString &name);
-    static bool stop(const QString &name);
+    bool disable();
+    bool enable();
+    bool start();
+    bool stop();
     void setEnabled(bool enabled);
     void setRunning(bool running);
 
 private:
     QString name;
+    Cmd cmd;
     bool running {};
     bool enabled {};
 };

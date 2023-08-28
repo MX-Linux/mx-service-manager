@@ -220,18 +220,16 @@ void MainWindow::pushEnableDisable_clicked()
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
     if (ui->pushEnableDisable->text() == tr("Enable at boot")) {
-        if (!Service::enable(service)) {
+        if (!ptrService->enable()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
         }
-        ptrService->setEnabled(true);
         itemUpdated();
         emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
         QMessageBox::information(this, tr("Success"), tr("%1 was enabled at boot time.").arg(service));
     } else {
-        if (!Service::disable(ui->listServices->currentItem()->text())) {
+        if (!ptrService->disable()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not disable %1").arg(service));
         }
-        ptrService->setEnabled(false);
         itemUpdated();
         emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
         QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
@@ -251,7 +249,7 @@ void MainWindow::pushStartStop_clicked()
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
     if (ui->pushStartStop->text() == tr("Start")) {
-        if (!Service::start(service)) {
+        if (!ptrService->start()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
         } else {
             ptrService->setRunning(true);
@@ -260,7 +258,7 @@ void MainWindow::pushStartStop_clicked()
             QMessageBox::information(this, tr("Success"), tr("%1 was started.").arg(service));
         }
     } else {
-        if (!Service::stop(ui->listServices->currentItem()->text())) {
+        if (!ptrService->stop()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not stop %1").arg(service));
         } else {
             ptrService->setRunning(false);
