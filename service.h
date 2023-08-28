@@ -34,11 +34,11 @@ public:
     [[nodiscard]] static QString getInfo(const QString &name);
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
+    static QString getInfoFromFile(const QString &name);
     static bool disable(const QString &name);
     static bool enable(const QString &name);
     static bool start(const QString &name);
     static bool stop(const QString &name);
-    static QString getInfoFromFile(const QString &name);
 
 private:
     QString name;

@@ -55,7 +55,7 @@ bool Service::isEnabled(const QString &name)
     if (getInit() == "systemd") {
         return cmd.run("systemctl -q is-enabled " + name, true);
     } else {
-        return cmd.run("ls /etc/rc5.d/S*" + name + " 1> /dev/null 2>&1", true);
+        return cmd.run("[ -e /etc/rc5.d/S*" + name + " ] || [ -e /etc/rcS.d/S*" + name + " ]");
     }
     return false;
 }
