@@ -140,7 +140,11 @@ void MainWindow::listServices()
     services.clear();
     const QStringList listServices = cmd.getCmdOut("service --status-all").split("\n");
     services.reserve(listServices.count());
+    QRegularExpression re("dpkg-.*$");
     for (const auto &item : listServices) {
+        if (item.trimmed().contains(re)) {
+            continue;
+        }
         auto *service = new Service(item.section("]  ", 1), item.trimmed().startsWith("[ + ]"));
         services << QSharedPointer<Service>(service);
     }
