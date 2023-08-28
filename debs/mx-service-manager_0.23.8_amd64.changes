@@ -18,29 +18,29 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- efb4b1298893c7cf20911980989e571a94bee936 1164 mx-service-manager_0.23.8.dsc
- 0c9a1c4066f4bb6e7b6d80f24d174754c377e647 27684 mx-service-manager_0.23.8.tar.xz
- e65812e0985133b79770a6421ee48e3477d6f122 10983 mx-service-manager_0.23.8_amd64.buildinfo
- bd3f6693973688b5863959d1bf9c15518f55642c 38840 mx-service-manager_0.23.8_amd64.deb
+ b92d4a57cc55afd53ee78faea25bdfe9fc10fc1d 1164 mx-service-manager_0.23.8.dsc
+ d7bda45cb3a3daae8b47eada527963a6d51f5a2d 27692 mx-service-manager_0.23.8.tar.xz
+ 205e36201acceb05250a911ca4a4fb88238eb3c1 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ 5df9731394699d9c4fa15ec894410d57420f9103 38996 mx-service-manager_0.23.8_amd64.deb
 Checksums-Sha256:
- 449c15896435a71844a4967d4bc25c3546996ce03e9b9eb6587c95b95ae6fa3a 1164 mx-service-manager_0.23.8.dsc
- 75fac8612c6d90a63bd78554cb4bcef1727ebd72444499b9057adf6dcc436607 27684 mx-service-manager_0.23.8.tar.xz
- b2af1ac781f5dabab4f952d007f4cc2fb11e452a6b7e4967510676385401df87 10983 mx-service-manager_0.23.8_amd64.buildinfo
- 1ce4220a2c25c2e64b50f4569acd8f0b96f1a7a261241531263e0e67515ce91f 38840 mx-service-manager_0.23.8_amd64.deb
+ 44799a52d8bd97045190a158fe5a96bbe8ceaa85cd11492902d5766fcd792602 1164 mx-service-manager_0.23.8.dsc
+ ff9c2e3c566f0206e72544a88b0ff63c481a5632250428b490cedaa7dc91ea06 27692 mx-service-manager_0.23.8.tar.xz
+ 1250ec35c8711bf0a1e4326e62a15a60e1e22de80b872445a6e07f4b1e6c681e 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ 87f5f0cc54b99ce81f1b0199f8faa1f51b8559bd1539f985610bba04925a8a37 38996 mx-service-manager_0.23.8_amd64.deb
 Files:
- 25ceb0b1c32a5cbcf53619685dc38c82 1164 admin optional mx-service-manager_0.23.8.dsc
- 14ca22350d3c92d395719cf70630c97c 27684 admin optional mx-service-manager_0.23.8.tar.xz
- e791f413da9632950915b321b1341efe 10983 admin optional mx-service-manager_0.23.8_amd64.buildinfo
- bf8ab1ff8066792b04b2c3fc764758a1 38840 admin optional mx-service-manager_0.23.8_amd64.deb
+ 373938fb6a58dcad585d7010d4550e05 1164 admin optional mx-service-manager_0.23.8.dsc
+ c6de5769a0638a166a87120ae5c17ed3 27692 admin optional mx-service-manager_0.23.8.tar.xz
+ dfc40256cca8d00ce02e5b00e6c19142 10983 admin optional mx-service-manager_0.23.8_amd64.buildinfo
+ 0fa0c05299b0a0df395b0cd4d446dd74 38996 admin optional mx-service-manager_0.23.8_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTsB3wTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNzBCADSwxoVd0jXnryhTcAml1DqsGxMrBVT
-ggsjI/nYmgmNA3A0IqTBEVZeSpsGDKn3M771+5c0YngYyLLX66s/ST9H/1a5iVQZ
-zCf9vHsYI4YzVgfsEB1wk+n/8X2bdP42ssSbXZ0e64L58ylqmK8utaFOzXuEFp/a
-D0HcW299wEgqpwOsvg0Ux/H+bskZS4LQwr/YZK81QMABy1/Cd/ZLAsq3c+Xcb9vK
-AOag+msOcbg3S2nPRLqlbHY9pOOcpWPCFKJOgfTHFUJBzjhCxonAJK7FOI6s/5+f
-iIcTlTzpAyqtH4SAiCaeiw0Z4b7ffYBi1Z+8DSfjZ7NcTEt3l9AVmmo2
-=C4TZ
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTsEVcTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumG0CB/9J05Pr7nCNCrtLO49w6apqpWKopOqf
+epkuIjX0aZgdIcdOIEGsH5FdZQSKoNXGvGiuvqjVneC1JJO2PGsAccschiEJAmmL
+6w7P40iJAaGPb8Q5kjGD5tx3TrCRAkYB2AIib7+EUAETvkGewo5YcgEOQjiW7mib
+ER/jMfmErFdgdXcCyJP0ZTQQwEnejbAhSswk7sNzR9dGzHvk9k6W7HdHH5np6uLD
+2blMBOhnto+JizGHZVRvMo8ALoduKd/MDa7SdvsZPv5lJwTHXY6ms+XOTf0ofXWY
+3UkHuCKecFaG1C/iQlaSTPRXfEYC+k+elbWyiaP39Qw5FBvdeoj3VZB/
+=5nf2
 -----END PGP SIGNATURE-----

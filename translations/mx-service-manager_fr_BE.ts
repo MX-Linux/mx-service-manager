@@ -76,7 +76,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="221"/>
-        <source>Count of total services, X services running</source>
+        <location filename="../mainwindow.cpp" line="61"/>
+        <source>Loading...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -85,7 +86,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="53"/>
+        <location filename="../mainwindow.cpp" line="54"/>
         <location filename="../mainwindow.cpp" line="196"/>
         <location filename="../mainwindow.cpp" line="203"/>
         <location filename="../mainwindow.cpp" line="224"/>
@@ -94,34 +95,34 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="54"/>
+        <location filename="../mainwindow.cpp" line="55"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="95"/>
+        <location filename="../mainwindow.cpp" line="100"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="99"/>
+        <location filename="../mainwindow.cpp" line="104"/>
         <location filename="../mainwindow.cpp" line="222"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="104"/>
+        <location filename="../mainwindow.cpp" line="109"/>
         <source>Disable at boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="107"/>
+        <location filename="../mainwindow.cpp" line="112"/>
         <location filename="../mainwindow.cpp" line="194"/>
         <source>Enable at boot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="164"/>
+        <location filename="../mainwindow.cpp" line="168"/>
         <source>%1 total services, %2 currently running</source>
         <translation type="unfinished"></translation>
     </message>
