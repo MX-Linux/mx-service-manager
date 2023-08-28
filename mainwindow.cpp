@@ -32,8 +32,6 @@
 #include "about.h"
 #include "service.h"
 
-Q_DECLARE_METATYPE(Service *)
-
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow)

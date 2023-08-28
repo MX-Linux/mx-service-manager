@@ -22,6 +22,7 @@
 #ifndef SERVICE_H
 #define SERVICE_H
 
+#include <QObject>
 #include <QString>
 
 class Service
@@ -48,5 +49,7 @@ private:
     bool running {};
     bool enabled {};
 };
+
+Q_DECLARE_METATYPE(Service *)
 
 #endif // SERVICE_H
