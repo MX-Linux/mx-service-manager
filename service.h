@@ -31,6 +31,7 @@ public:
     explicit Service(QString name, bool running);
     [[nodiscard]] QString getName() const;
     [[nodiscard]] bool isRunning() const;
+    [[nodiscard]] bool isEnabled() const;
     [[nodiscard]] static QString getInfo(const QString &name);
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
@@ -39,10 +40,13 @@ public:
     static bool enable(const QString &name);
     static bool start(const QString &name);
     static bool stop(const QString &name);
+    void setEnabled(bool enabled);
+    void setRunning(bool running);
 
 private:
     QString name;
     bool running {};
+    bool enabled {};
 };
 
 #endif // SERVICE_H

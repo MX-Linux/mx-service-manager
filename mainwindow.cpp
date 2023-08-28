@@ -32,6 +32,8 @@
 #include "about.h"
 #include "service.h"
 
+Q_DECLARE_METATYPE(Service *)
+
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow)
@@ -61,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listServices->addItem(tr("Loading..."));
     QTimer::singleShot(0, this, [this] {
         listServices();
+        markEnabled();
         displayServices();
     });
 }
@@ -87,30 +90,46 @@ void MainWindow::cmdStart()
 void MainWindow::itemUpdated()
 {
     blockSignals(true);
-    listServices();
     displayServices(ui->checkShowRunning->checkState());
     blockSignals(false);
+}
+
+void MainWindow::markEnabled()
+{
+    for (const auto &service : services) {
+        if (service->isEnabled(service->getName()) && !service->isRunning()) {
+            service->setEnabled(true);
+        }
+    }
 }
 
 void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     Q_UNUSED(previous);
+
     ui->textBrowser->setText(Service::getInfo(current->text()));
-    if (current->data(Qt::UserRole) == true) {
+    bool running = current->data(Qt::UserRole).value<Service *>()->isRunning();
+    bool enabled = current->data(Qt::UserRole).value<Service *>()->isEnabled();
+    if (running) {
         ui->pushStartStop->setText(tr("Stop"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("stop"));
         current->setForeground(QColor(Qt::darkGreen));
     } else {
-        ui->pushStartStop->setText(tr("Start"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("start"));
-        current->setForeground(defaultForeground);
+        ui->pushStartStop->setText(tr("Start"));
+        if (!enabled) {
+            current->setForeground(defaultForeground);
+        }
     }
-    if (Service::isEnabled(current->text())) {
+    if (enabled) {
         ui->pushEnableDisable->setText(tr("Disable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("stop"));
+        if (!running) {
+            current->setForeground(Qt::darkYellow);
+        }
     } else {
-        ui->pushEnableDisable->setText(tr("Enable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("start"));
+        ui->pushEnableDisable->setText(tr("Enable at boot"));
     }
 }
 
@@ -155,13 +174,18 @@ void MainWindow::displayServices(int checked)
     ui->listServices->blockSignals(true);
     ui->listServices->clear();
     uint countActive = 0;
+    uint countEnabled = 0;
     for (const auto &service : services) {
         auto *item = new QListWidgetItem(service->getName(), ui->listServices);
+        item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
         if (service->isRunning()) {
             ++countActive;
-            item->setData(Qt::UserRole, true);
             item->setForeground(QColor(Qt::darkGreen));
         } else {
+            if (service->isEnabled()) {
+                ++countEnabled;
+                item->setForeground(QColor(Qt::darkYellow));
+            }
             if (checked == Qt::Checked) {
                 delete item;
                 continue;
@@ -170,6 +194,7 @@ void MainWindow::displayServices(int checked)
         ui->listServices->addItem(item);
     }
     ui->labelCount->setText(tr("%1 total services, %2 currently running").arg(services.count()).arg(countActive));
+    ui->labelEnabledAtBoot->setText(tr("%1 enabled at boot, but not running").arg(countEnabled));
     ui->listServices->blockSignals(false);
     if (savedRow >= ui->listServices->count()) {
         savedRow = ui->listServices->count() - 1;
@@ -195,10 +220,12 @@ void MainWindow::pushEnableDisable_clicked()
 {
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
+    auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
     if (ui->pushEnableDisable->text() == tr("Enable at boot")) {
         if (!Service::enable(service)) {
             QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
         }
+        ptrService->setEnabled(true);
         itemUpdated();
         emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
         QMessageBox::information(this, tr("Success"), tr("%1 was enabled at boot time.").arg(service));
@@ -206,6 +233,7 @@ void MainWindow::pushEnableDisable_clicked()
         if (!Service::disable(ui->listServices->currentItem()->text())) {
             QMessageBox::warning(this, tr("Error"), tr("Could not disable %1").arg(service));
         }
+        ptrService->setEnabled(false);
         itemUpdated();
         emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
         QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
@@ -223,11 +251,12 @@ void MainWindow::pushStartStop_clicked()
 {
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
+    auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
     if (ui->pushStartStop->text() == tr("Start")) {
         if (!Service::start(service)) {
             QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
         } else {
-            ui->listServices->currentItem()->setData(Qt::UserRole, true);
+            ptrService->setRunning(true);
             itemUpdated();
             emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
             QMessageBox::information(this, tr("Success"), tr("%1 was started.").arg(service));
@@ -236,7 +265,7 @@ void MainWindow::pushStartStop_clicked()
         if (!Service::stop(ui->listServices->currentItem()->text())) {
             QMessageBox::warning(this, tr("Error"), tr("Could not stop %1").arg(service));
         } else {
-            ui->listServices->currentItem()->setData(Qt::UserRole, false);
+            ptrService->setRunning(false);
             itemUpdated();
             emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
             QMessageBox::information(this, tr("Success"), tr("%1 was stopped.").arg(service));

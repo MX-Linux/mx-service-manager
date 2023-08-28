@@ -30,7 +30,6 @@
 Service::Service(QString name, bool running)
     : name {std::move(name)},
       running {running}
-
 {
 }
 
@@ -71,6 +70,11 @@ bool Service::isRunning() const
     return running;
 }
 
+bool Service::isEnabled() const
+{
+    return enabled;
+}
+
 bool Service::start(const QString &name)
 {
     Cmd cmd;
@@ -81,6 +85,16 @@ bool Service::stop(const QString &name)
 {
     Cmd cmd;
     return cmd.run("service " + name + " stop");
+}
+
+void Service::setEnabled(bool enabled)
+{
+    this->enabled = enabled;
+}
+
+void Service::setRunning(bool running)
+{
+    this->running = running;
 }
 
 QString Service::getInfoFromFile(const QString &name)
