@@ -143,6 +143,7 @@ void MainWindow::listServices()
 
 void MainWindow::displayServices(int checked)
 {
+    bool firstTime = (ui->listServices->count() == 0);
     ui->listServices->blockSignals(true);
     ui->listServices->clear();
     uint countActive = 0;
@@ -162,7 +163,14 @@ void MainWindow::displayServices(int checked)
     }
     ui->labelCount->setText(tr("%1 total services, %2 currently running").arg(services.count()).arg(countActive));
     ui->listServices->blockSignals(false);
-    ui->listServices->setCurrentRow(0);
+    if (firstTime) {
+        ui->listServices->setCurrentRow(0);
+    } else {
+        if (savedRow >= ui->listServices->count()) {
+            savedRow = ui->listServices->count() - 1;
+        }
+        ui->listServices->setCurrentRow(savedRow);
+    }
 }
 
 void MainWindow::pushAbout_clicked()
@@ -181,6 +189,7 @@ void MainWindow::pushAbout_clicked()
 
 void MainWindow::pushEnableDisable_clicked()
 {
+    savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     if (ui->pushEnableDisable->text() == tr("Enable at boot")) {
         if (!Service::enable(service)) {
@@ -208,6 +217,7 @@ void MainWindow::pushHelp_clicked()
 
 void MainWindow::pushStartStop_clicked()
 {
+    savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     if (ui->pushStartStop->text() == tr("Start")) {
         if (!Service::start(service)) {

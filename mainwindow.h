@@ -65,6 +65,7 @@ private:
     Cmd cmd;
     QColor defaultForeground;
     QList<QSharedPointer<Service>> services;
+    int savedRow;
 
     void displayServices(int checked = false);
     void listServices();
