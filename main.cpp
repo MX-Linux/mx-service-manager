@@ -29,6 +29,7 @@
 #include <QTranslator>
 
 #include "mainwindow.h"
+#include "version.h"
 #include <unistd.h>
 
 extern const QString starting_home = qEnvironmentVariable("HOME");
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     }
     QApplication::setOrganizationName(QStringLiteral("MX-Linux"));
     QApplication::setWindowIcon(QIcon::fromTheme(QApplication::applicationName()));
+    QApplication::setApplicationVersion(VERSION);
 
     QTranslator qtTran;
     if (qtTran.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath))) {
