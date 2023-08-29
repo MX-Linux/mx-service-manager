@@ -63,6 +63,7 @@ MainWindow::MainWindow(QWidget *parent)
         listServices();
         markEnabled();
         displayServices();
+        ui->listServices->setFocus();
     });
 }
 
@@ -207,7 +208,7 @@ void MainWindow::displayServices()
     if (savedRow >= ui->listServices->count()) {
         savedRow = ui->listServices->count() - 1;
     }
-    ui->lineSearch->setFocus();
+    ui->listServices->setCurrentRow(savedRow);
 }
 
 void MainWindow::pushAbout_clicked()

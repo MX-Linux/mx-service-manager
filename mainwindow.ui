@@ -14,14 +14,7 @@
    <string>MX Service Manager</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="1">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Info:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
+   <item row="5" column="3">
     <widget class="QPushButton" name="pushEnableDisable">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -37,7 +30,7 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0" colspan="3">
+   <item row="9" column="0" colspan="4">
     <layout class="QGridLayout" name="buttonBar" columnstretch="0,0,0,0,0,0,0,0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
@@ -79,7 +72,7 @@
         <string>Alt+B</string>
        </property>
        <property name="autoDefault">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -142,6 +135,9 @@
        <property name="shortcut">
         <string>Alt+H</string>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item row="0" column="5">
@@ -182,57 +178,20 @@
         <string>Alt+N</string>
        </property>
        <property name="autoDefault">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="labelEnabledAtBoot">
      <property name="text">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLineEdit" name="lineSearch">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="placeholderText">
-      <string>search</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="labelServices">
-     <property name="text">
-      <string>Services and daemons:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QListWidget" name="listServices">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="labelCount">
-     <property name="text">
-      <string>Loading...</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
+   <item row="5" column="2">
     <widget class="QPushButton" name="pushStartStop">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -248,10 +207,20 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1" rowspan="4" colspan="2">
+   <item row="1" column="2" rowspan="4" colspan="2">
     <widget class="QTextBrowser" name="textBrowser"/>
    </item>
-   <item row="3" column="0">
+   <item row="0" column="0" colspan="4">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string> This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don't know what it is.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QComboBox" name="comboFilter">
      <item>
       <property name="text">
@@ -270,18 +239,48 @@
      </item>
     </widget>
    </item>
+   <item row="4" column="0">
+    <widget class="QListWidget" name="listServices">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLineEdit" name="lineSearch">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>search</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelCount">
+     <property name="text">
+      <string>Loading...</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <tabstops>
+  <tabstop>listServices</tabstop>
   <tabstop>lineSearch</tabstop>
   <tabstop>comboFilter</tabstop>
-  <tabstop>listServices</tabstop>
-  <tabstop>textBrowser</tabstop>
   <tabstop>pushStartStop</tabstop>
   <tabstop>pushEnableDisable</tabstop>
   <tabstop>pushAbout</tabstop>
   <tabstop>pushHelp</tabstop>
   <tabstop>pushCancel</tabstop>
+  <tabstop>textBrowser</tabstop>
  </tabstops>
  <resources>
   <include location="images.qrc"/>

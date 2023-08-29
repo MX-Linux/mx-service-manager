@@ -136,6 +136,7 @@ QString Service::getInfoFromFile(const QString &name)
 bool Service::enable()
 {
     if (getInit() == "systemd") {
+        cmd.run("systemctl unmask " + name);
         if (cmd.run("systemctl enable " + name)) {
             setEnabled(true);
             return true;
@@ -154,6 +155,7 @@ bool Service::disable()
 {
     if (getInit() == "systemd") {
         if (cmd.run("systemctl disable " + name)) {
+            cmd.run("systemctl mask " + name);
             setEnabled(false);
             return true;
         }
