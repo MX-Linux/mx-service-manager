@@ -201,7 +201,8 @@ void MainWindow::displayServices()
                 continue;
             }
         }
-        if (!service->isEnabled() && (ui->comboFilter->currentText() == tr("Enabled at boot services"))) {
+        if ((!service->isEnabled() && (ui->comboFilter->currentText() == tr("Services enabled at boot")))
+            || (service->isEnabled() && (ui->comboFilter->currentText() == tr("Services disabled at boot")))) {
             delete item;
         } else {
             ui->listServices->addItem(item);

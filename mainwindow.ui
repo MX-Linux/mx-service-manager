@@ -252,7 +252,12 @@
      </item>
      <item>
       <property name="text">
-       <string>Enabled at boot services</string>
+       <string>Services enabled at boot</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Services disabled at boot</string>
       </property>
      </item>
     </widget>
