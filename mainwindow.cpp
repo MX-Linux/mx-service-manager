@@ -88,7 +88,7 @@ void MainWindow::cmdStart()
 void MainWindow::itemUpdated()
 {
     blockSignals(true);
-    displayServices(ui->checkShowRunning->checkState());
+    displayServices();
     blockSignals(false);
 }
 
@@ -104,30 +104,32 @@ void MainWindow::markEnabled()
 void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     Q_UNUSED(previous);
-
+    if (!current) {
+        return;
+    }
     ui->textBrowser->setText(Service::getInfo(current->text()));
     bool running = current->data(Qt::UserRole).value<Service *>()->isRunning();
     bool enabled = current->data(Qt::UserRole).value<Service *>()->isEnabled();
     if (running) {
-        ui->pushStartStop->setText(tr("Stop"));
+        ui->pushStartStop->setText(tr("&Stop"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("stop"));
         current->setForeground(QColor(Qt::darkGreen));
     } else {
         ui->pushStartStop->setIcon(QIcon::fromTheme("start"));
-        ui->pushStartStop->setText(tr("Start"));
+        ui->pushStartStop->setText(tr("S&tart"));
         if (!enabled) {
             current->setForeground(defaultForeground);
         }
     }
     if (enabled) {
-        ui->pushEnableDisable->setText(tr("Disable at boot"));
+        ui->pushEnableDisable->setText(tr("&Disable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("stop"));
         if (!running) {
             current->setForeground(Qt::darkYellow);
         }
     } else {
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("start"));
-        ui->pushEnableDisable->setText(tr("Enable at boot"));
+        ui->pushEnableDisable->setText(tr("&Enable at boot"));
     }
 }
 
@@ -143,7 +145,8 @@ void MainWindow::setConnections()
 
 void MainWindow::setGeneralConnections()
 {
-    connect(ui->checkShowRunning, &QCheckBox::stateChanged, this, &MainWindow::displayServices);
+    connect(ui->comboFilter, &QComboBox::currentTextChanged, this, &MainWindow::displayServices);
+    connect(ui->lineSearch, &QLineEdit::textChanged, this, &MainWindow::displayServices);
     connect(ui->listServices, &QListWidget::currentItemChanged, this, &MainWindow::onSelectionChanged);
     connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAbout_clicked);
     connect(ui->pushCancel, &QPushButton::pressed, this, &MainWindow::close);
@@ -167,13 +170,16 @@ void MainWindow::listServices()
     }
 }
 
-void MainWindow::displayServices(int checked)
+void MainWindow::displayServices()
 {
     ui->listServices->blockSignals(true);
     ui->listServices->clear();
     uint countActive = 0;
     uint countEnabled = 0;
     for (const auto &service : services) {
+        if (!ui->lineSearch->text().isEmpty() && !service->getName().startsWith(ui->lineSearch->text())) {
+            continue;
+        }
         auto *item = new QListWidgetItem(service->getName(), ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
         if (service->isRunning()) {
@@ -184,12 +190,16 @@ void MainWindow::displayServices(int checked)
                 ++countEnabled;
                 item->setForeground(QColor(Qt::darkYellow));
             }
-            if (checked == Qt::Checked) {
+            if (ui->comboFilter->currentText() == tr("Running services")) {
                 delete item;
                 continue;
             }
         }
-        ui->listServices->addItem(item);
+        if (!service->isEnabled() && (ui->comboFilter->currentText() == tr("Enabled at boot services"))) {
+            delete item;
+        } else {
+            ui->listServices->addItem(item);
+        }
     }
     ui->labelCount->setText(tr("%1 total services, %2 currently running").arg(services.count()).arg(countActive));
     ui->labelEnabledAtBoot->setText(tr("%1 enabled at boot, but not running").arg(countEnabled));
@@ -197,7 +207,7 @@ void MainWindow::displayServices(int checked)
     if (savedRow >= ui->listServices->count()) {
         savedRow = ui->listServices->count() - 1;
     }
-    ui->listServices->setCurrentRow(savedRow);
+    ui->lineSearch->setFocus();
 }
 
 void MainWindow::pushAbout_clicked()
@@ -219,7 +229,7 @@ void MainWindow::pushEnableDisable_clicked()
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
-    if (ui->pushEnableDisable->text() == tr("Enable at boot")) {
+    if (ui->pushEnableDisable->text() == tr("&Enable at boot")) {
         if (!ptrService->enable()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
         }
@@ -248,7 +258,7 @@ void MainWindow::pushStartStop_clicked()
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
-    if (ui->pushStartStop->text() == tr("Start")) {
+    if (ui->pushStartStop->text() == tr("S&tart")) {
         if (!ptrService->start()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
         } else {

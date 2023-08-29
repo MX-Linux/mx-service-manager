@@ -68,7 +68,7 @@ private:
     QList<QSharedPointer<Service>> services;
     int savedRow = 0;
 
-    void displayServices(int checked = false);
+    void displayServices();
     void listServices();
 };
 
