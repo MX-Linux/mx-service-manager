@@ -31,6 +31,9 @@
 
 #include "about.h"
 #include "service.h"
+#include <chrono>
+
+using namespace std::chrono_literals;
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
@@ -57,9 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
     }
     QPalette palette = ui->listServices->palette();
     defaultForeground = palette.color(QPalette::Text);
-
     ui->listServices->addItem(tr("Loading..."));
+
     QTimer::singleShot(0, this, [this] {
+        QTimer timer;
+        timer.start(300ms);
+        connect(&timer, &QTimer::timeout, this, [this] {
+            static auto i = 0;
+            (i % 2 == 0) ? ui->labelCount->setText(tr("Loading...")) : ui->labelCount->clear();
+            ++i;
+        });
         listServices();
         markEnabled();
         displayServices();
