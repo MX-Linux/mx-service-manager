@@ -139,11 +139,6 @@ void MainWindow::cmdDone()
     setCursor(QCursor(Qt::ArrowCursor));
 }
 
-// set proc and timer connections
-void MainWindow::setConnections()
-{
-}
-
 void MainWindow::setGeneralConnections()
 {
     connect(ui->comboFilter, &QComboBox::currentTextChanged, this, &MainWindow::displayServices);
