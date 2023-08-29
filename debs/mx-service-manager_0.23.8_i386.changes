@@ -15,11 +15,11 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- bcc0a111496ad603b3a4d55775b4e113535664dd 10114 mx-service-manager_0.23.8_i386.buildinfo
- d92eb54919b7889ccceaa976bbf4b547d5e25208 44336 mx-service-manager_0.23.8_i386.deb
+ 5992ce56b066c15d88d1e44c76a0306378365daf 10114 mx-service-manager_0.23.8_i386.buildinfo
+ 89a2f17b5161549fb07ee45d55550e2a43b5a612 44652 mx-service-manager_0.23.8_i386.deb
 Checksums-Sha256:
- a7c14d4dbabc1bb1a2cfd371c0a7db4250c24d7f9d79d19bd0cee21ad38fbdb2 10114 mx-service-manager_0.23.8_i386.buildinfo
- f73c6f57f3f9dfd19db382ca333c7ad495f07a24389411672ee171e2000fb099 44336 mx-service-manager_0.23.8_i386.deb
+ b83f19d4183a38e445efc16a42d70415401bd8518303768bfb47e1d9f5938b9c 10114 mx-service-manager_0.23.8_i386.buildinfo
+ 620557ca347b88b3d0fa7ca492d9b213d42de3db250c65b186bbc719bdb1d499 44652 mx-service-manager_0.23.8_i386.deb
 Files:
- 16c99c89fae261752215661e3864e42f 10114 admin optional mx-service-manager_0.23.8_i386.buildinfo
- 4686b850e54b4cf7c0af8979e45becbf 44336 admin optional mx-service-manager_0.23.8_i386.deb
+ b74e648f45e17faddf41db22120e704e 10114 admin optional mx-service-manager_0.23.8_i386.buildinfo
+ a12b42ae4803455ea0f45c7a1d197e18 44652 admin optional mx-service-manager_0.23.8_i386.deb
