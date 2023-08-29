@@ -57,7 +57,6 @@ private slots:
     void pushEnableDisable_clicked();
     void pushHelp_clicked();
     void pushStartStop_clicked();
-    void setConnections();
     void setGeneralConnections();
 
 private:
