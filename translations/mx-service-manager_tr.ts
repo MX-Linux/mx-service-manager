@@ -1,9 +1,11 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="tr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="tr">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="225"/>
+        <location filename="../mainwindow.cpp" line="241"/>
         <source>MX Service Manager</source>
         <translation>MX Servis Yönetici</translation>
     </message>
@@ -14,8 +16,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
-        <location filename="../mainwindow.cpp" line="138"/>
-        <location filename="../mainwindow.cpp" line="240"/>
+        <location filename="../mainwindow.cpp" line="139"/>
+        <location filename="../mainwindow.cpp" line="256"/>
         <source>&amp;Enable at boot</source>
         <translation>Açılışta &amp;etkin</translation>
     </message>
@@ -45,41 +47,41 @@
         <translation>&amp;Kapat</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="255"/>
-        <location filename="../mainwindow.cpp" line="205"/>
+        <location filename="../mainwindow.ui" line="227"/>
+        <location filename="../mainwindow.cpp" line="214"/>
         <source>Services enabled at boot</source>
         <translation>Önyüklemede etkin servisler</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="260"/>
-        <location filename="../mainwindow.cpp" line="206"/>
+        <location filename="../mainwindow.ui" line="232"/>
+        <location filename="../mainwindow.cpp" line="215"/>
         <source>Services disabled at boot</source>
         <translation>Önyüklemede devre dışı servisler</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="281"/>
+        <location filename="../mainwindow.ui" line="253"/>
         <source>search</source>
         <translation>Ara</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.cpp" line="120"/>
+        <location filename="../mainwindow.cpp" line="121"/>
         <source>&amp;Stop</source>
         <translation>&amp;Dur</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="228"/>
+        <location filename="../mainwindow.ui" line="282"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
         <translation>Bu araç, bu sistemde bulunan hizmetleri ve arka plan programlarını (arka planda çalışan işlemler) listeler. Kritik bir bileşeni bozabilecek bir şeyi durdurmaktan kaçınmaya dikkat edin; Ne olduğunu bilmiyorsan, kendi haline bırakmak en iyisi.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="245"/>
+        <location filename="../mainwindow.ui" line="217"/>
         <source>All services</source>
         <translation>Tüm servisler</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="250"/>
-        <location filename="../mainwindow.cpp" line="200"/>
+        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>Running services</source>
         <translation>Çalışan servisler</translation>
     </message>
@@ -99,18 +101,18 @@
         <translation>Alt+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="291"/>
+        <location filename="../mainwindow.ui" line="263"/>
         <location filename="../mainwindow.cpp" line="63"/>
-        <location filename="../mainwindow.cpp" line="75"/>
+        <location filename="../mainwindow.cpp" line="76"/>
         <source>Loading...</source>
         <translation>Yükleniyor...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="57"/>
-        <location filename="../mainwindow.cpp" line="242"/>
-        <location filename="../mainwindow.cpp" line="249"/>
-        <location filename="../mainwindow.cpp" line="271"/>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="258"/>
+        <location filename="../mainwindow.cpp" line="265"/>
+        <location filename="../mainwindow.cpp" line="287"/>
+        <location filename="../mainwindow.cpp" line="296"/>
         <source>Error</source>
         <translation>Hata</translation>
     </message>
@@ -120,101 +122,109 @@
         <translation>Başlatma sistemi belirlenemedi. Bu programın systemd veya sysvinit ile çalışması gerekiyor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="125"/>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="126"/>
+        <location filename="../mainwindow.cpp" line="285"/>
         <source>S&amp;tart</source>
         <translation>&amp;Başlat</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="131"/>
+        <location filename="../mainwindow.cpp" line="132"/>
         <source>&amp;Disable at boot</source>
         <translation>Önyüklemede &amp;devre dışı</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="212"/>
         <source>%1 total services, %2 currently running</source>
-        <translation>%1 toplam servis, %2 şu anda çalışıyor</translation>
+        <translation type="vanished">%1 toplam servis, %2 şu anda çalışıyor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="213"/>
         <source>%1 enabled at boot, but not running</source>
-        <translation>%1 önyüklemede etkin, ancak çalışmıyor</translation>
+        <translation type="vanished">%1 önyüklemede etkin, ancak çalışmıyor</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
+        <source>%1 total services, %2 currently %3running%4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="229"/>
+        <source>%1 %2enabled%3 at boot, but not running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="241"/>
         <source>About %1</source>
         <translation>%1 Hakkında </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="242"/>
         <source>Version: </source>
         <translation>Sürüm:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="227"/>
+        <location filename="../mainwindow.cpp" line="243"/>
         <source>Service and daemon manager</source>
         <translation>Servis ve daemon yöneticisi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="229"/>
+        <location filename="../mainwindow.cpp" line="245"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Telif Hakkı (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="230"/>
+        <location filename="../mainwindow.cpp" line="246"/>
         <source>%1 License</source>
         <translation>%1 Lisans</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="242"/>
+        <location filename="../mainwindow.cpp" line="258"/>
         <source>Could not enable %1</source>
         <translation>%1 etkinleştirilemedi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="246"/>
-        <location filename="../mainwindow.cpp" line="253"/>
-        <location filename="../mainwindow.cpp" line="276"/>
-        <location filename="../mainwindow.cpp" line="285"/>
+        <location filename="../mainwindow.cpp" line="262"/>
+        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="292"/>
+        <location filename="../mainwindow.cpp" line="301"/>
         <source>Success</source>
         <translation>Başarılı</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="246"/>
+        <location filename="../mainwindow.cpp" line="262"/>
         <source>%1 was enabled at boot time.</source>
         <translation>%1 önyükleme esnasında etkinleştirildi.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="249"/>
+        <location filename="../mainwindow.cpp" line="265"/>
         <source>Could not disable %1</source>
         <translation>%1 devre dışı bırakılamadı</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="253"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <source>%1 was disabled.</source>
         <translation>%1 devre dışı bırakıldı.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="261"/>
+        <location filename="../mainwindow.cpp" line="277"/>
         <source>%1 Help</source>
         <translation>%1 Yardım</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="271"/>
+        <location filename="../mainwindow.cpp" line="287"/>
         <source>Could not start %1</source>
         <translation>%1 başlatılamadı</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="276"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>%1 was started.</source>
         <translation>%1 başlatıldı.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="280"/>
+        <location filename="../mainwindow.cpp" line="296"/>
         <source>Could not stop %1</source>
         <translation>%1 durdurulamadı</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="285"/>
+        <location filename="../mainwindow.cpp" line="301"/>
         <source>%1 was stopped.</source>
         <translation>%1 durduruldu.</translation>
     </message>
