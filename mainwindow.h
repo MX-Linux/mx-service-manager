@@ -51,7 +51,6 @@ private slots:
     void cmdDone();
     void cmdStart();
     void itemUpdated();
-    void markEnabled();
     void onSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void pushAbout_clicked();
     void pushEnableDisable_clicked();
@@ -63,6 +62,7 @@ private:
     Ui::MainWindow *ui;
     QSettings settings;
     Cmd cmd;
+    QStringList dependTargets {};
     QColor defaultForeground;
     QList<QSharedPointer<Service>> services;
     int savedRow = 0;

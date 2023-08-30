@@ -62,6 +62,11 @@ MainWindow::MainWindow(QWidget *parent)
     defaultForeground = palette.color(QPalette::Text);
     ui->listServices->addItem(tr("Loading..."));
 
+    dependTargets
+        = cmd.getCmdOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
+                        "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'")
+              .split(" ");
+
     QTimer::singleShot(0, this, [this] {
         QTimer timer;
         timer.start(300ms);
@@ -71,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent)
             ++i;
         });
         listServices();
-        markEnabled();
         displayServices();
         ui->listServices->setFocus();
     });
@@ -101,15 +105,6 @@ void MainWindow::itemUpdated()
     blockSignals(true);
     displayServices();
     blockSignals(false);
-}
-
-void MainWindow::markEnabled()
-{
-    for (const auto &service : services) {
-        if (service->isEnabled(service->getName()) && !service->isRunning()) {
-            service->setEnabled(true);
-        }
-    }
 }
 
 void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous)
@@ -167,11 +162,17 @@ void MainWindow::listServices()
     const QStringList listServices = cmd.getCmdOut("service --status-all").split("\n");
     services.reserve(listServices.count());
     QRegularExpression re("dpkg-.*$");
+    QString name;
     for (const auto &item : listServices) {
         if (item.trimmed().contains(re)) {
             continue;
         }
-        auto *service = new Service(item.section("]  ", 1), item.trimmed().startsWith("[ + ]"));
+        name = item.section("]  ", 1);
+        auto *service = new Service(name, item.trimmed().startsWith("[ + ]"));
+        service->setEnabled(Service::isEnabled(name));
+        if (dependTargets.contains(name)) {
+            service->setEnabled(true);
+        }
         services << QSharedPointer<Service>(service);
     }
 }
