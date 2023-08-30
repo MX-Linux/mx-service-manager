@@ -64,9 +64,12 @@ private:
     Cmd cmd;
     QStringList dependTargets {};
     QColor defaultForeground;
+    QColor runningColor {Qt::darkGreen};
+    QColor enabledColor {Qt::darkYellow};
     QList<QSharedPointer<Service>> services;
     int savedRow = 0;
 
+    QString getHtmlColor(QColor color);
     void displayServices();
     void listServices();
 };

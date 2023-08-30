@@ -64,7 +64,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     dependTargets
         = cmd.getCmdOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
-                        "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'")
+                        "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'",
+                        true)
               .split(" ");
 
     QTimer::singleShot(0, this, [this] {
@@ -119,7 +120,7 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     if (running) {
         ui->pushStartStop->setText(tr("&Stop"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("stop"));
-        current->setForeground(QColor(Qt::darkGreen));
+        current->setForeground(runningColor);
     } else {
         ui->pushStartStop->setIcon(QIcon::fromTheme("start"));
         ui->pushStartStop->setText(tr("S&tart"));
@@ -131,7 +132,7 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
         ui->pushEnableDisable->setText(tr("&Disable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("stop"));
         if (!running) {
-            current->setForeground(Qt::darkYellow);
+            current->setForeground(enabledColor);
         }
     } else {
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("start"));
@@ -154,6 +155,14 @@ void MainWindow::setGeneralConnections()
     connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
     connect(ui->pushEnableDisable, &QPushButton::clicked, this, &MainWindow::pushEnableDisable_clicked);
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
+}
+
+QString MainWindow::getHtmlColor(QColor color)
+{
+    return QString("#%1%2%3")
+        .arg(color.red(), 2, 16, QChar('0'))
+        .arg(color.green(), 2, 16, QChar('0'))
+        .arg(color.blue(), 2, 16, QChar('0'));
 }
 
 void MainWindow::listServices()
@@ -191,11 +200,11 @@ void MainWindow::displayServices()
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
         if (service->isRunning()) {
             ++countActive;
-            item->setForeground(QColor(Qt::darkGreen));
+            item->setForeground(runningColor);
         } else {
             if (service->isEnabled()) {
                 ++countEnabled;
-                item->setForeground(QColor(Qt::darkYellow));
+                item->setForeground(enabledColor);
             }
             if (ui->comboFilter->currentText() == tr("Running services")) {
                 delete item;
@@ -209,8 +218,15 @@ void MainWindow::displayServices()
             ui->listServices->addItem(item);
         }
     }
-    ui->labelCount->setText(tr("%1 total services, %2 currently running").arg(services.count()).arg(countActive));
-    ui->labelEnabledAtBoot->setText(tr("%1 enabled at boot, but not running").arg(countEnabled));
+
+    QString fontTagStart = QString("<font color='%1'>").arg(getHtmlColor(runningColor));
+    const QString fontTagEnd = "</font>";
+    ui->labelCount->setText(
+        tr("%1 total services, %2 currently %3running%4")
+            .arg(QString::number(services.count()), QString::number(countActive), fontTagStart, fontTagEnd));
+    fontTagStart = QString("<font color='%1'>").arg(getHtmlColor(enabledColor));
+    ui->labelEnabledAtBoot->setText(
+        tr("%1 %2enabled%3 at boot, but not running").arg(QString::number(countEnabled), fontTagStart, fontTagEnd));
     ui->listServices->blockSignals(false);
     if (savedRow >= ui->listServices->count()) {
         savedRow = ui->listServices->count() - 1;
