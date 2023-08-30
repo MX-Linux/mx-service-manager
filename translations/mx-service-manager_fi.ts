@@ -3,9 +3,9 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="225"/>
         <source>MX Service Manager</source>
-        <translation type="unfinished"/>
+        <translation>MX Palvelu Manageri</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
@@ -14,15 +14,15 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
-        <location filename="../mainwindow.cpp" line="143"/>
-        <location filename="../mainwindow.cpp" line="238"/>
+        <location filename="../mainwindow.cpp" line="138"/>
+        <location filename="../mainwindow.cpp" line="240"/>
         <source>&amp;Enable at boot</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Ota käyttöön käynnistyksen yhteydessä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Noin...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
@@ -45,37 +45,43 @@
         <translation>&amp;Sulje</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="276"/>
+        <location filename="../mainwindow.ui" line="255"/>
+        <location filename="../mainwindow.cpp" line="205"/>
+        <source>Services enabled at boot</source>
+        <translation>Palvelut käytössä käynnistyksen yhteydessä</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="260"/>
+        <location filename="../mainwindow.cpp" line="206"/>
+        <source>Services disabled at boot</source>
+        <translation>Palvelut pois käytöstä käynnistyksen yhteydessä</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="281"/>
         <source>search</source>
         <translation>etsi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="120"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Pysäytä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="228"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation type="unfinished"/>
+        <translation>Tämä työkalu luettelee tästä järjestelmästä löydetyt palvelut ja demonit (taustalla toimivat prosessit). Varo pysäyttämästä jotain, joka saattaa häiritä kriittistä komponenttia. parasta jättää se rauhaan, jos et tiedä mitä se on.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
         <source>All services</source>
-        <translation type="unfinished"/>
+        <translation>Kaikki palvelut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="250"/>
-        <location filename="../mainwindow.cpp" line="199"/>
+        <location filename="../mainwindow.cpp" line="200"/>
         <source>Running services</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="255"/>
-        <location filename="../mainwindow.cpp" line="204"/>
-        <source>Enabled at boot services</source>
-        <translation type="unfinished"/>
+        <translation>Käynnissä olevat palvelut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
@@ -93,124 +99,124 @@
         <translation>Alt+N</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="286"/>
+        <location filename="../mainwindow.ui" line="291"/>
         <location filename="../mainwindow.cpp" line="63"/>
-        <location filename="../mainwindow.cpp" line="70"/>
+        <location filename="../mainwindow.cpp" line="75"/>
         <source>Loading...</source>
         <translation>Lataa...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="57"/>
-        <location filename="../mainwindow.cpp" line="240"/>
-        <location filename="../mainwindow.cpp" line="247"/>
-        <location filename="../mainwindow.cpp" line="269"/>
-        <location filename="../mainwindow.cpp" line="278"/>
+        <location filename="../mainwindow.cpp" line="242"/>
+        <location filename="../mainwindow.cpp" line="249"/>
+        <location filename="../mainwindow.cpp" line="271"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="58"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation type="unfinished"/>
+        <translation>Alkujärjestelmää ei voitu määrittää. Tämän ohjelman oletetaan toimivan joko systemd:n tai sysvinitin kanssa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="130"/>
-        <location filename="../mainwindow.cpp" line="267"/>
+        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <source>S&amp;tart</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Aloita</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="136"/>
+        <location filename="../mainwindow.cpp" line="131"/>
         <source>&amp;Disable at boot</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Poista käytöstä käynnistyksen yhteydessä</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="210"/>
+        <location filename="../mainwindow.cpp" line="212"/>
         <source>%1 total services, %2 currently running</source>
-        <translation type="unfinished"/>
+        <translation>%1 palveluita yhteensä, %2 käynnissä</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="213"/>
         <source>%1 enabled at boot, but not running</source>
-        <translation type="unfinished"/>
+        <translation>%1 käytössä käynnistyksen yhteydessä, mutta ei käynnissä</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="225"/>
         <source>About %1</source>
         <translation>%1 lisätietoja</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
+        <location filename="../mainwindow.cpp" line="226"/>
         <source>Version: </source>
         <translation>Versio: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="225"/>
+        <location filename="../mainwindow.cpp" line="227"/>
         <source>Service and daemon manager</source>
-        <translation type="unfinished"/>
+        <translation>Palvelu- ja daemon manageri</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="227"/>
+        <location filename="../mainwindow.cpp" line="229"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="228"/>
+        <location filename="../mainwindow.cpp" line="230"/>
         <source>%1 License</source>
         <translation>%1 lupa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="240"/>
+        <location filename="../mainwindow.cpp" line="242"/>
         <source>Could not enable %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei voitu ottaa käyttöön %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="244"/>
-        <location filename="../mainwindow.cpp" line="251"/>
-        <location filename="../mainwindow.cpp" line="274"/>
-        <location filename="../mainwindow.cpp" line="283"/>
+        <location filename="../mainwindow.cpp" line="246"/>
+        <location filename="../mainwindow.cpp" line="253"/>
+        <location filename="../mainwindow.cpp" line="276"/>
+        <location filename="../mainwindow.cpp" line="285"/>
         <source>Success</source>
         <translation>Onnistui</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="244"/>
+        <location filename="../mainwindow.cpp" line="246"/>
         <source>%1 was enabled at boot time.</source>
-        <translation type="unfinished"/>
+        <translation>%1 oli käytössä käynnistyksen yhteydessä.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="247"/>
+        <location filename="../mainwindow.cpp" line="249"/>
         <source>Could not disable %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei voitu poistaa käytöstä %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="251"/>
+        <location filename="../mainwindow.cpp" line="253"/>
         <source>%1 was disabled.</source>
-        <translation type="unfinished"/>
+        <translation>%1 oli poistettu käytöstä.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="259"/>
+        <location filename="../mainwindow.cpp" line="261"/>
         <source>%1 Help</source>
         <translation>%1 Apuopas</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="271"/>
         <source>Could not start %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei voitu käynnistää %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="274"/>
+        <location filename="../mainwindow.cpp" line="276"/>
         <source>%1 was started.</source>
-        <translation type="unfinished"/>
+        <translation>%1 käynnistettiin.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="278"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>Could not stop %1</source>
-        <translation type="unfinished"/>
+        <translation>Ei voitu pysäyttää %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="283"/>
+        <location filename="../mainwindow.cpp" line="285"/>
         <source>%1 was stopped.</source>
-        <translation type="unfinished"/>
+        <translation>%1 pysäytettiin.</translation>
     </message>
 </context>
 <context>

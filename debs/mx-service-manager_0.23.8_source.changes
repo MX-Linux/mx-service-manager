@@ -15,26 +15,26 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- 32beed8f5baa840b2c293c90180ad96874b9b64e 1164 mx-service-manager_0.23.8.dsc
- 83685a93920b78f2a048b84be8c3fe1a32a8028f 50372 mx-service-manager_0.23.8.tar.xz
- a0d4814b5ff683376898f3a75c40977f7fcdbcb2 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ b9369bd788d29b8ea2bb0a7666bb9ddc70f64802 1164 mx-service-manager_0.23.8.dsc
+ f6a235d57e210d1e6eff3f1f8368a8c6036a9420 53988 mx-service-manager_0.23.8.tar.xz
+ c5f7d9a9e53a5debc5e01cc097dd46778fd4ce76 10984 mx-service-manager_0.23.8_amd64.buildinfo
 Checksums-Sha256:
- ed2cb1d012ead768b6496278e9db82d7a0ecf62513476e6dafd5ff67a17e95e6 1164 mx-service-manager_0.23.8.dsc
- 19c986dddf48434b0f999d07a3711f8803b22dc31d07cd9c0ffd323d799fbd07 50372 mx-service-manager_0.23.8.tar.xz
- a9d233e1bc6fd92e15accc64bf9a36c797aed0f8c0c8c6fa195b58170eb84f57 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ 280f1cbdfdf552251cfff26354b5a2d381f264885673e6750c9d92b54fb77072 1164 mx-service-manager_0.23.8.dsc
+ 52b10338d465a2727f99e7b5303376f8c993d4e31ff1330e59d455d520c46bb3 53988 mx-service-manager_0.23.8.tar.xz
+ 37ddd3388ede2e8be9a28aa02a2e9655042a6d8696e2b242ddbdf29defa5dd4f 10984 mx-service-manager_0.23.8_amd64.buildinfo
 Files:
- b9c05f48098f992dac9ac0abab4119d4 1164 admin optional mx-service-manager_0.23.8.dsc
- 9a7f630d9c0cdf499a4cbe9501f2332f 50372 admin optional mx-service-manager_0.23.8.tar.xz
- e05dab449e3702945736f632e570e5ba 10983 admin optional mx-service-manager_0.23.8_amd64.buildinfo
+ f72460115ac39d665e77811c49fa9ec3 1164 admin optional mx-service-manager_0.23.8.dsc
+ 5c7a1f12424687dba3182b457c54e204 53988 admin optional mx-service-manager_0.23.8.tar.xz
+ 2a26e12992069ed5c2762e99d4986417 10984 admin optional mx-service-manager_0.23.8_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTuraYTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumB2ACACh94M+FBw1MzFcgB2zflyCHFIbPYes
-4xJkI6sF1M7CuNHcX81KS71Hu8cfJpcoryOYrA9Qni1eXcK6SFK72UzV7KCmhPxO
-vyxdxtClN9EMf17FqXiV0LA3usYRHs+Bt9nlvif3gxkd1Zts9ROE0Ffb1hM/v29J
-7dSWJCmDLFjTcJdS8Hr+TIsO5yIWUMEe7Bm4fF0KP9cItPFDSoDF8T632b9hssn6
-MgMpgoYaFySwFycmZu9CCYx92fQMHQ5IqVI8CWd9eZXBtWZ5csTLJ65chLrEr9zJ
-jjXt/yHWL/t70GQHLt58BLDPf/JOn3UKC9AKNBP4VR+2uV4QMiTN9sUO
-=JUs+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTvghMTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumKxSB/9qotXP0MWg8aRyYOXRe9SSNacyMHTc
+9X+Zd5PR7yogza7Sqiof7qAqGisZ/ZNP5p9LQIY6IDkXtQWaIso1oU9qiTavBsrK
+8UMhEbom6AjHQHehvYaGv+33ZRJSGEvm8s0K0Bri9DE+WcouDZSI6p8QKU8hZAO2
+YGzUpn3NOu1B5oCcZkR3KYlzsgTrKHBEvLzl1VBcvwmE66EjgnVpYOUTiidNDZVf
+7xlFdS5iu0f5GEx8fTJZP0ovnOVOXl04P47aJXqinz7yaWzzrd34RPf9vz3cbDLl
+YcAywBZ5Esz/XsfDnKZEvukuwec2c8fw+woTS0MWmKtj0YFZ2jdJIUPx
+=QzHM
 -----END PGP SIGNATURE-----
