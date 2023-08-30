@@ -1,6 +1,6 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=MX Service Managers
+Name=MX Service Manager
 Comment=Manually enable or disable services
 Exec=mxsm-launcher
 Terminal=false
