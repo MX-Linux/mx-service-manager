@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 26 Aug 2023 20:55:12 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: source amd64
+Version: 0.23.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (0.23.8) mx; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ 32beed8f5baa840b2c293c90180ad96874b9b64e 1164 mx-service-manager_0.23.8.dsc
+ 83685a93920b78f2a048b84be8c3fe1a32a8028f 50372 mx-service-manager_0.23.8.tar.xz
+ a0d4814b5ff683376898f3a75c40977f7fcdbcb2 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ eeddd390036103abf4e431a9bad1aa23c16239b3 60580 mx-service-manager_0.23.8_amd64.deb
+Checksums-Sha256:
+ ed2cb1d012ead768b6496278e9db82d7a0ecf62513476e6dafd5ff67a17e95e6 1164 mx-service-manager_0.23.8.dsc
+ 19c986dddf48434b0f999d07a3711f8803b22dc31d07cd9c0ffd323d799fbd07 50372 mx-service-manager_0.23.8.tar.xz
+ a9d233e1bc6fd92e15accc64bf9a36c797aed0f8c0c8c6fa195b58170eb84f57 10983 mx-service-manager_0.23.8_amd64.buildinfo
+ 24903292b69273ff47ca0398c6fc46244ac8ded4633436a63c7134c6af62e1e4 60580 mx-service-manager_0.23.8_amd64.deb
+Files:
+ b9c05f48098f992dac9ac0abab4119d4 1164 admin optional mx-service-manager_0.23.8.dsc
+ 9a7f630d9c0cdf499a4cbe9501f2332f 50372 admin optional mx-service-manager_0.23.8.tar.xz
+ e05dab449e3702945736f632e570e5ba 10983 admin optional mx-service-manager_0.23.8_amd64.buildinfo
+ 84823c7837f8ef27bf0f842186912a97 60580 admin optional mx-service-manager_0.23.8_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTuraYTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumHb4B/9saLKg22z67OBdo/wN4LMpdugzaXNH
+/sB60hyjBCaiyoRSsXyHi2YMz/Cnx034iMMokB85YU2Y7ova0lz7aLQeUcyTi91t
+v4NKJ9wzkdPPEqfFiQ7ftThQZ508UuepkrYPhsca8tYv2xL7OxVsbaEvQIpDnJZ+
+5QqniA8yFyJLiclioKv0BZHkX81ne1H3FiQmG5fcsUkN96WeYBS87t86vHt6yLpT
+QfqelE2HSGpajRePlGtgPBcOPuzSL1it0EQgjHLT410mSNLHbWx5sur94qUKPiIB
+X6W14D8oz2RXKtZz7scrQoHWtXAQDVH62x+YIdfIk2yVnrTzDnaZWA8F
+=29bA
+-----END PGP SIGNATURE-----
