@@ -133,14 +133,6 @@
         <translation>&amp;Beim Systemstart deaktivieren</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 Dienste insgesamt, %2 laufen derzeit</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 beim Startvorgang aktiviert, aber zur Zeit nicht laufend</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation type="unfinished"></translation>

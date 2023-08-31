@@ -133,14 +133,6 @@
         <translation>&amp;Poista käytöstä käynnistyksen yhteydessä</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 palveluita yhteensä, %2 käynnissä</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 käytössä käynnistyksen yhteydessä, mutta ei käynnissä</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation type="unfinished"></translation>

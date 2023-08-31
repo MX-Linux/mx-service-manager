@@ -133,14 +133,6 @@
         <translation>&amp;Disabilita all&apos;avvio</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 servizi totali, %2 attualmente in esecuzione</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 abilitato all&apos;avvio, ma non in esecuzione</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation type="unfinished"></translation>

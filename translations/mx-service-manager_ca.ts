@@ -133,22 +133,14 @@
         <translation>&amp;Desactiva en arrencar</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 serveis en total, %2 executant-se ara</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 activats en arrencar, però no s&apos;executen</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 serveis en total, %2 actualment %3executant-se%4</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2activats%3 a l&apos;arrancala, però no executant-se</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>

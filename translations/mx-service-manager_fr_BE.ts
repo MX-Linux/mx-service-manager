@@ -133,14 +133,6 @@
         <translation>&amp;Désactiver au démarrage</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 services au total, dont %2 en cours d’exécution.</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 activés au démarrage mais pas en cours d’exécution.</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation type="unfinished"></translation>

@@ -133,14 +133,6 @@
         <translation>&amp;Uitschakelen bij opstarten</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 totaal aantal services, %2 momenteel actief</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 ingeschakeld bij opstarten, maar draait niet</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation type="unfinished"></translation>

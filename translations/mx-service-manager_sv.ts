@@ -133,22 +133,14 @@
         <translation>&amp;Deaktivera vid boot</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently running</source>
-        <translation type="vanished">%1 totala tjänster, %2 som körs nu</translation>
-    </message>
-    <message>
-        <source>%1 enabled at boot, but not running</source>
-        <translation type="vanished">%1 aktiverade vid boot, men som inte körs</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tjänster totalt, %2 just nu %3körs%4</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2aktiverade%3 vid boot, men körs inte</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>
