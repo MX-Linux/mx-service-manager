@@ -273,7 +273,7 @@ void MainWindow::pushEnableDisable_clicked()
 // Help button clicked
 void MainWindow::pushHelp_clicked()
 {
-    const QString url = QStringLiteral("mxlinux.org");
+    const QString url = QStringLiteral("https://mxlinux.org/wiki/help-service-manager/");
     displayDoc(url, tr("%1 Help").arg(this->windowTitle()));
 }
 
