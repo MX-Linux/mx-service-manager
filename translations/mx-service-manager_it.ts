@@ -135,12 +135,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 servizi totali, %2 attualmente %3in esecuzione%4</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2abilitato%3 all&apos;avvio, ma non in esecuzione</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>

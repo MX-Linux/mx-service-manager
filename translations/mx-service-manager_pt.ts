@@ -7,7 +7,7 @@
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="241"/>
         <source>MX Service Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestor de serviços do MX</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
@@ -19,12 +19,12 @@
         <location filename="../mainwindow.cpp" line="139"/>
         <location filename="../mainwindow.cpp" line="256"/>
         <source>&amp;Enable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ativar no arranque</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Sobre...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
@@ -50,13 +50,13 @@
         <location filename="../mainwindow.ui" line="227"/>
         <location filename="../mainwindow.cpp" line="214"/>
         <source>Services enabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Serviços ativados no arranque</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
         <location filename="../mainwindow.cpp" line="215"/>
         <source>Services disabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Serviços desativados no arranque</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="253"/>
@@ -67,23 +67,23 @@
         <location filename="../mainwindow.ui" line="203"/>
         <location filename="../mainwindow.cpp" line="121"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Parar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="282"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta ferramenta lista os serviços e daemons (processos que são executados em segundo plano) encontrados neste sistema. Tenha cuidado para evitar parar algo que possa perturbar um componente crítico; é melhor não o interromper se não souber o que é.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="217"/>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os serviços</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
         <location filename="../mainwindow.cpp" line="209"/>
         <source>Running services</source>
-        <translation type="unfinished"></translation>
+        <translation>Serviços em execução</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
@@ -119,28 +119,28 @@
     <message>
         <location filename="../mainwindow.cpp" line="58"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível determinar o sistema de inicialização. Este programa deve ser executado com o sistema de inicialização ‘SystemD’ ou ‘SysVinit’</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="126"/>
         <location filename="../mainwindow.cpp" line="285"/>
         <source>S&amp;tart</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Iniciar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="132"/>
         <source>&amp;Disable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Desativar no arranque</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 total de serviços, %2 atualmente e %3em execução%4</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2 ativados, %3 no arranque, mas não em execução</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="243"/>
         <source>Service and daemon manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestor de serviços e processos</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="245"/>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="258"/>
         <source>Could not enable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível ativar %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="262"/>
@@ -183,17 +183,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="262"/>
         <source>%1 was enabled at boot time.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi ativado no momento do arranque.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="265"/>
         <source>Could not disable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível desativar %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="269"/>
         <source>%1 was disabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 estava desativado.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="277"/>
@@ -203,22 +203,22 @@
     <message>
         <location filename="../mainwindow.cpp" line="287"/>
         <source>Could not start %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível iniciar %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="292"/>
         <source>%1 was started.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi iniciado.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="296"/>
         <source>Could not stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Não foi possível parar %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="301"/>
         <source>%1 was stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 foi interrompido.</translation>
     </message>
 </context>
 <context>

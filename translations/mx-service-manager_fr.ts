@@ -19,12 +19,12 @@
         <location filename="../mainwindow.cpp" line="139"/>
         <location filename="../mainwindow.cpp" line="256"/>
         <source>&amp;Enable at boot</source>
-        <translation>&amp;Activer au démarrage</translation>
+        <translation>A&amp;ctiver au démarrage</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation>&amp;À propos...</translation>
+        <translation>À &amp;propos...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
@@ -39,12 +39,12 @@
     <message>
         <location filename="../mainwindow.ui" line="129"/>
         <source>&amp;Help</source>
-        <translation>Aide &amp;?</translation>
+        <translation>A&amp;ide</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="171"/>
         <source>&amp;Close</source>
-        <translation>&amp;Quitter</translation>
+        <translation>Q&amp;uitter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
@@ -125,7 +125,7 @@
         <location filename="../mainwindow.cpp" line="126"/>
         <location filename="../mainwindow.cpp" line="285"/>
         <source>S&amp;tart</source>
-        <translation>Dém&amp;arrer</translation>
+        <translation>Dé&amp;marrer</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="132"/>
@@ -135,12 +135,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 services au total, dont %2 %3en cours d’exécution%4.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2activés%3 au démarrage mais pas en cours d’exécution.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../about.cpp" line="75"/>
         <source>&amp;Close</source>
-        <translation>&amp;Quitter</translation>
+        <translation>Q&amp;uitter</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="74"/>

@@ -7,7 +7,7 @@
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="241"/>
         <source>MX Service Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>MX upravljalnik storitev</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
@@ -19,12 +19,12 @@
         <location filename="../mainwindow.cpp" line="139"/>
         <location filename="../mainwindow.cpp" line="256"/>
         <source>&amp;Enable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vklopi ob zagonu</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;O programu</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
@@ -50,13 +50,13 @@
         <location filename="../mainwindow.ui" line="227"/>
         <location filename="../mainwindow.cpp" line="214"/>
         <source>Services enabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob zagonu vklopljene storitve</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
         <location filename="../mainwindow.cpp" line="215"/>
         <source>Services disabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob zagonu izklopljene storitve</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="253"/>
@@ -67,23 +67,23 @@
         <location filename="../mainwindow.ui" line="203"/>
         <location filename="../mainwindow.cpp" line="121"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zaustavi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="282"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation type="unfinished"></translation>
+        <translation>To orodje izpiše storitve in pritajene programe (procese, ki tečejo v ozadju), ki so bili najdeni na tem sistemu. Pri zaustavljanju teh bodite previdni, saj lahko zaustavite kritično komponento. Najbolje jih je pustiti pri miru, če ne veste kaj so.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="217"/>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>Vse storitve</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
         <location filename="../mainwindow.cpp" line="209"/>
         <source>Running services</source>
-        <translation type="unfinished"></translation>
+        <translation>Zagnane storitve</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
@@ -119,28 +119,28 @@
     <message>
         <location filename="../mainwindow.cpp" line="58"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ni bilo mogoče določiti sistema za inicializacijo. Program naj bi bil zagnan bodisi s systemd, bodisi s sysvinit</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="126"/>
         <location filename="../mainwindow.cpp" line="285"/>
         <source>S&amp;tart</source>
-        <translation type="unfinished"></translation>
+        <translation>Z&amp;aženi</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="132"/>
         <source>&amp;Disable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Izklopi ob zagonu</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="225"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vseh storitev, %2 trenutnih %3 zagnanih%4</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="229"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%2vklopljenih%3 ob zagonu, a ne zagnanih</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="243"/>
         <source>Service and daemon manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Upravljanik storitev in pritajenih programov</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="245"/>
@@ -170,7 +170,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="258"/>
         <source>Could not enable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nisem mogel vklopiti %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="262"/>
@@ -183,17 +183,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="262"/>
         <source>%1 was enabled at boot time.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je bil vklopljen ob zagonu.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="265"/>
         <source>Could not disable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nisem mogel izklopiti %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="269"/>
         <source>%1 was disabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je bil izklopljen.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="277"/>
@@ -203,22 +203,22 @@
     <message>
         <location filename="../mainwindow.cpp" line="287"/>
         <source>Could not start %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nisem mogel zagnati %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="292"/>
         <source>%1 was started.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je bil zagnan.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="296"/>
         <source>Could not stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nisem mogel zaustaviti %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="301"/>
         <source>%1 was stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 je bil zaustavljen.</translation>
     </message>
 </context>
 <context>

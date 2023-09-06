@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Tue, 05 Sep 2023 09:07:58 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: source amd64
+Version: 23.9
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.9) mx; urgency=medium
+ .
+   * First official release with latest translations
+Checksums-Sha1:
+ 58bab25b01d0340287c327ab58a3b7739415ab44 1156 mx-service-manager_23.9.dsc
+ 4424ec2cb806af0a51982129720baf5f2c284025 55432 mx-service-manager_23.9.tar.xz
+ 455a8de95e7f5e259177d17be3cc7523a1ec7b2c 10967 mx-service-manager_23.9_amd64.buildinfo
+ 7588150980aa6799d39045fe0d8dc1889f8a2e08 65488 mx-service-manager_23.9_amd64.deb
+Checksums-Sha256:
+ 38d3ea69ae43c642d663327ed82fdf8420616b21f77c65c8b377cdceab49e447 1156 mx-service-manager_23.9.dsc
+ 7fd5e2d05f4be464f825f8edadd5f164309a40998bf71e109cd9d0ec77fc2100 55432 mx-service-manager_23.9.tar.xz
+ c1a629289184b6f2592ea1239df0c2b90894593a563ea592e939a2e638e7e13f 10967 mx-service-manager_23.9_amd64.buildinfo
+ 6fefd06e2e69c5581500cdad89434d2bce367982e16c9bafe14b0cd27acbc4c9 65488 mx-service-manager_23.9_amd64.deb
+Files:
+ 373106fa4be521516245959088e12e6f 1156 admin optional mx-service-manager_23.9.dsc
+ 5853999b98979b29d04b9897a4613464 55432 admin optional mx-service-manager_23.9.tar.xz
+ 53139ef560ed83dbee3eca04b211246a 10967 admin optional mx-service-manager_23.9_amd64.buildinfo
+ 941f3abd57243c7886fea430df8bc17f 65488 admin optional mx-service-manager_23.9_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT3uQETHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJTOCACm7rHz+6v5NRyIEGdfxJ7EYYXARfL6
+IYn2ADsNQLGRrX4O7XyBL4lOTS023koYDnZSpc1pCFcq1UuTRWEg8KTjWRGL7udf
+Q1Eqm9lbOL6K5qdsM3KmSXZHrMJ5uYCXivtSI6BvM8ikABal6xJ+X6sPT1usBNCr
+hH4nvYCpIh3sapvXKXDMm75iAm2fsGzARELdGuKyWuGDsP1MAy3bJP1DNnv4KG9n
+2S8nltTAx2/WgI9Jg9QTNrHs93+Rzx/A11L0iy/Fb5LExTb3ChSrhC+59Jfwffv7
+kIw3lqsnPDjdijxhiA1oxeI1s5E/VDZRoW6d5/ue+8AmKquQr0zTXACL
+=heFj
+-----END PGP SIGNATURE-----

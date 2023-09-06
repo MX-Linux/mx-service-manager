@@ -1,3 +1,9 @@
+mx-service-manager (23.9) mx; urgency=medium
+
+  * First official release with latest translations
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 05 Sep 2023 09:07:58 -0400
+
 mx-service-manager (0.23.8) mx; urgency=medium
 
   * Initial release
