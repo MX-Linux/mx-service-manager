@@ -157,7 +157,7 @@ void MainWindow::setGeneralConnections()
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
 }
 
-QString MainWindow::getHtmlColor(QColor color)
+QString MainWindow::getHtmlColor(const QColor& color)
 {
     return QString("#%1%2%3")
         .arg(color.red(), 2, 16, QChar('0'))
