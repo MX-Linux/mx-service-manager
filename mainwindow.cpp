@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
     auto init = Service::getInit();
-    if (init != "systemd" && init != "init") {
+    if (init != "systemd" && !init.startsWith("init")) { // can be "init(mxlinux)" when running in WSL for example
         QMessageBox::warning(
             this, tr("Error"),
             tr("Could not determine the init system. This program is supposed to run either with systemd or sysvinit")
