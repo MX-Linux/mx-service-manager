@@ -195,12 +195,11 @@ void MainWindow::displayServices()
     for (const auto &service : services) {
         QString serviceName = service->getName();
         QString searchText = ui->lineSearch->text();
-        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)) {
-            if (!(serviceName == "smbd"
-                  && (searchText == "s" || searchText == "sa" || searchText == "sam" || searchText == "samb"
-                      || searchText == "samba"))) {
-                continue;
-            }
+        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)
+            && !(serviceName == "smbd"
+                 && (searchText == "s" || searchText == "sa" || searchText == "sam" || searchText == "samb"
+                     || searchText == "samba"))) {
+            continue;
         }
         auto *item = new QListWidgetItem(service->getName(), ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
