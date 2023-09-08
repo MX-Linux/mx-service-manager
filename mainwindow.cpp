@@ -181,6 +181,9 @@ void MainWindow::listServices()
                 continue;
             }
             name = item.section("]  ", 1);
+            if (name == "debian") {
+                continue;
+            }
             auto *service = new Service(name, item.trimmed().startsWith("[ + ]"));
             service->setEnabled(Service::isEnabled(name));
             if (dependTargets.contains(name)) {
