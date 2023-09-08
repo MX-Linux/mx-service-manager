@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 08 Sep 2023 08:23:42 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: source amd64
+Version: 23.9.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.9.01) mx; urgency=medium
+ .
+   * Add it to mx-tools
+   * Improve sysvinit detection
+Checksums-Sha1:
+ b78672533fd38b8f2dda7b2a75453f2c4fc23f5c 1168 mx-service-manager_23.9.01.dsc
+ 1056cc90cb87544a4b2aa128cb80b5bf84ee099b 55444 mx-service-manager_23.9.01.tar.xz
+ e7b8e59e0453a30ffb3966cc566206a33f2b450a 10991 mx-service-manager_23.9.01_amd64.buildinfo
+ 5f00723dc920d558a040ab62220dc51958480140 65520 mx-service-manager_23.9.01_amd64.deb
+Checksums-Sha256:
+ 21c773e2477ebcf0160164899d7372190e093ca7b6cae4dc9f488dc397251cd1 1168 mx-service-manager_23.9.01.dsc
+ e0653074a173dcacf7664060a3922439263e4b3aa583e0ac757d4cab85c55b98 55444 mx-service-manager_23.9.01.tar.xz
+ bbafdc9cb93e211398b289b3a1e65047d573949cd721ddf00275d7abdf22c644 10991 mx-service-manager_23.9.01_amd64.buildinfo
+ ee0f4650ce4bf9c1ee9fdb5185c737f1dd7b4ddd0b6405bcc2b4c5b8b67b5c2e 65520 mx-service-manager_23.9.01_amd64.deb
+Files:
+ f7033d45f858925dc64d6e90f7aa5a4e 1168 admin optional mx-service-manager_23.9.01.dsc
+ 75c712a4004a31461948a799c9355bd6 55444 admin optional mx-service-manager_23.9.01.tar.xz
+ d01db67540825440127099ee8d0e2fce 10991 admin optional mx-service-manager_23.9.01_amd64.buildinfo
+ 00f8d745e51339cff18cfe21e94bc9a0 65520 admin optional mx-service-manager_23.9.01_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7EtkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumAmkB/4qLdH7jc1GrnHwDp9WNRhs665Obh3K
+izR/aLKpOzdxuX6+mJJ2Gt4lEjeGOaYI/YVjCvNMtbcBw0/oT+ZsSLRmJps/qN5S
+sn0z1Ozc0Qoxddr6x96o98HymlcLrbuakpXMa1JhMPxX9Qd4qgqO0att2Na0lAQY
+LytVaLH9qylWs+JaQOEg/qydn+5xV7WMkSaNT5NnqeiT3XFQGh31yer+uPy4uFDq
+uhWhWVCYUtXIAHIosIw0Rlb1wBVPk7MdX9v3ACWIJ21ayJbC/ZhHEifsI0Ha4g9m
+hzbyv7IOjU5slnJErfGNyR26xQENR7TyrIoEo1EF0Vm1T0PWXXiiy4Dj
+=kcjB
+-----END PGP SIGNATURE-----

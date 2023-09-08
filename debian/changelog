@@ -1,3 +1,10 @@
+mx-service-manager (23.9.01) mx; urgency=medium
+
+  * Add it to mx-tools
+  * Improve sysvinit detection
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 08 Sep 2023 08:23:42 -0400
+
 mx-service-manager (23.9) mx; urgency=medium
 
   * First official release with latest translations
