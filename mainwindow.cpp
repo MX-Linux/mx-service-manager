@@ -24,6 +24,9 @@
 
 #include <QDebug>
 #include <QFileDialog>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QScreen>
 #include <QScrollBar>
 #include <QTextStream>
@@ -168,21 +171,44 @@ QString MainWindow::getHtmlColor(const QColor &color)
 void MainWindow::listServices()
 {
     services.clear();
-    const QStringList listServices = cmd.getCmdOut("service --status-all").split("\n");
-    services.reserve(listServices.count());
-    QRegularExpression re("dpkg-.*$");
-    QString name;
-    for (const auto &item : listServices) {
-        if (item.trimmed().contains(re)) {
-            continue;
+    if (Service::getInit().startsWith("init")) {
+        QStringList list = cmd.getCmdOut("service --status-all").split("\n");
+        services.reserve(list.count());
+        QRegularExpression re("dpkg-.*$");
+        QString name;
+        for (const auto &item : list) {
+            if (item.trimmed().contains(re)) {
+                continue;
+            }
+            name = item.section("]  ", 1);
+            auto *service = new Service(name, item.trimmed().startsWith("[ + ]"));
+            service->setEnabled(Service::isEnabled(name));
+            if (dependTargets.contains(name)) {
+                service->setEnabled(true);
+            }
+            services << QSharedPointer<Service>(service);
         }
-        name = item.section("]  ", 1);
-        auto *service = new Service(name, item.trimmed().startsWith("[ + ]"));
-        service->setEnabled(Service::isEnabled(name));
-        if (dependTargets.contains(name)) {
-            service->setEnabled(true);
+    } else {
+        QString list = cmd.getCmdOut("systemctl list-units --type=service --all -o json");
+        auto doc = QJsonDocument::fromJson(list.toUtf8());
+        if (!doc.isArray()) {
+            qDebug() << "JSON data is not an array.";
+            return;
         }
-        services << QSharedPointer<Service>(service);
+        auto jsonArray = doc.array();
+        for (const auto &value : jsonArray) {
+            auto obj = value.toObject();
+            if (value.isObject()) {
+                QString name = obj.value("unit").toString().section(".", 0, 0);
+                QString status = obj.value("sub").toString();
+                auto *service = new Service(name, status == "running");
+                service->setEnabled(Service::isEnabled(name));
+                if (dependTargets.contains(name)) {
+                    service->setEnabled(true);
+                }
+                services << QSharedPointer<Service>(service);
+            }
+        }
     }
 }
 
