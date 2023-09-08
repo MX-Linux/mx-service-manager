@@ -16,26 +16,26 @@ Changes:
    * Add alias for smbd/samba to make it easier to search
    * List systemd services with 'systemctl list-units' command instead of 'services'
 Checksums-Sha1:
- ad565a56dc04e68eaa7ba7fe3340bed5569ccfa7 1168 mx-service-manager_23.9.02.dsc
- 6202725cdf04c24264fce2704ffdb39a600f7031 56264 mx-service-manager_23.9.02.tar.xz
- f163ad88aea98dc9740881c84829e1168d24ec76 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ 358f03ddbdcaf710936dcc14f963afe0a27ee617 1168 mx-service-manager_23.9.02.dsc
+ b25ff8fd0da980cfdf04c0bb0f13c01b14bf6991 56168 mx-service-manager_23.9.02.tar.xz
+ 771fa438668ba5eb28df3ac403bfef047841a166 10992 mx-service-manager_23.9.02_amd64.buildinfo
 Checksums-Sha256:
- d154999bf42a0ed9bb0fe5ad816ce509ef2969d7c156cc1da6616f2fd6b9eb89 1168 mx-service-manager_23.9.02.dsc
- bf26c5b0eb09b987a0552fa0dc6c096d8f5dfdebcd4bd82d6c781f4fd449c799 56264 mx-service-manager_23.9.02.tar.xz
- db0a88af912e9539203c3dbdd307ed51fb7f071a6780851108f88611c729c0f2 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ ae16d6f7c66fa5e8b80095e2e974a383d06d346c40e602c41bfcd0b59c6e810f 1168 mx-service-manager_23.9.02.dsc
+ 1c72759024c6b4ec61bd85ee401431e6d76a698d80d89da40401e06a94ad2883 56168 mx-service-manager_23.9.02.tar.xz
+ c1ce95d187a5dec8179cb8f7c5990a908bfb79dc129d79e0c39ec5d1b4699b14 10992 mx-service-manager_23.9.02_amd64.buildinfo
 Files:
- ccf346adc7134e0f00bdbb7c0ea1e1d9 1168 admin optional mx-service-manager_23.9.02.dsc
- c208ee53957dbc32bfe5d739c8a06a07 56264 admin optional mx-service-manager_23.9.02.tar.xz
- eaafaf6203eeff8ca5dc27000b1497cc 10992 admin optional mx-service-manager_23.9.02_amd64.buildinfo
+ cdb92d5e790e9cfb7ed262b1909769c8 1168 admin optional mx-service-manager_23.9.02.dsc
+ 70755aabbc2ce389938c29f0ec7e2ff7 56168 admin optional mx-service-manager_23.9.02.tar.xz
+ e7156a0ffb49f396577e780b38eac7d3 10992 admin optional mx-service-manager_23.9.02_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7ZHATHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumO+XCACbBEDbdxuikqCpDWgOysx3z8ZedXR1
-2avjWm6n4Z57Rpfwqr4xD5KJsIukkVChK03Kz2rIUI6nv4ILPBTip55xrgnYyE/2
-B0cYE1lnv0TZyQZxUkGlgVkwsVF8W8yCEoBwFlc9rmMxGz9lVrtbzHaeJm9YYys0
-7R8BR19s2ieMUBkf+tQxO4ysdkKku5dtyLcWyYH9FjQLHuYpoSjQga3YPMIPUE8R
-hJ7T3x8b1osz5EcxIQfpq3CeWCZPG0FWtmStMFHiyQOwAEC2S+JSdKKcxrgKwkms
-1TIFqJhAGj6TPLYU1clme+kr3AiLAKeultiMgn4qFSjHyiE5bp5lSvlY
-=gsLN
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7btcTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumOsNCACgiL0lQj6kNRwCGfz1lEyqvJiInTme
+7evXHukseorWMZv1Q+TEo+ycS0gW+jilTz1DERljzVpvUFcz6n66/aqPpNk8oVhC
+lGnZQDTDN66b+ktS4aAhcfso+zOWcAXlnya9/qWcEuSWYRGntXsIhCTbcV960gX3
+dOatCof1XpZIVA89+9L0cV54/41x4lMnaJd96QiK7l7vWAp1wKGKDUWOJv3bqSdW
+O+vucI9hz3chbgGe3I2aBglxmigRAYJMgWjHO8qvDtrv2NlpWAEL84iqS2IVmJ/6
+9WGmfmXx/QJHdSMkYGWjcClBHLk77a/rhgmpcf2M4heS3DQwGlCZYA79
+=Jb3V
 -----END PGP SIGNATURE-----

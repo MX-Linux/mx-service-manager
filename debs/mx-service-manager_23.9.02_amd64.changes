@@ -19,29 +19,29 @@ Changes:
    * Add alias for smbd/samba to make it easier to search
    * List systemd services with 'systemctl list-units' command instead of 'services'
 Checksums-Sha1:
- ad565a56dc04e68eaa7ba7fe3340bed5569ccfa7 1168 mx-service-manager_23.9.02.dsc
- 6202725cdf04c24264fce2704ffdb39a600f7031 56264 mx-service-manager_23.9.02.tar.xz
- f163ad88aea98dc9740881c84829e1168d24ec76 10992 mx-service-manager_23.9.02_amd64.buildinfo
- afd3e358e87b309497209803a861905872b2f576 67808 mx-service-manager_23.9.02_amd64.deb
+ 358f03ddbdcaf710936dcc14f963afe0a27ee617 1168 mx-service-manager_23.9.02.dsc
+ b25ff8fd0da980cfdf04c0bb0f13c01b14bf6991 56168 mx-service-manager_23.9.02.tar.xz
+ 771fa438668ba5eb28df3ac403bfef047841a166 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ c7881a71821c48caf638dd110f9860d2190c2613 67804 mx-service-manager_23.9.02_amd64.deb
 Checksums-Sha256:
- d154999bf42a0ed9bb0fe5ad816ce509ef2969d7c156cc1da6616f2fd6b9eb89 1168 mx-service-manager_23.9.02.dsc
- bf26c5b0eb09b987a0552fa0dc6c096d8f5dfdebcd4bd82d6c781f4fd449c799 56264 mx-service-manager_23.9.02.tar.xz
- db0a88af912e9539203c3dbdd307ed51fb7f071a6780851108f88611c729c0f2 10992 mx-service-manager_23.9.02_amd64.buildinfo
- ad78bb82506ca87f9c56a23637d8d69f8b5fb7b2c47d5766566fed92de26f987 67808 mx-service-manager_23.9.02_amd64.deb
+ ae16d6f7c66fa5e8b80095e2e974a383d06d346c40e602c41bfcd0b59c6e810f 1168 mx-service-manager_23.9.02.dsc
+ 1c72759024c6b4ec61bd85ee401431e6d76a698d80d89da40401e06a94ad2883 56168 mx-service-manager_23.9.02.tar.xz
+ c1ce95d187a5dec8179cb8f7c5990a908bfb79dc129d79e0c39ec5d1b4699b14 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ 7729857d3da8b6eed193098f07e5e51daba9efda3e21835b31f66b76c1481894 67804 mx-service-manager_23.9.02_amd64.deb
 Files:
- ccf346adc7134e0f00bdbb7c0ea1e1d9 1168 admin optional mx-service-manager_23.9.02.dsc
- c208ee53957dbc32bfe5d739c8a06a07 56264 admin optional mx-service-manager_23.9.02.tar.xz
- eaafaf6203eeff8ca5dc27000b1497cc 10992 admin optional mx-service-manager_23.9.02_amd64.buildinfo
- b22628f14b44cc8f5933dcf6b76eb704 67808 admin optional mx-service-manager_23.9.02_amd64.deb
+ cdb92d5e790e9cfb7ed262b1909769c8 1168 admin optional mx-service-manager_23.9.02.dsc
+ 70755aabbc2ce389938c29f0ec7e2ff7 56168 admin optional mx-service-manager_23.9.02.tar.xz
+ e7156a0ffb49f396577e780b38eac7d3 10992 admin optional mx-service-manager_23.9.02_amd64.buildinfo
+ 3cbe74de1683323e3ceffc66ca50bb61 67804 admin optional mx-service-manager_23.9.02_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7ZHATHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumMYMB/9LF9N2+SBRJK+wc4VjcM4H1R1pPkZ1
-6e0+L1h5/gCgmTcQXkW8cw+lXs26aQQ+efShJMY3lkB+Mw0SSBT3lNMPToDS9NnP
-CCOBXaXXxWMmyllvd3ejUFCkHqZF8UVjtI/3fFv4tMj3e5l8iQveG3E/QYIcVKJn
-VLsSDv56NYv+fTcTB07qu0FAXfHes3xLF62l2OApih42UKz7ufnv8Wgt4ltkxB6Z
-aAXWsOA9Kxi42CK31kCo2RBOiXt3pWbIJh5hasPm8wU38f4Qc7dgiWRiwkqLpA7F
-U9HUkyJrGZWKsvEOwaFFDUprCfk9P1oJMwKBHwr+5jvZDOkPLkLK5ASq
-=fApr
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7btcTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumPtnB/9gRp0ND/sFmZB0SMlvkJ2BQj4M4ejZ
+UMYq3Ck8plgWfajQf2s6N5mcp29wm/X8AI4TQarU1pFLBlhixNoo+pN2uLgrwY4D
+dfZjcIpkmMewkEUR6Mea0EJKwcooGiF3HXIEYfqOeW/GY9KUxSRbWS0fRxu+9aza
+hU1mZLaOhqLz95+GuXng69wKV/WMRY9wP4ik5LA9s4q1ReZiLTp5VX6V/wjsfXEV
+/7nMUhSd62ekuvPbwdYnvgHEoe58SEryAh673Jo8UHjucOR1VwRBd3opoUJ/CLpq
+tLFIsdMa19JVMQUJNpYxYnRNgpwEuCLQLHALA+k0V3AAifU50ste7I0Y
+=TyqX
 -----END PGP SIGNATURE-----

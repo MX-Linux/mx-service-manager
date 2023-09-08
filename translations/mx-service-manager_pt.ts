@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="289"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>MX Service Manager</source>
         <translation>Gestor de serviços do MX</translation>
     </message>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="142"/>
-        <location filename="../mainwindow.cpp" line="304"/>
+        <location filename="../mainwindow.cpp" line="307"/>
         <source>&amp;Enable at boot</source>
         <translation>&amp;Ativar no arranque</translation>
     </message>
@@ -48,13 +48,13 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
-        <location filename="../mainwindow.cpp" line="261"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>Services enabled at boot</source>
         <translation>Serviços ativados no arranque</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
-        <location filename="../mainwindow.cpp" line="262"/>
+        <location filename="../mainwindow.cpp" line="265"/>
         <source>Services disabled at boot</source>
         <translation>Serviços desativados no arranque</translation>
     </message>
@@ -81,7 +81,7 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
-        <location filename="../mainwindow.cpp" line="256"/>
+        <location filename="../mainwindow.cpp" line="259"/>
         <source>Running services</source>
         <translation>Serviços em execução</translation>
     </message>
@@ -109,10 +109,10 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="60"/>
-        <location filename="../mainwindow.cpp" line="306"/>
-        <location filename="../mainwindow.cpp" line="313"/>
-        <location filename="../mainwindow.cpp" line="335"/>
-        <location filename="../mainwindow.cpp" line="344"/>
+        <location filename="../mainwindow.cpp" line="309"/>
+        <location filename="../mainwindow.cpp" line="316"/>
+        <location filename="../mainwindow.cpp" line="338"/>
+        <location filename="../mainwindow.cpp" line="347"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
@@ -123,7 +123,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="129"/>
-        <location filename="../mainwindow.cpp" line="333"/>
+        <location filename="../mainwindow.cpp" line="336"/>
         <source>S&amp;tart</source>
         <translation>&amp;Iniciar</translation>
     </message>
@@ -133,90 +133,90 @@
         <translation>&amp;Desativar no arranque</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="272"/>
+        <location filename="../mainwindow.cpp" line="275"/>
         <source>%1 total services, %2 currently %3running%4</source>
         <translation>%1 total de serviços, %2 atualmente e %3em execução%4</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="276"/>
+        <location filename="../mainwindow.cpp" line="279"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
         <translation>%1 %2 ativados, %3 no arranque, mas não em execução</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="289"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>About %1</source>
         <translation>Sobre o %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="290"/>
+        <location filename="../mainwindow.cpp" line="293"/>
         <source>Version: </source>
         <translation>Versão: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="291"/>
+        <location filename="../mainwindow.cpp" line="294"/>
         <source>Service and daemon manager</source>
         <translation>Gestor de serviços e processos</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="296"/>
         <source>Copyright (c) MX Linux</source>
         <translation> Direitos de autor (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="294"/>
+        <location filename="../mainwindow.cpp" line="297"/>
         <source>%1 License</source>
         <translation>Licença do %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="306"/>
+        <location filename="../mainwindow.cpp" line="309"/>
         <source>Could not enable %1</source>
         <translation>Não foi possível ativar %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="310"/>
-        <location filename="../mainwindow.cpp" line="317"/>
-        <location filename="../mainwindow.cpp" line="340"/>
-        <location filename="../mainwindow.cpp" line="349"/>
+        <location filename="../mainwindow.cpp" line="313"/>
+        <location filename="../mainwindow.cpp" line="320"/>
+        <location filename="../mainwindow.cpp" line="343"/>
+        <location filename="../mainwindow.cpp" line="352"/>
         <source>Success</source>
         <translation>Êxito</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="310"/>
+        <location filename="../mainwindow.cpp" line="313"/>
         <source>%1 was enabled at boot time.</source>
         <translation>%1 foi ativado no momento do arranque.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="313"/>
+        <location filename="../mainwindow.cpp" line="316"/>
         <source>Could not disable %1</source>
         <translation>Não foi possível desativar %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>%1 was disabled.</source>
         <translation>%1 estava desativado.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="325"/>
+        <location filename="../mainwindow.cpp" line="328"/>
         <source>%1 Help</source>
         <translation>Ajuda do %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="335"/>
+        <location filename="../mainwindow.cpp" line="338"/>
         <source>Could not start %1</source>
         <translation>Não foi possível iniciar %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="340"/>
+        <location filename="../mainwindow.cpp" line="343"/>
         <source>%1 was started.</source>
         <translation>%1 foi iniciado.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="344"/>
+        <location filename="../mainwindow.cpp" line="347"/>
         <source>Could not stop %1</source>
         <translation>Não foi possível parar %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="349"/>
+        <location filename="../mainwindow.cpp" line="352"/>
         <source>%1 was stopped.</source>
         <translation>%1 foi interrompido.</translation>
     </message>
