@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Fri, 08 Sep 2023 12:03:50 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: i386
+Version: 23.9.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.9.02) mx; urgency=medium
+ .
+   * Add alias for smbd/samba to make it easier to search
+   * List systemd services with 'systemctl list-units' command instead of 'services'
+Checksums-Sha1:
+ d385bd350f1385e4c6305b4a92406a1ba3bf98d1 10120 mx-service-manager_23.9.02_i386.buildinfo
+ 19bdf0e2b21d6d657298719b9a408cb4d8a7e89d 69416 mx-service-manager_23.9.02_i386.deb
+Checksums-Sha256:
+ ddbf5fac6a79451022a107c40276463cd3c2d772afcd98461bcedb45353daf87 10120 mx-service-manager_23.9.02_i386.buildinfo
+ f76949dec9849bab1ae6eedffa8357f0fae6e12cef121128a5bcf332e5838639 69416 mx-service-manager_23.9.02_i386.deb
+Files:
+ e6fb28fa89152147dc42bddbcded8508 10120 admin optional mx-service-manager_23.9.02_i386.buildinfo
+ 2433f44b36d5b48476fdf918faa7b330 69416 admin optional mx-service-manager_23.9.02_i386.deb

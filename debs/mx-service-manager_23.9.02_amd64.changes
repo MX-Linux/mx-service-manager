@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 08 Sep 2023 12:03:50 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: source amd64
+Version: 23.9.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.9.02) mx; urgency=medium
+ .
+   * Add alias for smbd/samba to make it easier to search
+   * List systemd services with 'systemctl list-units' command instead of 'services'
+Checksums-Sha1:
+ 4c84266f31d16985efde0015f89295b9cab60a81 1168 mx-service-manager_23.9.02.dsc
+ b41e7a52cbf35c36154980de7169b961ea8d5742 56204 mx-service-manager_23.9.02.tar.xz
+ 56983cd640d4dbadabbfd5ad298fdd928371266f 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ ef70f3e10644a3e70fccd5c93e2b005e96ca79e2 67216 mx-service-manager_23.9.02_amd64.deb
+Checksums-Sha256:
+ bd3c53659cabe2e3cca01f4f7013a63d5c66bbe59cef563d5099c94462501efd 1168 mx-service-manager_23.9.02.dsc
+ fa68a497daddb4a82788fcf7e133732b90a0016e5c9271ce3134c9f53214fe6f 56204 mx-service-manager_23.9.02.tar.xz
+ 780fd76e216d3293b18889ddc4a3cb76026ac1f0936c91f8448b660f8ca6edfd 10992 mx-service-manager_23.9.02_amd64.buildinfo
+ 681f07c0f228deefe8fc23d0ec80ce58c6bec569c1e69a63c79403ffb136b3b5 67216 mx-service-manager_23.9.02_amd64.deb
+Files:
+ e178c2dfdca0ead8c8188f910666539d 1168 admin optional mx-service-manager_23.9.02.dsc
+ 7240a7cbcbeaed1724c18f38a37a7f6b 56204 admin optional mx-service-manager_23.9.02.tar.xz
+ 0b0ec192097c2c55731317c1d9538ecb 10992 admin optional mx-service-manager_23.9.02_amd64.buildinfo
+ 8aec167a3a949a9a6e1f21e4b295ffbc 67216 admin optional mx-service-manager_23.9.02_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmT7UpMTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumK94CAC6Paph6WAEx0GqOUlC86a0p+zezVxd
+XK/1La8zItUWTcLW0SH/QyW/2ewfZj7M8bvaxdH8hJyxv7NUs75pDyG1I0MpmLt1
+xbD3wdAz0wD2mtfh09jfkqVWJgn7FvOlZ/Lf8kvf87S0+xzO/788yqoczM2toNIG
+YFQH8KX3OZfLGjxkH5M+XozGwfJagseB5PDoe1qPySAqXAE3gtm9J3DznsKgM4w8
+N4fS9EIbfDbeQ0PT8pdnXm/7igGvnGDsz21EToEt5ZIj5DnRPgsFwB6LjGS9qmzP
+2vtxO/x9pLv4mBQ6lHcrMYUt8sWQ3OnKW7qsR1yvKMpS0q7sm42R8PHA
+=e972
+-----END PGP SIGNATURE-----

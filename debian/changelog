@@ -1,6 +1,7 @@
 mx-service-manager (23.9.02) mx; urgency=medium
 
   * Add alias for smbd/samba to make it easier to search
+  * List systemd services with 'systemctl list-units' command instead of 'services'
 
  -- Adrian <adrian@mxlinux.org>  Fri, 08 Sep 2023 12:03:50 -0400
 
