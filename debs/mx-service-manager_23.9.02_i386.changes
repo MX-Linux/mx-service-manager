@@ -16,11 +16,11 @@ Changes:
    * Add alias for smbd/samba to make it easier to search
    * List systemd services with 'systemctl list-units' command instead of 'services'
 Checksums-Sha1:
- d385bd350f1385e4c6305b4a92406a1ba3bf98d1 10120 mx-service-manager_23.9.02_i386.buildinfo
- 19bdf0e2b21d6d657298719b9a408cb4d8a7e89d 69416 mx-service-manager_23.9.02_i386.deb
+ bf7028440a0756b094d6da614c362e2861b76610 10120 mx-service-manager_23.9.02_i386.buildinfo
+ 8717b78a3ae77b72c6cf913f8bc7bf2d07a8c1ec 69924 mx-service-manager_23.9.02_i386.deb
 Checksums-Sha256:
- ddbf5fac6a79451022a107c40276463cd3c2d772afcd98461bcedb45353daf87 10120 mx-service-manager_23.9.02_i386.buildinfo
- f76949dec9849bab1ae6eedffa8357f0fae6e12cef121128a5bcf332e5838639 69416 mx-service-manager_23.9.02_i386.deb
+ 775e50ea0083af16eea5545c30cd1bfb784c44b094fc60e50d964e0ad9a00722 10120 mx-service-manager_23.9.02_i386.buildinfo
+ d298f31846e427b5b62f4c686800966ca87a6d93a0104df284234f7eb7fc0637 69924 mx-service-manager_23.9.02_i386.deb
 Files:
- e6fb28fa89152147dc42bddbcded8508 10120 admin optional mx-service-manager_23.9.02_i386.buildinfo
- 2433f44b36d5b48476fdf918faa7b330 69416 admin optional mx-service-manager_23.9.02_i386.deb
+ a6d98d619bb696fdc55069a35750994c 10120 admin optional mx-service-manager_23.9.02_i386.buildinfo
+ 6d267586d4c162ae6b4f9fc297250bd6 69924 admin optional mx-service-manager_23.9.02_i386.deb
