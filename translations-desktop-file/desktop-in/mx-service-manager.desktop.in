@@ -8,5 +8,5 @@ Exec=mxsm-launcher
 Terminal=false
 Type=Application
 Icon=mx-service-manager
-Categories=GNOME;GTK;System;
+Categories=GNOME;GTK;System;MX-Maintenance;
 NoDisplay=false
