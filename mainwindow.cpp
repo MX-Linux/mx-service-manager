@@ -157,7 +157,7 @@ void MainWindow::setGeneralConnections()
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
 }
 
-QString MainWindow::getHtmlColor(const QColor& color)
+QString MainWindow::getHtmlColor(const QColor &color)
 {
     return QString("#%1%2%3")
         .arg(color.red(), 2, 16, QChar('0'))
@@ -193,8 +193,14 @@ void MainWindow::displayServices()
     uint countActive = 0;
     uint countEnabled = 0;
     for (const auto &service : services) {
-        if (!ui->lineSearch->text().isEmpty() && !service->getName().startsWith(ui->lineSearch->text())) {
-            continue;
+        QString serviceName = service->getName();
+        QString searchText = ui->lineSearch->text();
+        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)) {
+            if (!(serviceName == "smbd"
+                  && (searchText == "s" || searchText == "sa" || searchText == "sam" || searchText == "samb"
+                      || searchText == "samba"))) {
+                continue;
+            }
         }
         auto *item = new QListWidgetItem(service->getName(), ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
