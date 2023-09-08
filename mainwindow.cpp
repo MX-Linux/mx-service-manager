@@ -172,7 +172,7 @@ void MainWindow::listServices()
 {
     services.clear();
     if (Service::getInit().startsWith("init")) {
-        QStringList list = cmd.getCmdOut("service --status-all").split("\n");
+        const auto list = cmd.getCmdOut("service --status-all").split("\n");
         services.reserve(list.count());
         QRegularExpression re("dpkg-.*$");
         QString name;
@@ -189,7 +189,7 @@ void MainWindow::listServices()
             services << QSharedPointer<Service>(service);
         }
     } else {
-        QString list = cmd.getCmdOut("systemctl list-units --type=service --all -o json");
+        const auto list = cmd.getCmdOut("systemctl list-units --type=service --all -o json");
         auto doc = QJsonDocument::fromJson(list.toUtf8());
         if (!doc.isArray()) {
             qDebug() << "JSON data is not an array.";
@@ -206,6 +206,22 @@ void MainWindow::listServices()
                 if (dependTargets.contains(name)) {
                     service->setEnabled(true);
                 }
+                services << QSharedPointer<Service>(service);
+            }
+        }
+        const auto masked = cmd.getCmdOut("systemctl list-unit-files --type=service --state=masked -o json");
+        doc = QJsonDocument::fromJson(masked.toUtf8());
+        if (!doc.isArray()) {
+            qDebug() << "JSON data is not an array.";
+            return;
+        }
+        jsonArray = doc.array();
+        for (const auto &value : jsonArray) {
+            auto obj = value.toObject();
+            if (value.isObject()) {
+                QString name = obj.value("unit_file").toString().section(".", 0, 0);
+                auto *service = new Service(name, false);
+                service->setEnabled(false);
                 services << QSharedPointer<Service>(service);
             }
         }
@@ -263,6 +279,7 @@ void MainWindow::displayServices()
         savedRow = ui->listServices->count() - 1;
     }
     ui->listServices->setCurrentRow(savedRow);
+    ui->listServices->sortItems();
 }
 
 void MainWindow::pushAbout_clicked()
