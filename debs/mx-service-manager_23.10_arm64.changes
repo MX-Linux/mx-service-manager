@@ -17,11 +17,11 @@ Changes:
    * Eliminate some duplicates in the service list
    * Eliminate "not-found" services in systemd list
 Checksums-Sha1:
- f6ff2aa47d1ce8282de8267a9679e5eaeffdc55a 9621 mx-service-manager_23.10_arm64.buildinfo
- eeba9151ec6e13c6fce23c71e02ad0f5f71af080 66092 mx-service-manager_23.10_arm64.deb
+ b5b4ebff0fb2bfdb0c6df1227e166624cbe3da91 9621 mx-service-manager_23.10_arm64.buildinfo
+ 61adade546ae88724d3dc44a2a9f05c8bab5c025 66260 mx-service-manager_23.10_arm64.deb
 Checksums-Sha256:
- 012c93010b880bd027ad87cc2a77623b1950d9581e74981dc28fd25a4a850050 9621 mx-service-manager_23.10_arm64.buildinfo
- 1391de2b533606e7b878a3e83143fa538de32792ab439d1d295dbc1340aa307d 66092 mx-service-manager_23.10_arm64.deb
+ bda9aa7d4fc7cac39a30019e04869a60fd74a522b97f6a727674d4d392cbba12 9621 mx-service-manager_23.10_arm64.buildinfo
+ a407ec881e56ab789620ee0de1243e649b366e71714fb5a97649053663a301b3 66260 mx-service-manager_23.10_arm64.deb
 Files:
- f5eada55ae35f641e5b78f56deace0f9 9621 admin optional mx-service-manager_23.10_arm64.buildinfo
- cde2c80ca133e7e1d60142bde927b27d 66092 admin optional mx-service-manager_23.10_arm64.deb
+ 87520852197b969de49fc0256b3ca552 9621 admin optional mx-service-manager_23.10_arm64.buildinfo
+ 277ea37e541b691a3ab0f59ed3ff6339 66260 admin optional mx-service-manager_23.10_arm64.deb

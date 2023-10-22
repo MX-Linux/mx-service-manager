@@ -17,11 +17,11 @@ Changes:
    * Eliminate some duplicates in the service list
    * Eliminate "not-found" services in systemd list
 Checksums-Sha1:
- 381526138a2dccc9d6046c0fc436204baf510c11 10109 mx-service-manager_23.10_i386.buildinfo
- 8e156c307a7cbf58d83c82512b2217a219f6c622 75872 mx-service-manager_23.10_i386.deb
+ 7dd5b43b47d5185574133d851e998798c6373230 10109 mx-service-manager_23.10_i386.buildinfo
+ 0ac1330ab4350174c7294d8905fcffb6fa4af2fe 75964 mx-service-manager_23.10_i386.deb
 Checksums-Sha256:
- 0feb3260c96843e166858b3d37bbda93a9b56adad5580592bb236330430fc05e 10109 mx-service-manager_23.10_i386.buildinfo
- ba8ce3b1dd71a0c40f9cee341228f478821316aa01e43cb70b63a5d4b3fbec39 75872 mx-service-manager_23.10_i386.deb
+ ad5b3b7c9f72ba8781e823999a91849a6ba5259aef5dde76f366fcc217a9df9d 10109 mx-service-manager_23.10_i386.buildinfo
+ fd63aa152361d1acde36705503e8cecd10cecf152978760c6381d039c3e5a33b 75964 mx-service-manager_23.10_i386.deb
 Files:
- b82c84904cb4846466c415b206900551 10109 admin optional mx-service-manager_23.10_i386.buildinfo
- 6efac7151dfc333922489310ededef8a 75872 admin optional mx-service-manager_23.10_i386.deb
+ 1b30896bedcbf3e293e683143018bc4b 10109 admin optional mx-service-manager_23.10_i386.buildinfo
+ 75ae337ca5e405923fec97dc9aed9ea7 75964 admin optional mx-service-manager_23.10_i386.deb

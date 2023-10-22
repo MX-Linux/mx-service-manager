@@ -86,9 +86,11 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
         if (item->data(Qt::UserRole).value<Service *>()) {
+            if (!item->toolTip().isEmpty()) {
+                return;
+            }
             ui->lineSearch->blockSignals(true);
             item->setToolTip(item->data(Qt::UserRole).value<Service *>()->getDescription());
-            // item->toolTip();
             ui->lineSearch->blockSignals(false);
         }
     });
