@@ -1,0 +1,27 @@
+Format: 1.8
+Date: Sat, 21 Oct 2023 22:30:37 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: arm64
+Version: 23.10
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.10) mx; urgency=medium
+ .
+   * Add tooltip with service description
+   * Eliminate some duplicates in the service list
+   * Eliminate "not-found" services in systemd list
+Checksums-Sha1:
+ f6ff2aa47d1ce8282de8267a9679e5eaeffdc55a 9621 mx-service-manager_23.10_arm64.buildinfo
+ eeba9151ec6e13c6fce23c71e02ad0f5f71af080 66092 mx-service-manager_23.10_arm64.deb
+Checksums-Sha256:
+ 012c93010b880bd027ad87cc2a77623b1950d9581e74981dc28fd25a4a850050 9621 mx-service-manager_23.10_arm64.buildinfo
+ 1391de2b533606e7b878a3e83143fa538de32792ab439d1d295dbc1340aa307d 66092 mx-service-manager_23.10_arm64.deb
+Files:
+ f5eada55ae35f641e5b78f56deace0f9 9621 admin optional mx-service-manager_23.10_arm64.buildinfo
+ cde2c80ca133e7e1d60142bde927b27d 66092 admin optional mx-service-manager_23.10_arm64.deb
