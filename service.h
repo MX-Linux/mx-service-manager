@@ -25,12 +25,11 @@
 #include <QObject>
 #include <QString>
 
-class Service : public QObject
+class Service
 {
-    Q_OBJECT
 public:
     Service() = default;
-    explicit Service(QString name, bool running, QObject *parent = nullptr);
+    explicit Service(QString name, bool running);
     [[nodiscard]] QString getDescription() const;
     [[nodiscard]] QString getName() const;
     [[nodiscard]] bool isEnabled() const;
@@ -38,7 +37,6 @@ public:
     [[nodiscard]] static QString getInfo(const QString &name);
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
-    static QString getInfoFromFile(const QString &name);
     bool disable();
     bool enable();
     bool start();
@@ -50,6 +48,7 @@ private:
     QString name;
     bool running {};
     bool enabled {};
+    static QString getInfoFromFile(const QString &name);
 };
 
 Q_DECLARE_METATYPE(Service *)

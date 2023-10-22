@@ -30,9 +30,8 @@
 
 extern const QString init = Service::getInit();
 
-Service::Service(QString name, bool running, QObject *parent)
-    : QObject(parent),
-      name {std::move(name)},
+Service::Service(QString name, bool running)
+    : name {std::move(name)},
       running {running}
 {
 }
