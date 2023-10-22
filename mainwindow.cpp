@@ -204,6 +204,10 @@ void MainWindow::listServices()
             if (value.isObject()) {
                 QString name = obj.value("unit").toString().section(".", 0, 0);
                 QString status = obj.value("sub").toString();
+                QString load = obj.value("load").toString();
+                if (load == "not-found") {
+                    continue;
+                }
                 auto *service = new Service(name, status == "running");
                 service->setEnabled(Service::isEnabled(name));
                 if (dependTargets.contains(name)) {
