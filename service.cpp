@@ -20,15 +20,19 @@
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 #include "service.h"
-#include "cmd.h"
 
 #include <QDebug>
 #include <QFile>
+#include <QProcess>
+#include <QRegularExpression>
 
 #include <utility>
 
-Service::Service(QString name, bool running)
-    : name {std::move(name)},
+extern const QString init = Service::getInit();
+
+Service::Service(QString name, bool running, QObject *parent)
+    : QObject(parent),
+      name {std::move(name)},
       running {running}
 {
 }
@@ -40,9 +44,11 @@ QString Service::getName() const
 
 QString Service::getInfo(const QString &name)
 {
-    Cmd cmd;
-    if (getInit() == "systemd") {
-        return cmd.getCmdOut("service " + name + " status");
+    if (init == "systemd") {
+        QProcess proc;
+        proc.start("service", {name, "status"});
+        proc.waitForFinished();
+        return proc.readAll();
     } else {
         return getInfoFromFile(name);
     }
@@ -50,24 +56,68 @@ QString Service::getInfo(const QString &name)
 
 bool Service::isEnabled(const QString &name)
 {
-    Cmd cmd;
-    if (getInit() == "systemd") {
-        return cmd.run("systemctl -q is-enabled " + name, true);
+    if (init == "systemd") {
+        return (QProcess::execute("systemctl", {"-q", "is-enabled", name}) == 0);
     } else {
-        return cmd.run("[ -e /etc/rc5.d/S*" + name + " ] || [ -e /etc/rcS.d/S*" + name + " ]", true);
+        return (QProcess::execute("/bin/bash",
+                                  {"-c", R"([[ -e /etc/rc5.d/S*"$file_name" || -e /etc/rcS.d/S*"$file_name" ]])"})
+                == 0);
     }
     return false;
 }
 
 QString Service::getInit()
 {
-    Cmd cmd;
-    return cmd.getCmdOut("cat /proc/1/comm", true).trimmed();
+    QProcess proc;
+    proc.start("cat", {"/proc/1/comm"});
+    proc.waitForFinished();
+    return proc.readAll().trimmed();
 }
 
 bool Service::isRunning() const
 {
     return running;
+}
+
+QString Service::getDescription() const
+{
+    if (init != "systemd") {
+        QRegularExpression regex("\nShort-Description:([^\n]*)");
+        QRegularExpressionMatch match = regex.match(getInfo(name));
+        if (match.captured(1).isEmpty()) {
+            regex.setPattern("\nDescription:\\s*(.*)\n");
+            match = regex.match(getInfo(name));
+        }
+        if (match.hasMatch()) {
+            return match.captured(1);
+        }
+        return {};
+    } else {
+        QProcess proc;
+        proc.start("/bin/bash",
+                   {"-c", "systemctl list-units " + name + ".service -o json-pretty | grep description | cut -d: -f2"});
+        proc.waitForFinished();
+        QString out = proc.readAll().trimmed();
+        out = out.mid(1, out.length() - 2);
+        if (out.isEmpty()) {
+            proc.start("/bin/bash",
+                       {"-c", "systemctl status " + name + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'"});
+            proc.waitForFinished();
+            out = proc.readAll().trimmed();
+        }
+        if (out.isEmpty()) {
+            QRegularExpression regex("\nShort-Description:([^\n]*)");
+            QRegularExpressionMatch match = regex.match(getInfo(name));
+            if (match.captured(1).isEmpty()) {
+                regex.setPattern("\nDescription:\\s*(.*)\n");
+                match = regex.match(getInfo(name));
+            }
+            if (match.hasMatch()) {
+                return match.captured(1);
+            }
+        }
+        return out;
+    }
 }
 
 bool Service::isEnabled() const
@@ -77,7 +127,7 @@ bool Service::isEnabled() const
 
 bool Service::start()
 {
-    if (cmd.run("service " + name + " start")) {
+    if (QProcess::execute("service", {name, "start"}) == 0) {
         setRunning(true);
         return true;
     }
@@ -86,7 +136,7 @@ bool Service::start()
 
 bool Service::stop()
 {
-    if (cmd.run("service " + name + " stop")) {
+    if (QProcess::execute("service", {name, "stop"}) == 0) {
         setRunning(false);
         return true;
     }
@@ -105,15 +155,20 @@ void Service::setRunning(bool running)
 
 QString Service::getInfoFromFile(const QString &name)
 {
-    Cmd cmd;
     QFile file("/etc/init.d/" + name);
     if (!file.exists()) {
         qDebug() << "Could not find unit file";
-        return cmd.getCmdOut("service " + name + " status");
+        QProcess proc;
+        proc.start("service", {name, "status"});
+        proc.waitForFinished();
+        return proc.readAll();
     }
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << "Could not open unit file";
-        return cmd.getCmdOut("service " + name + " status");
+        QProcess proc;
+        proc.start("service", {name, "status"});
+        proc.waitForFinished();
+        return proc.readAll();
     }
     QString info;
     bool info_header = false;
@@ -135,15 +190,15 @@ QString Service::getInfoFromFile(const QString &name)
 
 bool Service::enable()
 {
-    if (getInit() == "systemd") {
-        cmd.run("systemctl unmask " + name);
-        if (cmd.run("systemctl enable " + name)) {
+    if (init == "systemd") {
+        QProcess::execute("systemctl", {"unmask", name});
+        if (QProcess::execute("systemctl", {"enable", name}) == 0) {
             setEnabled(true);
             return true;
         }
     } else {
-        cmd.run("sudo update-rc.d " + name + " defaults");
-        if (cmd.run("sudo update-rc.d " + name + " enable")) {
+        QProcess::execute("update-rc.d", {name, "defaults"});
+        if (QProcess::execute("update-rc.d", {name, "enable"}) == 0) {
             setEnabled(true);
             return true;
         }
@@ -153,14 +208,14 @@ bool Service::enable()
 
 bool Service::disable()
 {
-    if (getInit() == "systemd") {
-        if (cmd.run("systemctl disable " + name)) {
-            cmd.run("systemctl mask " + name);
+    if (init == "systemd") {
+        if (QProcess::execute("systemctl", {"disable", name}) == 0) {
+            QProcess::execute("systemctl", {"mask", name});
             setEnabled(false);
             return true;
         }
     } else {
-        if (cmd.run("sudo update-rc.d " + name + " remove")) {
+        if (QProcess::execute("update-rc.d", {name, "remove"}) == 0) {
             setEnabled(false);
             return true;
         }

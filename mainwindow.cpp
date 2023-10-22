@@ -38,6 +38,8 @@
 
 using namespace std::chrono_literals;
 
+extern const QString init;
+
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow)
@@ -54,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
             centerWindow();
         }
     }
-    auto init = Service::getInit();
     if (init != "systemd" && !init.startsWith("init")) { // can be "init(mxlinux)" when running in WSL for example
         QMessageBox::warning(
             this, tr("Error"),
@@ -82,6 +83,14 @@ MainWindow::MainWindow(QWidget *parent)
         listServices();
         displayServices();
         ui->listServices->setFocus();
+    });
+    connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
+        if (item->data(Qt::UserRole).value<Service *>()) {
+            ui->lineSearch->blockSignals(true);
+            item->setToolTip(item->data(Qt::UserRole).value<Service *>()->getDescription());
+            // item->toolTip();
+            ui->lineSearch->blockSignals(false);
+        }
     });
 }
 
@@ -171,8 +180,8 @@ QString MainWindow::getHtmlColor(const QColor &color)
 void MainWindow::listServices()
 {
     services.clear();
-    if (Service::getInit().startsWith("init")) {
-        const auto list = cmd.getCmdOut("service --status-all").split("\n");
+    if (init != "systemd") {
+        const auto list = cmd.getCmdOut("service --status-all", true).split("\n");
         services.reserve(list.count());
         QRegularExpression re("dpkg-.*$");
         QString name;
@@ -199,6 +208,8 @@ void MainWindow::listServices()
             return;
         }
         auto jsonArray = doc.array();
+        QStringList names;
+        names.reserve(jsonArray.size() * 2);
         for (const auto &value : jsonArray) {
             auto obj = value.toObject();
             if (value.isObject()) {
@@ -209,6 +220,7 @@ void MainWindow::listServices()
                     continue;
                 }
                 auto *service = new Service(name, status == "running");
+                names << name;
                 service->setEnabled(Service::isEnabled(name));
                 if (dependTargets.contains(name)) {
                     service->setEnabled(true);
@@ -227,9 +239,11 @@ void MainWindow::listServices()
             auto obj = value.toObject();
             if (value.isObject()) {
                 QString name = obj.value("unit_file").toString().section(".", 0, 0);
-                auto *service = new Service(name, false);
-                service->setEnabled(false);
-                services << QSharedPointer<Service>(service);
+                if (!names.contains(name)) {
+                    auto *service = new Service(name, false);
+                    service->setEnabled(false);
+                    services << QSharedPointer<Service>(service);
+                }
             }
         }
     }
