@@ -1,3 +1,10 @@
+mx-service-manager (23.10.01) mx; urgency=medium
+
+  * Fix: show description tooltip for systemd disabled services and add it to the info box
+  * Eliminate more duplicates from service list
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 27 Oct 2023 19:17:09 -0400
+
 mx-service-manager (23.10) mx; urgency=medium
 
   * Add tooltip with service description
