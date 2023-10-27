@@ -2,15 +2,15 @@ Format: 3.0 (native)
 Source: mx-service-manager
 Binary: mx-service-manager
 Architecture: any
-Version: 23.10
+Version: 23.10.01
 Maintainer: Adrian <adrian@mxlinux.org>
 Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 10), qtbase5-dev, qttools5-dev-tools
 Package-List:
  mx-service-manager deb admin optional arch=any
 Checksums-Sha1:
- 3f1b4237772df6d47135e732211d57fc57bded7f 1463072 mx-service-manager_23.10.tar.xz
+ 35e819e461ad1ba3e483eefa21d16b36e516f82f 1486740 mx-service-manager_23.10.01.tar.xz
 Checksums-Sha256:
- 6b25ef8c3a5bc99e6fe3b7337309aae1c608a8a79ff2075ec1588e1bee05375c 1463072 mx-service-manager_23.10.tar.xz
+ 3fe0a81b6895bfbe25a2ca61f219a29db662b853ac71cb00422bbdca70fd172f 1486740 mx-service-manager_23.10.01.tar.xz
 Files:
- eb20b16cbf0bc2503835637864ff5f1a 1463072 mx-service-manager_23.10.tar.xz
+ 34bdfb93ae7ea4f40fc6bdf4cdb9c408 1486740 mx-service-manager_23.10.01.tar.xz

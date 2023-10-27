@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="310"/>
+        <location filename="../mainwindow.cpp" line="313"/>
         <source>MX Service Manager</source>
         <translation>MX szolgáltatáskezelő</translation>
     </message>
@@ -16,15 +16,15 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
-        <location filename="../mainwindow.cpp" line="151"/>
-        <location filename="../mainwindow.cpp" line="325"/>
+        <location filename="../mainwindow.cpp" line="153"/>
+        <location filename="../mainwindow.cpp" line="328"/>
         <source>&amp;Enable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Engedélyezés indításkor</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Névjegy...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
@@ -48,15 +48,15 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
-        <location filename="../mainwindow.cpp" line="282"/>
+        <location filename="../mainwindow.cpp" line="285"/>
         <source>Services enabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Az indításkor engedélyezett szolgáltatások</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
-        <location filename="../mainwindow.cpp" line="283"/>
+        <location filename="../mainwindow.cpp" line="286"/>
         <source>Services disabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Az indításkor letiltott szolgáltatások</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="268"/>
@@ -65,25 +65,25 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.cpp" line="133"/>
+        <location filename="../mainwindow.cpp" line="135"/>
         <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Megállítás</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="297"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ez az eszköz a rendszerben található szolgáltatásokat és daemonokat (a háttérben futó folyamatok) listázza. Legyen óvatos, nehogy leállítson valamit, ami megzavarhat egy fontos komponenst; a legjobb, ha nem módosítja azokat, amelyeket nem ismeri.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="217"/>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation>Minden szolgáltatás</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
-        <location filename="../mainwindow.cpp" line="277"/>
+        <location filename="../mainwindow.cpp" line="280"/>
         <source>Running services</source>
-        <translation type="unfinished"></translation>
+        <translation>Futó szolgáltatások</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
@@ -109,116 +109,116 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="61"/>
-        <location filename="../mainwindow.cpp" line="327"/>
-        <location filename="../mainwindow.cpp" line="334"/>
-        <location filename="../mainwindow.cpp" line="356"/>
-        <location filename="../mainwindow.cpp" line="365"/>
+        <location filename="../mainwindow.cpp" line="330"/>
+        <location filename="../mainwindow.cpp" line="337"/>
+        <location filename="../mainwindow.cpp" line="359"/>
+        <location filename="../mainwindow.cpp" line="368"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült az init rendszer típusának megállapítása. Ez a program a systemd és a sysvinit megoldásokkal működik</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="138"/>
-        <location filename="../mainwindow.cpp" line="354"/>
+        <location filename="../mainwindow.cpp" line="140"/>
+        <location filename="../mainwindow.cpp" line="357"/>
         <source>S&amp;tart</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Indítás</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="146"/>
         <source>&amp;Disable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Letiltás indításkor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="296"/>
         <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 szolgáltatás összesen, jelenleg %2 %3fut%4</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="297"/>
+        <location filename="../mainwindow.cpp" line="300"/>
         <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2engedélyezett% indításkor, de nem fut</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="310"/>
+        <location filename="../mainwindow.cpp" line="313"/>
         <source>About %1</source>
         <translation>%1 névjegye</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="311"/>
+        <location filename="../mainwindow.cpp" line="314"/>
         <source>Version: </source>
         <translation>Verzió:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="312"/>
+        <location filename="../mainwindow.cpp" line="315"/>
         <source>Service and daemon manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Szolgáltatás és daemon kezelő</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="314"/>
+        <location filename="../mainwindow.cpp" line="317"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="315"/>
+        <location filename="../mainwindow.cpp" line="318"/>
         <source>%1 License</source>
         <translation>%1 licenc</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="327"/>
+        <location filename="../mainwindow.cpp" line="330"/>
         <source>Could not enable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 engedélyezése nem sikerült</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="331"/>
-        <location filename="../mainwindow.cpp" line="338"/>
-        <location filename="../mainwindow.cpp" line="361"/>
-        <location filename="../mainwindow.cpp" line="370"/>
+        <location filename="../mainwindow.cpp" line="334"/>
+        <location filename="../mainwindow.cpp" line="341"/>
+        <location filename="../mainwindow.cpp" line="364"/>
+        <location filename="../mainwindow.cpp" line="373"/>
         <source>Success</source>
         <translation>Sikeres</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="331"/>
-        <source>%1 was enabled at boot time.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="334"/>
+        <source>%1 was enabled at boot time.</source>
+        <translation>%1 indítása a rendszerrel engedélyezve.</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="337"/>
         <source>Could not disable %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 letiltása nem sikerült</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="338"/>
+        <location filename="../mainwindow.cpp" line="341"/>
         <source>%1 was disabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 letiltva.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="346"/>
+        <location filename="../mainwindow.cpp" line="349"/>
         <source>%1 Help</source>
         <translation>%1 súgó</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="359"/>
         <source>Could not start %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 indítása nem sikerült</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="361"/>
+        <location filename="../mainwindow.cpp" line="364"/>
         <source>%1 was started.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elindítva.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="365"/>
+        <location filename="../mainwindow.cpp" line="368"/>
         <source>Could not stop %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megállítása nem sikerült</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="370"/>
+        <location filename="../mainwindow.cpp" line="373"/>
         <source>%1 was stopped.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 megállítva.</translation>
     </message>
 </context>
 <context>

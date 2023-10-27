@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Fri, 27 Oct 2023 19:17:09 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: i386
+Version: 23.10.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.10.01) mx; urgency=medium
+ .
+   * Fix: show description tooltip for systemd disabled services and add it to the info box
+   * Eliminate more duplicates from service list
+Checksums-Sha1:
+ d83df98a4702743c84a417d06eeb516fdc9075a0 10124 mx-service-manager_23.10.01_i386.buildinfo
+ 0b53d4c065f19bcb8fd0f57df5bc62fc41ae71a2 77200 mx-service-manager_23.10.01_i386.deb
+Checksums-Sha256:
+ 251af2a5b392e43621f7a527da545cbe0f8b61e6c1e361800b0f4b6300cfb515 10124 mx-service-manager_23.10.01_i386.buildinfo
+ a87d02aeccfd2f4e00c745de9cead5e4c4cb6eeceef5c682d319a0202a4fbc8b 77200 mx-service-manager_23.10.01_i386.deb
+Files:
+ 53e0ad01194ea6a23c207048cd527415 10124 admin optional mx-service-manager_23.10.01_i386.buildinfo
+ 3e816faaaaeda5aff4a0463504f05d5e 77200 admin optional mx-service-manager_23.10.01_i386.deb

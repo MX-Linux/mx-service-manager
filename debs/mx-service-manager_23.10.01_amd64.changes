@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 27 Oct 2023 19:17:09 -0400
+Source: mx-service-manager
+Binary: mx-service-manager
+Architecture: source amd64
+Version: 23.10.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-service-manager - mx-service-manager
+Changes:
+ mx-service-manager (23.10.01) mx; urgency=medium
+ .
+   * Fix: show description tooltip for systemd disabled services and add it to the info box
+   * Eliminate more duplicates from service list
+Checksums-Sha1:
+ 3ced0bb3a210229e35476b0bdc0001c7b867f2bc 1178 mx-service-manager_23.10.01.dsc
+ 1cd0f28cdc191fc8c1cdfc15a2d7263227897e91 1486408 mx-service-manager_23.10.01.tar.xz
+ bcd487dda5cd6bbdcd0d8764e90bc4e2e7f755bd 10999 mx-service-manager_23.10.01_amd64.buildinfo
+ a30147a9e2bbe5935da86fa683fa02010a3cb492 74796 mx-service-manager_23.10.01_amd64.deb
+Checksums-Sha256:
+ b56504cc5d63e99bb7ddef1297c25da3f64fd7fb7e1ec22c004e56e2aeecfee1 1178 mx-service-manager_23.10.01.dsc
+ 8b2234835cb03c643dcd11fcd5b75922edcd1ce8dffa070a691cc3f5e9604a1e 1486408 mx-service-manager_23.10.01.tar.xz
+ 6ad5ad947aaca138fcdcae7acd8cc641d594b0de5b4da8b1a705f2e71ebb994f 10999 mx-service-manager_23.10.01_amd64.buildinfo
+ 49bfb521841934cb2ee5fa75657834230376f6422a9c8389ba481ec66763a641 74796 mx-service-manager_23.10.01_amd64.deb
+Files:
+ b7737faa6354bdffb096285e03a759d8 1178 admin optional mx-service-manager_23.10.01.dsc
+ afbfdd64ede24fee33f927a12e7bee0a 1486408 admin optional mx-service-manager_23.10.01.tar.xz
+ 8458be7e7c485bdf4a2de9ba176da8dc 10999 admin optional mx-service-manager_23.10.01_amd64.buildinfo
+ 32f5b73e26eb46a285f96ae1b6751acb 74796 admin optional mx-service-manager_23.10.01_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmU8SoYTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumM4xB/4+Dsyb+0hZheBBUkCnO6BhJwYIsGPM
+Att+LFyTLiHM9vzdeZ7k4WHCyvf7QQtvlELWfKlNv9hgCilTAFYNvyn0FSf6u0as
+vwJmHD9KRNzRVmjcF7Jv1Rfqe7kGVQcOZD8qVSS01mnUJQUvTPiVnBshsGDFU7Dq
++g7wXpdTCkzuobkLm496ZBih2d/jepraVaWPj4iUAhDNojma3f4n0muys2gvIab/
+dEj1HDz1fVvKeFxJhCkpo/uXZXbMnep2VInaqYRriWIzsDG00CNuo5yAqopE8GgF
+pgF+BK8QonGYAQoL4w0I+Mv4DWjdPJ4wOYWJoxw5GfYtcdZx0Mow/M+V
+=QfVl
+-----END PGP SIGNATURE-----
