@@ -23,6 +23,7 @@
 
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
 
@@ -41,13 +42,18 @@ QString Service::getName() const
     return name;
 }
 
-QString Service::getInfo(const QString &name)
+QString Service::getInfo() const
 {
     if (init == "systemd") {
         QProcess proc;
+
         proc.start("service", {name, "status"});
         proc.waitForFinished();
-        return proc.readAll();
+        QString info = proc.readAll();
+        if (!isEnabled()) {
+            info.append("\nDescription:" + getDescription());
+        }
+        return info;
     } else {
         return getInfoFromFile(name);
     }
@@ -82,10 +88,10 @@ QString Service::getDescription() const
 {
     if (init != "systemd") {
         QRegularExpression regex("\nShort-Description:([^\n]*)");
-        QRegularExpressionMatch match = regex.match(getInfo(name));
+        QRegularExpressionMatch match = regex.match(getInfo());
         if (match.captured(1).isEmpty()) {
             regex.setPattern("\nDescription:\\s*(.*)\n");
-            match = regex.match(getInfo(name));
+            match = regex.match(getInfo());
         }
         if (match.hasMatch()) {
             return match.captured(1);
@@ -106,10 +112,10 @@ QString Service::getDescription() const
         }
         if (out.isEmpty()) {
             QRegularExpression regex("\nShort-Description:([^\n]*)");
-            QRegularExpressionMatch match = regex.match(getInfo(name));
+            QRegularExpressionMatch match = regex.match(getInfoFromFile(name));
             if (match.captured(1).isEmpty()) {
                 regex.setPattern("\nDescription:\\s*(.*)\n");
-                match = regex.match(getInfo(name));
+                match = regex.match(getInfoFromFile(name));
             }
             if (match.hasMatch()) {
                 return match.captured(1);
@@ -154,16 +160,20 @@ void Service::setRunning(bool running)
 
 QString Service::getInfoFromFile(const QString &name)
 {
-    QFile file("/etc/init.d/" + name);
-    if (!file.exists()) {
-        qDebug() << "Could not find unit file";
-        QProcess proc;
-        proc.start("service", {name, "status"});
-        proc.waitForFinished();
-        return proc.readAll();
+    QFileInfo fileInfo("/etc/init.d/" + name);
+    if (!fileInfo.isFile()) {
+        fileInfo.setFile("/etc/init.d/" + name + ".sh");
+        if (!fileInfo.isFile()) {
+            qDebug() << "Could not find unit file" << name;
+            QProcess proc;
+            proc.start("service", {name, "status"});
+            proc.waitForFinished();
+            return proc.readAll();
+        }
     }
+    QFile file {fileInfo.canonicalFilePath()};
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Could not open unit file";
+        qDebug() << "Could not open unit file" << name;
         QProcess proc;
         proc.start("service", {name, "status"});
         proc.waitForFinished();

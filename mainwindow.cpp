@@ -128,7 +128,7 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     if (!current) {
         return;
     }
-    ui->textBrowser->setText(Service::getInfo(current->text()));
+    ui->textBrowser->setText(current->data(Qt::UserRole).value<Service *>()->getInfo());
     bool running = current->data(Qt::UserRole).value<Service *>()->isRunning();
     bool enabled = current->data(Qt::UserRole).value<Service *>()->isEnabled();
     if (running) {
@@ -218,16 +218,16 @@ void MainWindow::listServices()
                 QString name = obj.value("unit").toString().section(".", 0, 0);
                 QString status = obj.value("sub").toString();
                 QString load = obj.value("load").toString();
-                if (load == "not-found") {
-                    continue;
+                if (!names.contains(name) && load != "not-found") {
+                    auto *service = new Service(name, status == "running");
+                    names << name;
+
+                    service->setEnabled(Service::isEnabled(name));
+                    if (dependTargets.contains(name)) {
+                        service->setEnabled(true);
+                    }
+                    services << QSharedPointer<Service>(service);
                 }
-                auto *service = new Service(name, status == "running");
-                names << name;
-                service->setEnabled(Service::isEnabled(name));
-                if (dependTargets.contains(name)) {
-                    service->setEnabled(true);
-                }
-                services << QSharedPointer<Service>(service);
             }
         }
         const auto masked = cmd.getCmdOut("systemctl list-unit-files --type=service --state=masked -o json");
@@ -243,6 +243,7 @@ void MainWindow::listServices()
                 QString name = obj.value("unit_file").toString().section(".", 0, 0);
                 if (!names.contains(name)) {
                     auto *service = new Service(name, false);
+                    names << name;
                     service->setEnabled(false);
                     services << QSharedPointer<Service>(service);
                 }

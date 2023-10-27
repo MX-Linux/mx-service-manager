@@ -31,10 +31,10 @@ public:
     Service() = default;
     explicit Service(QString name, bool running);
     [[nodiscard]] QString getDescription() const;
+    [[nodiscard]] QString getInfo() const;
     [[nodiscard]] QString getName() const;
     [[nodiscard]] bool isEnabled() const;
     [[nodiscard]] bool isRunning() const;
-    [[nodiscard]] static QString getInfo(const QString &name);
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
     bool disable();
