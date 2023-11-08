@@ -1,3 +1,9 @@
+mx-service-manager (23.11.01) mx; urgency=medium
+
+  * Fix: launching from menu from Xfce, not enough permissions to list services
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 08 Nov 2023 11:19:17 -0500
+
 mx-service-manager (23.11) mx; urgency=medium
 
   * Run program as normal user and elevate only when needed

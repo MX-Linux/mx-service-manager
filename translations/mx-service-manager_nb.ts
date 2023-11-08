@@ -258,11 +258,7 @@
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>version:</source>
-        <translation type="vanished">versjon:</translation>
+        <translation>Dette programmet må kjøres med administratorrettigheter.</translation>
     </message>
     <message>
         <location filename="../service.cpp" line="116"/>

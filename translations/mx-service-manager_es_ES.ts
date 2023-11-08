@@ -258,16 +258,12 @@
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>version:</source>
-        <translation type="vanished">versión:</translation>
+        <translation>Debe ejecutar este programa con acceso de administrador.</translation>
     </message>
     <message>
         <location filename="../service.cpp" line="116"/>
         <source>Could not find service description</source>
-        <translation type="unfinished"></translation>
+        <translation>No se encontró la descripción del servicio</translation>
     </message>
 </context>
 </TS>

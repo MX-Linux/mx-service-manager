@@ -261,10 +261,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>version:</source>
-        <translation type="vanished">sürüm:</translation>
-    </message>
-    <message>
         <location filename="../service.cpp" line="116"/>
         <source>Could not find service description</source>
         <translation type="unfinished"></translation>
