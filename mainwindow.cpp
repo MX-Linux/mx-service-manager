@@ -186,7 +186,7 @@ void MainWindow::listServices()
 {
     services.clear();
     if (init != "systemd") {
-        const auto list = cmd.getOutAsRoot("service --status-all", true).trimmed().split("\n");
+        const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
         services.reserve(list.count());
         QRegularExpression re("dpkg-.*$");
         QString name;

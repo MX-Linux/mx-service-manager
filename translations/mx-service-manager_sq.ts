@@ -258,12 +258,12 @@
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Këtë program duhet ta xhironi me leje përgjegjësi.</translation>
     </message>
     <message>
         <location filename="../service.cpp" line="116"/>
         <source>Could not find service description</source>
-        <translation type="unfinished"></translation>
+        <translation>S’u gjet dot përshkrim shërbimi</translation>
     </message>
 </context>
 </TS>

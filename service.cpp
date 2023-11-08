@@ -44,7 +44,7 @@ QString Service::getName() const
 QString Service::getInfo() const
 {
     if (init == "systemd") {
-        QString info = Cmd().getOutAsRoot("service " + name + " status").trimmed();
+        QString info = Cmd().getOutAsRoot("/sbin/service " + name + " status").trimmed();
         if (!isEnabled()) {
             info.append("\nDescription:" + getDescription());
         }
@@ -126,7 +126,7 @@ bool Service::isEnabled() const
 
 bool Service::start()
 {
-    if (Cmd().runAsRoot("service " + name + " start")) {
+    if (Cmd().runAsRoot("/sbin/service " + name + " start")) {
         setRunning(true);
         return true;
     }
@@ -135,7 +135,7 @@ bool Service::start()
 
 bool Service::stop()
 {
-    if (Cmd().runAsRoot("service " + name + " stop")) {
+    if (Cmd().runAsRoot("/sbin/service " + name + " stop")) {
         setRunning(false);
         return true;
     }
@@ -159,12 +159,12 @@ QString Service::getInfoFromFile(const QString &name)
         fileInfo.setFile("/etc/init.d/" + name + ".sh");
         if (!fileInfo.isFile()) {
             qDebug() << "Could not find unit file" << name;
-            return Cmd().getOut("service " + name + " status", false, false, true);
+            return Cmd().getOut("/sbin/service " + name + " status", false, false, true);
         }
     }
     QFile file {fileInfo.canonicalFilePath()};
     if (!file.open(QIODevice::ReadOnly)) {
-        return Cmd().getOut("service " + name + " status", false, false, true);
+        return Cmd().getOut("/sbin/service " + name + " status", false, false, true);
     }
     QString info;
     bool info_header = false;
@@ -193,8 +193,8 @@ bool Service::enable()
             return true;
         }
     } else {
-        Cmd().runAsRoot("update-rc.d " + name + " defaults");
-        if (Cmd().runAsRoot("update-rc.d " + name + " enable")) {
+        Cmd().runAsRoot("/sbin/update-rc.d " + name + " defaults");
+        if (Cmd().runAsRoot("/sbin/update-rc.d " + name + " enable")) {
             setEnabled(true);
             return true;
         }
@@ -211,7 +211,7 @@ bool Service::disable()
             return true;
         }
     } else {
-        if (Cmd().runAsRoot("update-rc.d " + name + " remove")) {
+        if (Cmd().runAsRoot("/sbin/update-rc.d " + name + " remove")) {
             setEnabled(false);
             return true;
         }
