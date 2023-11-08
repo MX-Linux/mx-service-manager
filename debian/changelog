@@ -1,3 +1,10 @@
+mx-service-manager (23.11) mx; urgency=medium
+
+  * Run program as normal user and elevate only when needed
+  * Fix random jumping in the service list when changing the status of a service
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 07 Nov 2023 20:26:35 -0500
+
 mx-service-manager (23.10.01) mx; urgency=medium
 
   * Fix: show description tooltip for systemd disabled services and add it to the info box

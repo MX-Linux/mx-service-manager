@@ -20,14 +20,13 @@
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 #include "service.h"
+#include "cmd.h"
 
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
 #include <QProcess>
 #include <QRegularExpression>
-
-#include <utility>
 
 extern const QString init = Service::getInit();
 
@@ -45,11 +44,7 @@ QString Service::getName() const
 QString Service::getInfo() const
 {
     if (init == "systemd") {
-        QProcess proc;
-
-        proc.start("service", {name, "status"});
-        proc.waitForFinished();
-        QString info = proc.readAll();
+        QString info = Cmd().getOutAsRoot("service " + name + " status").trimmed();
         if (!isEnabled()) {
             info.append("\nDescription:" + getDescription());
         }
@@ -88,27 +83,28 @@ QString Service::getDescription() const
 {
     if (init != "systemd") {
         QRegularExpression regex("\nShort-Description:([^\n]*)");
-        QRegularExpressionMatch match = regex.match(getInfo());
+        QString info = getInfo();
+        QRegularExpressionMatch match = regex.match(info);
         if (match.captured(1).isEmpty()) {
             regex.setPattern("\nDescription:\\s*(.*)\n");
-            match = regex.match(getInfo());
+            match = regex.match(info);
         }
         if (match.hasMatch()) {
             return match.captured(1);
         }
         return {};
     } else {
-        QProcess proc;
-        proc.start("/bin/bash",
-                   {"-c", "systemctl list-units " + name + ".service -o json-pretty | grep description | cut -d: -f2"});
-        proc.waitForFinished();
-        QString out = proc.readAll().trimmed();
+        QString out
+            = Cmd()
+                  .getOut("systemctl list-units " + name + ".service -o json-pretty | grep description | cut -d: -f2",
+                          true, false, true)
+                  .trimmed();
         out = out.mid(1, out.length() - 2);
         if (out.isEmpty()) {
-            proc.start("/bin/bash",
-                       {"-c", "systemctl status " + name + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'"});
-            proc.waitForFinished();
-            out = proc.readAll().trimmed();
+            out = Cmd()
+                      .getOut("systemctl status " + name + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'",
+                              true, false, true)
+                      .trimmed();
         }
         if (out.isEmpty()) {
             QRegularExpression regex("\nShort-Description:([^\n]*)");
@@ -117,9 +113,7 @@ QString Service::getDescription() const
                 regex.setPattern("\nDescription:\\s*(.*)\n");
                 match = regex.match(getInfoFromFile(name));
             }
-            if (match.hasMatch()) {
-                return match.captured(1);
-            }
+            out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
         }
         return out;
     }
@@ -132,7 +126,7 @@ bool Service::isEnabled() const
 
 bool Service::start()
 {
-    if (QProcess::execute("service", {name, "start"}) == 0) {
+    if (Cmd().runAsRoot("service " + name + " start")) {
         setRunning(true);
         return true;
     }
@@ -141,7 +135,7 @@ bool Service::start()
 
 bool Service::stop()
 {
-    if (QProcess::execute("service", {name, "stop"}) == 0) {
+    if (Cmd().runAsRoot("service " + name + " stop")) {
         setRunning(false);
         return true;
     }
@@ -165,19 +159,12 @@ QString Service::getInfoFromFile(const QString &name)
         fileInfo.setFile("/etc/init.d/" + name + ".sh");
         if (!fileInfo.isFile()) {
             qDebug() << "Could not find unit file" << name;
-            QProcess proc;
-            proc.start("service", {name, "status"});
-            proc.waitForFinished();
-            return proc.readAll();
+            return Cmd().getOut("service " + name + " status", false, false, true);
         }
     }
     QFile file {fileInfo.canonicalFilePath()};
     if (!file.open(QIODevice::ReadOnly)) {
-        qDebug() << "Could not open unit file" << name;
-        QProcess proc;
-        proc.start("service", {name, "status"});
-        proc.waitForFinished();
-        return proc.readAll();
+        return Cmd().getOut("service " + name + " status", false, false, true);
     }
     QString info;
     bool info_header = false;
@@ -200,14 +187,14 @@ QString Service::getInfoFromFile(const QString &name)
 bool Service::enable()
 {
     if (init == "systemd") {
-        QProcess::execute("systemctl", {"unmask", name});
-        if (QProcess::execute("systemctl", {"enable", name}) == 0) {
+        Cmd().runAsRoot("systemctl unmask " + name);
+        if (Cmd().runAsRoot("systemctl enable " + name)) {
             setEnabled(true);
             return true;
         }
     } else {
-        QProcess::execute("update-rc.d", {name, "defaults"});
-        if (QProcess::execute("update-rc.d", {name, "enable"}) == 0) {
+        Cmd().runAsRoot("update-rc.d " + name + " defaults");
+        if (Cmd().runAsRoot("update-rc.d " + name + " enable")) {
             setEnabled(true);
             return true;
         }
@@ -218,13 +205,13 @@ bool Service::enable()
 bool Service::disable()
 {
     if (init == "systemd") {
-        if (QProcess::execute("systemctl", {"disable", name}) == 0) {
-            QProcess::execute("systemctl", {"mask", name});
+        if (Cmd().runAsRoot("systemctl disable " + name)) {
+            Cmd().runAsRoot("systemctl mask " + name);
             setEnabled(false);
             return true;
         }
     } else {
-        if (QProcess::execute("update-rc.d", {name, "remove"}) == 0) {
+        if (Cmd().runAsRoot("update-rc.d " + name + " remove")) {
             setEnabled(false);
             return true;
         }

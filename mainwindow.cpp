@@ -67,9 +67,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listServices->addItem(tr("Loading..."));
 
     dependTargets
-        = cmd.getCmdOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
-                        "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'",
-                        true)
+        = cmd.getOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
+                     "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'",
+                     true)
               .split(" ");
 
     QTimer::singleShot(0, this, [this] {
@@ -86,12 +86,15 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
         if (item->data(Qt::UserRole).value<Service *>()) {
+            ui->listServices->blockSignals(true);
             if (!item->toolTip().isEmpty()) {
+                ui->listServices->blockSignals(false);
                 return;
             }
             ui->lineSearch->blockSignals(true);
             item->setToolTip(item->data(Qt::UserRole).value<Service *>()->getDescription());
             ui->lineSearch->blockSignals(false);
+            ui->listServices->blockSignals(false);
         }
     });
 }
@@ -183,7 +186,7 @@ void MainWindow::listServices()
 {
     services.clear();
     if (init != "systemd") {
-        const auto list = cmd.getCmdOut("service --status-all", true).split("\n");
+        const auto list = cmd.getOut("service --status-all", true).trimmed().split("\n");
         services.reserve(list.count());
         QRegularExpression re("dpkg-.*$");
         QString name;
@@ -203,7 +206,7 @@ void MainWindow::listServices()
             services << QSharedPointer<Service>(service);
         }
     } else {
-        const auto list = cmd.getCmdOut("systemctl list-units --type=service --all -o json");
+        const auto list = cmd.getOutAsRoot("systemctl list-units --type=service --all -o json").trimmed();
         auto doc = QJsonDocument::fromJson(list.toUtf8());
         if (!doc.isArray()) {
             qDebug() << "JSON data is not an array.";
@@ -230,7 +233,8 @@ void MainWindow::listServices()
                 }
             }
         }
-        const auto masked = cmd.getCmdOut("systemctl list-unit-files --type=service --state=masked -o json");
+        const auto masked
+            = cmd.getOutAsRoot("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
         doc = QJsonDocument::fromJson(masked.toUtf8());
         if (!doc.isArray()) {
             qDebug() << "JSON data is not an array.";
@@ -299,11 +303,11 @@ void MainWindow::displayServices()
     ui->labelEnabledAtBoot->setText(
         tr("%1 %2enabled%3 at boot, but not running").arg(QString::number(countEnabled), fontTagStart, fontTagEnd));
     ui->listServices->blockSignals(false);
+    ui->listServices->sortItems();
     if (savedRow >= ui->listServices->count()) {
         savedRow = ui->listServices->count() - 1;
     }
     ui->listServices->setCurrentRow(savedRow);
-    ui->listServices->sortItems();
 }
 
 void MainWindow::pushAbout_clicked()
