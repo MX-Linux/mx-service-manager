@@ -38,9 +38,9 @@ SOURCES += \
     service.cpp
 
 HEADERS  += \
+    common.h \
     mainwindow.h \
     service.h \
-    version.h \
     about.h \
     cmd.h
 

@@ -20,7 +20,6 @@
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 #include "service.h"
-#include "cmd.h"
 
 #include <QDebug>
 #include <QFile>
@@ -28,7 +27,10 @@
 #include <QProcess>
 #include <QRegularExpression>
 
-extern const QString init = Service::getInit();
+#include "cmd.h"
+#include "common.h"
+
+const QString init {Service::getInit()};
 
 Service::Service(QString name, bool running)
     : name {std::move(name)},

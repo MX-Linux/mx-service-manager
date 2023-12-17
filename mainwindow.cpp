@@ -33,12 +33,12 @@
 #include <QTimer>
 
 #include "about.h"
+#include "common.h"
 #include "service.h"
+
 #include <chrono>
 
 using namespace std::chrono_literals;
-
-extern const QString init;
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
@@ -51,8 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     QSize size = this->size();
     if (settings.contains(QStringLiteral("geometry"))) {
         restoreGeometry(settings.value(QStringLiteral("geometry")).toByteArray());
-        if (this->isMaximized()) { // add option to resize if maximized
-            this->resize(size);
+        if (isMaximized()) { // add option to resize if maximized
+            resize(size);
             centerWindow();
         }
     }
@@ -108,9 +108,9 @@ MainWindow::~MainWindow()
 void MainWindow::centerWindow()
 {
     QRect screenGeometry = QApplication::primaryScreen()->geometry();
-    int x = (screenGeometry.width() - this->width()) / 2;
-    int y = (screenGeometry.height() - this->height()) / 2;
-    this->move(x, y);
+    int x = (screenGeometry.width() - width()) / 2;
+    int y = (screenGeometry.height() - height()) / 2;
+    move(x, y);
 }
 
 void MainWindow::cmdStart()
@@ -312,16 +312,16 @@ void MainWindow::displayServices()
 
 void MainWindow::pushAbout_clicked()
 {
-    this->hide();
+    hide();
     displayAboutMsgBox(
         tr("About %1") + tr("MX Service Manager"),
         R"(<p align="center"><b><h2>MX Service Manager</h2></b></p><p align="center">)" + tr("Version: ")
             + QApplication::applicationVersion() + "</p><p align=\"center\"><h3>" + tr("Service and daemon manager")
             + R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
             + tr("Copyright (c) MX Linux") + "<br /><br /></p>",
-        QStringLiteral("/usr/share/doc/mx-service-manager/license.html"), tr("%1 License").arg(this->windowTitle()));
+        QStringLiteral("/usr/share/doc/mx-service-manager/license.html"), tr("%1 License").arg(windowTitle()));
 
-    this->show();
+    show();
 }
 
 void MainWindow::pushEnableDisable_clicked()
@@ -349,8 +349,8 @@ void MainWindow::pushEnableDisable_clicked()
 // Help button clicked
 void MainWindow::pushHelp_clicked()
 {
-    const QString url = QStringLiteral("https://mxlinux.org/wiki/help-service-manager/");
-    displayDoc(url, tr("%1 Help").arg(this->windowTitle()));
+    const QString url = "https://mxlinux.org/wiki/help-service-manager/";
+    displayDoc(url, tr("%1 Help").arg(windowTitle()));
 }
 
 void MainWindow::pushStartStop_clicked()

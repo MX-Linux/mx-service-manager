@@ -9,11 +9,10 @@
 #include <QTextEdit>
 #include <QVBoxLayout>
 
+#include "common.h"
 #include <unistd.h>
 
-extern const QString starting_home;
-
-// display doc as nomal user when run as root
+// Display doc as nomal user when run as root
 void displayDoc(const QString &url, const QString &title)
 {
     bool started_as_root = false;

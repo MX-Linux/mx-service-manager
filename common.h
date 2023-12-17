@@ -21,33 +21,5 @@
  **********************************************************************/
 #pragma once
 
-#include <QObject>
-#include <QString>
-
-class Service
-{
-public:
-    Service() = default;
-    explicit Service(QString name, bool running);
-    [[nodiscard]] QString getDescription() const;
-    [[nodiscard]] QString getInfo() const;
-    [[nodiscard]] QString getName() const;
-    [[nodiscard]] bool isEnabled() const;
-    [[nodiscard]] bool isRunning() const;
-    [[nodiscard]] static QString getInit();
-    [[nodiscard]] static bool isEnabled(const QString &name);
-    bool disable();
-    bool enable();
-    bool start();
-    bool stop();
-    void setEnabled(bool enabled);
-    void setRunning(bool running);
-
-private:
-    QString name;
-    bool running {};
-    bool enabled {};
-    static QString getInfoFromFile(const QString &name);
-};
-
-Q_DECLARE_METATYPE(Service *)
+const QString starting_home {qEnvironmentVariable("HOME")};
+extern const QString init;
