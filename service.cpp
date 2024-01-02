@@ -65,7 +65,6 @@ bool Service::isEnabled(const QString &name)
                                   {"-c", R"([[ -e /etc/rc5.d/S*"$file_name" || -e /etc/rcS.d/S*"$file_name" ]])"})
                 == 0);
     }
-    return false;
 }
 
 QString Service::getInit()

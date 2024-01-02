@@ -43,8 +43,6 @@ public:
     ~MainWindow() override;
     void centerWindow();
 
-public slots:
-
 private slots:
     void cmdDone();
     void cmdStart();

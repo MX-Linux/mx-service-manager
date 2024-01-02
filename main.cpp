@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     if (getuid() == 0) {
         qputenv("HOME", "/root");
     }
-    QApplication::setOrganizationName(QStringLiteral("MX-Linux"));
+    QApplication::setOrganizationName("MX-Linux");
     QApplication::setWindowIcon(QIcon::fromTheme(QApplication::applicationName()));
     QApplication::setApplicationVersion(VERSION);
 

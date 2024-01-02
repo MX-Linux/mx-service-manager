@@ -26,6 +26,8 @@
 
 class Service
 {
+    Q_DISABLE_COPY(Service)
+
 public:
     Service() = default;
     explicit Service(QString name, bool running);
