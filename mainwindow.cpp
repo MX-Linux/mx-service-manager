@@ -56,11 +56,12 @@ MainWindow::MainWindow(QWidget *parent)
             centerWindow();
         }
     }
-    if (init != "systemd" && !init.startsWith("init")) { // Can be "init(mxlinux)" when running in WSL for example
+    if (initSystem != "systemd"
+        && !initSystem.startsWith("init")) { // Can be "init(mxlinux)" when running in WSL for example
         QMessageBox::warning(
             this, tr("Error"),
             tr("Could not determine the init system. This program is supposed to run either with systemd or sysvinit")
-                + "\nINIT:" + init);
+                + "\nINIT:" + initSystem);
     }
     QPalette palette = ui->listServices->palette();
     defaultForeground = palette.color(QPalette::Text);
@@ -185,7 +186,7 @@ QString MainWindow::getHtmlColor(const QColor &color)
 void MainWindow::listServices()
 {
     services.clear();
-    if (init != "systemd") {
+    if (initSystem != "systemd") {
         const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
         QRegularExpression re("dpkg-.*$");
         for (const auto &item : list) {

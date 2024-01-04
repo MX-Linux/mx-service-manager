@@ -28,9 +28,8 @@
 #include <QRegularExpression>
 
 #include "cmd.h"
-#include "common.h"
 
-const QString init {Service::getInit()};
+inline const QString initSystem {Service::getInit()};
 
 Service::Service(QString name, bool running)
     : name {std::move(name)},
@@ -45,7 +44,7 @@ QString Service::getName() const
 
 QString Service::getInfo() const
 {
-    if (init == "systemd") {
+    if (initSystem == "systemd") {
         QString info = Cmd().getOutAsRoot("/sbin/service " + name + " status").trimmed();
         if (!isEnabled()) {
             info.append("\nDescription:" + getDescription());
@@ -58,7 +57,7 @@ QString Service::getInfo() const
 
 bool Service::isEnabled(const QString &name)
 {
-    if (init == "systemd") {
+    if (initSystem == "systemd") {
         return (QProcess::execute("systemctl", {"-q", "is-enabled", name}) == 0);
     } else {
         return (QProcess::execute("/bin/bash",
@@ -82,7 +81,7 @@ bool Service::isRunning() const
 
 QString Service::getDescription() const
 {
-    if (init != "systemd") {
+    if (initSystem != "systemd") {
         QRegularExpression regex("\nShort-Description:([^\n]*)");
         QString info = getInfo();
         QRegularExpressionMatch match = regex.match(info);
@@ -187,7 +186,7 @@ QString Service::getInfoFromFile(const QString &name)
 
 bool Service::enable()
 {
-    if (init == "systemd") {
+    if (initSystem == "systemd") {
         Cmd().runAsRoot("systemctl unmask " + name);
         if (Cmd().runAsRoot("systemctl enable " + name)) {
             setEnabled(true);
@@ -205,7 +204,7 @@ bool Service::enable()
 
 bool Service::disable()
 {
-    if (init == "systemd") {
+    if (initSystem == "systemd") {
         if (Cmd().runAsRoot("systemctl disable " + name)) {
             Cmd().runAsRoot("systemctl mask " + name);
             setEnabled(false);
