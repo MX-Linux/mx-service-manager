@@ -1,9 +1,12 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="fi">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="302"/>
+        <location filename="../ui_mainwindow.h" line="225"/>
         <source>MX Service Manager</source>
         <translation>MX Palvelu Manageri</translation>
     </message>
@@ -11,85 +14,101 @@
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="157"/>
         <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../ui_mainwindow.h" line="226"/>
         <source>&amp;Enable at boot</source>
         <translation>&amp;Ota käyttöön käynnistyksen yhteydessä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
+        <location filename="../ui_mainwindow.h" line="228"/>
         <source>About this application</source>
         <translation>Tietoja tästä sovelluksesta</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
+        <location filename="../ui_mainwindow.h" line="230"/>
         <source>&amp;About...</source>
         <translation>&amp;Noin...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="72"/>
+        <location filename="../ui_mainwindow.h" line="232"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="126"/>
+        <location filename="../ui_mainwindow.h" line="236"/>
         <source>Display help </source>
         <translation>Näytä ohje</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="129"/>
+        <location filename="../ui_mainwindow.h" line="238"/>
         <source>&amp;Help</source>
         <translation>&amp;Ohje</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="136"/>
+        <location filename="../ui_mainwindow.h" line="240"/>
         <source>Alt+H</source>
         <translation>Alt+H</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="168"/>
+        <location filename="../ui_mainwindow.h" line="243"/>
         <source>Quit application</source>
         <translation>Lopeta sovellus</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="171"/>
+        <location filename="../ui_mainwindow.h" line="245"/>
         <source>&amp;Close</source>
         <translation>&amp;Sulje</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="178"/>
+        <location filename="../ui_mainwindow.h" line="247"/>
         <source>Alt+N</source>
         <translation>Alt+N</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="203"/>
         <location filename="../mainwindow.cpp" line="139"/>
+        <location filename="../ui_mainwindow.h" line="250"/>
         <source>&amp;Stop</source>
         <translation>&amp;Pysäytä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="217"/>
+        <location filename="../ui_mainwindow.h" line="251"/>
         <source>All services</source>
         <translation>Kaikki palvelut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="222"/>
         <location filename="../mainwindow.cpp" line="277"/>
+        <location filename="../ui_mainwindow.h" line="252"/>
         <source>Running services</source>
         <translation>Käynnissä olevat palvelut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
         <location filename="../mainwindow.cpp" line="278"/>
+        <location filename="../ui_mainwindow.h" line="253"/>
         <source>Services enabled at boot</source>
         <translation>Palvelut käytössä käynnistyksen yhteydessä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="232"/>
         <location filename="../mainwindow.cpp" line="279"/>
+        <location filename="../ui_mainwindow.h" line="254"/>
         <source>Services disabled at boot</source>
         <translation>Palvelut pois käytöstä käynnistyksen yhteydessä</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="268"/>
+        <location filename="../ui_mainwindow.h" line="257"/>
         <source>search</source>
         <translation>etsi</translation>
     </message>
@@ -97,11 +116,13 @@
         <location filename="../mainwindow.ui" line="278"/>
         <location filename="../mainwindow.cpp" line="68"/>
         <location filename="../mainwindow.cpp" line="81"/>
+        <location filename="../ui_mainwindow.h" line="258"/>
         <source>Loading...</source>
         <translation>Lataa...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="297"/>
+        <location filename="../ui_mainwindow.h" line="259"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
         <translation>Tämä työkalu luettelee tästä järjestelmästä löydetyt palvelut ja demonit (taustalla toimivat prosessit). Varo pysäyttämästä jotain, joka saattaa häiritä kriittistä komponenttia. parasta jättää se rauhaan, jos et tiedä mitä se on.</translation>
     </message>
@@ -133,12 +154,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="286"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="288"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="302"/>
