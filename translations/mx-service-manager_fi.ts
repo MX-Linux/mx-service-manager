@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
 <context>
     <name>MainWindow</name>
     <message>
@@ -10,16 +8,16 @@
         <translation>MX Palvelu Manageri</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="62"/>
-        <source>About this application</source>
-        <translation>Tietoja tästä sovelluksesta</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="157"/>
         <location filename="../mainwindow.cpp" line="317"/>
         <source>&amp;Enable at boot</source>
         <translation>&amp;Ota käyttöön käynnistyksen yhteydessä</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="62"/>
+        <source>About this application</source>
+        <translation>Tietoja tästä sovelluksesta</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
@@ -42,9 +40,41 @@
         <translation>&amp;Ohje</translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="136"/>
+        <source>Alt+H</source>
+        <translation>Alt+H</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="168"/>
+        <source>Quit application</source>
+        <translation>Lopeta sovellus</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="171"/>
         <source>&amp;Close</source>
         <translation>&amp;Sulje</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="178"/>
+        <source>Alt+N</source>
+        <translation>Alt+N</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="203"/>
+        <location filename="../mainwindow.cpp" line="139"/>
+        <source>&amp;Stop</source>
+        <translation>&amp;Pysäytä</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="217"/>
+        <source>All services</source>
+        <translation>Kaikki palvelut</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.cpp" line="277"/>
+        <source>Running services</source>
+        <translation>Käynnissä olevat palvelut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
@@ -64,48 +94,16 @@
         <translation>etsi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.cpp" line="139"/>
-        <source>&amp;Stop</source>
-        <translation>&amp;Pysäytä</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="297"/>
-        <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Tämä työkalu luettelee tästä järjestelmästä löydetyt palvelut ja demonit (taustalla toimivat prosessit). Varo pysäyttämästä jotain, joka saattaa häiritä kriittistä komponenttia. parasta jättää se rauhaan, jos et tiedä mitä se on.</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="217"/>
-        <source>All services</source>
-        <translation>Kaikki palvelut</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="222"/>
-        <location filename="../mainwindow.cpp" line="277"/>
-        <source>Running services</source>
-        <translation>Käynnissä olevat palvelut</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="136"/>
-        <source>Alt+H</source>
-        <translation>Alt+H</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="168"/>
-        <source>Quit application</source>
-        <translation>Lopeta sovellus</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="178"/>
-        <source>Alt+N</source>
-        <translation>Alt+N</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="278"/>
         <location filename="../mainwindow.cpp" line="68"/>
         <location filename="../mainwindow.cpp" line="81"/>
         <source>Loading...</source>
         <translation>Lataa...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="297"/>
+        <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
+        <translation>Tämä työkalu luettelee tästä järjestelmästä löydetyt palvelut ja demonit (taustalla toimivat prosessit). Varo pysäyttämästä jotain, joka saattaa häiritä kriittistä komponenttia. parasta jättää se rauhaan, jos et tiedä mitä se on.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
@@ -133,22 +131,14 @@
         <translation>&amp;Poista käytöstä käynnistyksen yhteydessä</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="vanished">%1 palvelua, %2 tällä hetkellä %3 käynnissä %4</translation>
-    </message>
-    <message>
-        <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="vanished">%1 %2 käytössä %3 käynnistyksen yhteydessä, mutta ei käynnissä</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="286"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="288"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="302"/>

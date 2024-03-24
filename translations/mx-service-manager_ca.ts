@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
 <context>
     <name>MainWindow</name>
     <message>
@@ -10,16 +8,16 @@
         <translation>MX Service Manager</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="62"/>
-        <source>About this application</source>
-        <translation>Quant a aquest programa</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="157"/>
         <location filename="../mainwindow.cpp" line="317"/>
         <source>&amp;Enable at boot</source>
         <translation>&amp;Activa en arrencar</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="62"/>
+        <source>About this application</source>
+        <translation>Quant a aquest programa</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
@@ -42,9 +40,41 @@
         <translation>&amp;Ajuda</translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="136"/>
+        <source>Alt+H</source>
+        <translation>Alt+H</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="168"/>
+        <source>Quit application</source>
+        <translation>Surt de l&apos;aplicació</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="171"/>
         <source>&amp;Close</source>
         <translation>Tan&amp;ca </translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="178"/>
+        <source>Alt+N</source>
+        <translation>Alt+N</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="203"/>
+        <location filename="../mainwindow.cpp" line="139"/>
+        <source>&amp;Stop</source>
+        <translation>A&amp;tura</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="217"/>
+        <source>All services</source>
+        <translation>Tots els serveis</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="222"/>
+        <location filename="../mainwindow.cpp" line="277"/>
+        <source>Running services</source>
+        <translation>Serveis executant-se</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="227"/>
@@ -64,48 +94,16 @@
         <translation>cerca</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.cpp" line="139"/>
-        <source>&amp;Stop</source>
-        <translation>A&amp;tura</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="297"/>
-        <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Aquesta eina llista els serveis i els dimonis (processos que s&apos;executen en segon pla) que es troben al sistema. Tingueu compte de no aturar quelcom que trencar un component crític; millor deixar-lo si no sabeu el que és.</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="217"/>
-        <source>All services</source>
-        <translation>Tots els serveis</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="222"/>
-        <location filename="../mainwindow.cpp" line="277"/>
-        <source>Running services</source>
-        <translation>Serveis executant-se</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="136"/>
-        <source>Alt+H</source>
-        <translation>Alt+H</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="168"/>
-        <source>Quit application</source>
-        <translation>Surt de l&apos;aplicació</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="178"/>
-        <source>Alt+N</source>
-        <translation>Alt+N</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="278"/>
         <location filename="../mainwindow.cpp" line="68"/>
         <location filename="../mainwindow.cpp" line="81"/>
         <source>Loading...</source>
         <translation>Carregant...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="297"/>
+        <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
+        <translation>Aquesta eina llista els serveis i els dimonis (processos que s&apos;executen en segon pla) que es troben al sistema. Tingueu compte de no aturar quelcom que trencar un component crític; millor deixar-lo si no sabeu el que és.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
@@ -133,22 +131,14 @@
         <translation>&amp;Desactiva en arrencar</translation>
     </message>
     <message>
-        <source>%1 total services, %2 currently %3running%4</source>
-        <translation type="vanished">%1 serveis en total, %2 actualment %3executant-se%4</translation>
-    </message>
-    <message>
-        <source>%1 %2enabled%3 at boot, but not running</source>
-        <translation type="vanished">%1 %2activats%3 a l&apos;arrancala, però no executant-se</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="286"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="288"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="302"/>

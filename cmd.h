@@ -1,4 +1,6 @@
-#pragma once
+
+#ifndef CMD_H
+#define CMD_H
 
 #include <QProcess>
 
@@ -7,7 +9,6 @@ class QTextStream;
 class Cmd : public QProcess
 {
     Q_OBJECT
-
 public:
     explicit Cmd(QObject *parent = nullptr);
 
@@ -21,8 +22,8 @@ signals:
     void done();
 
 private:
-    static const QString elevateCommand;
-    static const QString helperCommand;
     QString elevate;
     QString helper;
 };
+
+#endif // CMD_H

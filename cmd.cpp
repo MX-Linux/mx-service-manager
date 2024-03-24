@@ -7,13 +7,10 @@
 
 #include <unistd.h>
 
-const QString Cmd::elevateCommand = QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu";
-const QString Cmd::helperCommand = "/usr/lib/" + QApplication::applicationName() + "/helper";
-
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
-      elevate(elevateCommand),
-      helper(helperCommand)
+      elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"},
+      helper {"/usr/lib/" + QApplication::applicationName() + "/helper"}
 {
 }
 
