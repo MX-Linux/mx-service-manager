@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 23 Mar 2024 20:30:31 -0400
+Source: mx-service-manager
+Architecture: source
+Version: 24.3.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-service-manager (24.3.02) mx; urgency=medium
+ .
+   * Fix running commands as root
+Checksums-Sha1:
+ e9c19179069ff8514d1ad5c5aba3add10369942d 1171 mx-service-manager_24.3.02.dsc
+ 832acb85614de4bb60a0c606aa3b101c1f240d38 559900 mx-service-manager_24.3.02.tar.xz
+ 1a3a2724888f2e56da3f47536292478620104218 10991 mx-service-manager_24.3.02_amd64.buildinfo
+Checksums-Sha256:
+ 223c4518ec668a5cf64f1c91f064b775df05ccce9e3681bc56c80408bdc3049e 1171 mx-service-manager_24.3.02.dsc
+ 0dad9d0c53b3b72063e02bc3d6dd944775eff689c989c5f76ef9f7f435bc3773 559900 mx-service-manager_24.3.02.tar.xz
+ 11ea9d725e604e60dd80071651d6029ac86b379761b27c27c9e08a1a0d118992 10991 mx-service-manager_24.3.02_amd64.buildinfo
+Files:
+ fc0311db3b2b121f9d64245f1acc2258 1171 admin optional mx-service-manager_24.3.02.dsc
+ c9463cf66aa493984c6fac15f6906e2a 559900 admin optional mx-service-manager_24.3.02.tar.xz
+ ca10a9b089c3d5f18e0efdc9a0876d86 10991 admin optional mx-service-manager_24.3.02_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmYAHF0THGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumExDB/0dj6lA+yIA92ylrcUOOSjrmrhFMr3/
+HNs6sM91ih7ald9PFkNejGsZTq2TV1K5Nk7FlLQQ9Yjc7OWUsGJbarUEDD103UOh
+BSzdkJIc6jfhBX7/2+dYLvFm/ktq1kicgECLpPyd24DId6xIzkT3p+36mY4mSavk
+9wsFHdORA8yAJyv3TEWsmtRGooFFa0pV4D8qE7/YrjDC8YzN2xrPviCRF83Sxow5
+QmVhD6/U7MgrhkiGn2XR0OT9W1foD0EucH5/AZaMOiAG5FAjpxe0zopHdP6gFv7T
+Dlbf2lQ0SR+3QN6b7ZIWpYWMkhOUGk8d8Z9FUMCplFDXsVtc2O0zUXF1
+=fz75
+-----END PGP SIGNATURE-----
