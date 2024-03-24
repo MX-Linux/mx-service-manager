@@ -1,4 +1,4 @@
-mx-service-manager (24.3.01) mx; urgency=medium
+mx-service-manager (24.3.02) mx; urgency=medium
 
   * Fix running commands as root
 
