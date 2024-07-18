@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
       ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setWindowFlags(Qt::Window); // For the close, min and max buttons
+    setWindowFlags(Qt::Window); // Enable close, minimize, and maximize buttons
     setGeneralConnections();
 
     const auto size = this->size();
@@ -77,24 +77,22 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer timer;
         timer.start(300ms);
         connect(&timer, &QTimer::timeout, this, [this] {
-            static auto i = 0;
-            (i % 2 == 0) ? ui->labelCount->setText(tr("Loading...")) : ui->labelCount->clear();
-            ++i;
+            static bool toggle = false;
+            ui->labelCount->setText(toggle ? tr("Loading...") : QString());
+            toggle = !toggle;
         });
         listServices();
         displayServices();
         ui->listServices->setFocus();
     });
     connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
-        if (item->data(Qt::UserRole).value<Service *>()) {
+        if (auto service = item->data(Qt::UserRole).value<Service *>()) {
             ui->listServices->blockSignals(true);
-            if (!item->toolTip().isEmpty()) {
-                ui->listServices->blockSignals(false);
-                return;
+            if (item->toolTip().isEmpty()) {
+                ui->lineSearch->blockSignals(true);
+                item->setToolTip(service->getDescription());
+                ui->lineSearch->blockSignals(false);
             }
-            ui->lineSearch->blockSignals(true);
-            item->setToolTip(item->data(Qt::UserRole).value<Service *>()->getDescription());
-            ui->lineSearch->blockSignals(false);
             ui->listServices->blockSignals(false);
         }
     });
