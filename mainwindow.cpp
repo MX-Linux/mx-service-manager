@@ -38,8 +38,6 @@
 
 #include <chrono>
 
-#include "../Timer.h"
-
 using namespace std::chrono_literals;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -193,7 +191,6 @@ void MainWindow::listServices()
 
 void MainWindow::processNonSystemdServices()
 {
-    ScopedTimer timer("processNonSystemdServices");
     const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
     QRegularExpression re("dpkg-.*$");
     services.reserve(list.size());
@@ -204,7 +201,7 @@ void MainWindow::processNonSystemdServices()
 
     for (const auto &item : list) {
         const QString trimmedItem = item.trimmed();
-        if (trimmedItem.contains(re) || item.section(sectionDelimiter, 1) == debian) {
+        if (item.section(sectionDelimiter, 1) == debian || trimmedItem.contains(re)) {
             continue;
         }
 
@@ -227,7 +224,6 @@ void MainWindow::processSystemdServices()
 
 void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
 {
-    ScopedTimer timer("processSystemdActiveInactiveServices");
     const auto list = cmd.getOut("systemctl list-units --type=service --all -o json").trimmed();
     auto doc = QJsonDocument::fromJson(list.toUtf8());
     if (!doc.isArray()) {
@@ -272,7 +268,6 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
 
 void MainWindow::processSystemdMaskedServices(QStringList &names)
 {
-    ScopedTimer timer("processSystemdMaskedServices");
     const auto masked = cmd.getOut("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
     auto doc = QJsonDocument::fromJson(masked.toUtf8());
     if (!doc.isArray()) {
