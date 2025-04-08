@@ -45,7 +45,7 @@ QString Service::getName() const
 QString Service::getInfo() const
 {
     if (initSystem == "systemd") {
-        QString info = Cmd().getOutAsRoot("/sbin/service " + name + " status").trimmed();
+        QString info = Cmd().getOut("/sbin/service " + name + " status").trimmed();
         if (!isEnabled()) {
             info.append("\nDescription:" + getDescription());
         }

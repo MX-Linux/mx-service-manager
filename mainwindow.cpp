@@ -200,7 +200,7 @@ void MainWindow::listServices()
             services << service;
         }
     } else {
-        const auto list = cmd.getOutAsRoot("systemctl list-units --type=service --all -o json").trimmed();
+        const auto list = cmd.getOut("systemctl list-units --type=service --all -o json").trimmed();
         auto doc = QJsonDocument::fromJson(list.toUtf8());
         if (!doc.isArray()) {
             qDebug() << "JSON data is not an array.";
@@ -224,8 +224,7 @@ void MainWindow::listServices()
             service->setEnabled(Service::isEnabled(name) || dependTargets.contains(name));
             services << service;
         }
-        const auto masked
-            = cmd.getOutAsRoot("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
+        const auto masked = cmd.getOut("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
         doc = QJsonDocument::fromJson(masked.toUtf8());
         if (!doc.isArray()) {
             qDebug() << "JSON data is not an array.";
