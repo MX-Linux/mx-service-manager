@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ro">
+<TS version="2.1" language="gl">
 <context>
     <name>MainWindow</name>
     <message>
@@ -19,7 +19,7 @@
     <message>
         <location filename="../mainwindow.ui" line="62"/>
         <source>About this application</source>
-        <translation>Informații despre program</translation>
+        <translation>Sobre esta aplicación</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
@@ -34,7 +34,7 @@
     <message>
         <location filename="../mainwindow.ui" line="125"/>
         <source>Display help </source>
-        <translation>Afișează ajutor</translation>
+        <translation>Amosar axuda</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="128"/>
@@ -49,12 +49,12 @@
     <message>
         <location filename="../mainwindow.ui" line="166"/>
         <source>Quit application</source>
-        <translation>Închide programul </translation>
+        <translation>Saír do aplicativo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="169"/>
         <source>&amp;Close</source>
-        <translation>&amp;Închide</translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="175"/>
@@ -94,14 +94,14 @@
     <message>
         <location filename="../mainwindow.ui" line="281"/>
         <source>search</source>
-        <translation>căutare</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="291"/>
         <location filename="../mainwindow.cpp" line="68"/>
         <location filename="../mainwindow.cpp" line="81"/>
         <source>Loading...</source>
-        <translation>Încărcare...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="310"/>
@@ -115,7 +115,7 @@
         <location filename="../mainwindow.cpp" line="416"/>
         <location filename="../mainwindow.cpp" line="425"/>
         <source>Error</source>
-        <translation>Eroare</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="63"/>
@@ -146,12 +146,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="371"/>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sobre %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="372"/>
         <source>Version: </source>
-        <translation>Versiune:</translation>
+        <translation>Versión: </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="373"/>
@@ -166,7 +166,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="376"/>
         <source>%1 License</source>
-        <translation type="unfinished"></translation>
+        <translation>Licenza de %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="388"/>
@@ -179,7 +179,7 @@
         <location filename="../mainwindow.cpp" line="421"/>
         <location filename="../mainwindow.cpp" line="430"/>
         <source>Success</source>
-        <translation>Succes</translation>
+        <translation>Con éxito</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="392"/>
@@ -199,7 +199,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="406"/>
         <source>%1 Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Axuda para %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="416"/>
@@ -227,39 +227,39 @@
     <message>
         <location filename="../about.cpp" line="70"/>
         <source>License</source>
-        <translation>Licență</translation>
+        <translation>Licenza</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="71"/>
         <location filename="../about.cpp" line="81"/>
         <source>Changelog</source>
-        <translation>Changelog</translation>
+        <translation>Rexistro dos cambios</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="72"/>
         <source>Cancel</source>
-        <translation>Anulează</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="94"/>
         <source>&amp;Close</source>
-        <translation>&amp;Închide</translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="74"/>
         <location filename="../main.cpp" line="82"/>
         <source>Error</source>
-        <translation>Eroare</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="75"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"></translation>
+        <translation>O usuario parece ser root; para usar este programa, pechar a sesión e iniciar sesión como usuario normal.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Debes executar este programa con acceso de administrador.</translation>
     </message>
     <message>
         <location filename="../service.cpp" line="124"/>
