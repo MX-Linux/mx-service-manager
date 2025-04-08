@@ -38,6 +38,8 @@
 
 #include <chrono>
 
+#include "../Timer.h"
+
 using namespace std::chrono_literals;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -71,7 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
         = cmd.getOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
                      "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'",
                      true)
-              .split(" ");
+              .split(' ', Qt::SkipEmptyParts);
 
     QTimer::singleShot(0, this, [this] {
         QTimer timer;
@@ -185,109 +187,175 @@ void MainWindow::listServices()
 {
     services.clear();
     if (initSystem != "systemd") {
-        const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
-        QRegularExpression re("dpkg-.*$");
-        for (const auto &item : list) {
-            if (item.trimmed().contains(re) || item.section("]  ", 1) == "debian") {
-                continue;
-            }
-            QString name = item.section("]  ", 1);
-            if (name.isEmpty()) {
-                continue;
-            }
-            QSharedPointer<Service> service = QSharedPointer<Service>::create(name, item.trimmed().startsWith("[ + ]"));
-            service->setEnabled(Service::isEnabled(name) || dependTargets.contains(name));
-            services << service;
-        }
+        processNonSystemdServices();
     } else {
-        const auto list = cmd.getOut("systemctl list-units --type=service --all -o json").trimmed();
-        auto doc = QJsonDocument::fromJson(list.toUtf8());
-        if (!doc.isArray()) {
-            qDebug() << "JSON data is not an array.";
-            return;
-        }
-        auto jsonArray = doc.array();
-        QStringList names;
-        names.reserve(jsonArray.size() * 2);
-        for (const auto &value : jsonArray) {
-            if (!value.isObject()) {
-                continue;
-            }
-            auto obj = value.toObject();
-            QString name = obj.value("unit").toString().section(".", 0, 0);
-            if (name.isEmpty() || names.contains(name) || obj.value("load").toString() == "not-found") {
-                continue;
-            }
-            QSharedPointer<Service> service
-                = QSharedPointer<Service>::create(name, obj.value("sub").toString() == "running");
-            names << name;
-            service->setEnabled(Service::isEnabled(name) || dependTargets.contains(name));
-            services << service;
-        }
-        const auto masked = cmd.getOut("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
-        doc = QJsonDocument::fromJson(masked.toUtf8());
-        if (!doc.isArray()) {
-            qDebug() << "JSON data is not an array.";
-            return;
-        }
-        jsonArray = doc.array();
-        for (const auto &value : jsonArray) {
-            if (!value.isObject()) {
-                continue;
-            }
-            auto obj = value.toObject();
-            QString name = obj.value("unit_file").toString().section(".", 0, 0);
-            if (name.isEmpty() || names.contains(name)) {
-                continue;
-            }
-            QSharedPointer<Service> service = QSharedPointer<Service>::create(name, false);
-            names << name;
-            service->setEnabled(false);
-            services << service;
-        }
+        processSystemdServices();
     }
+}
+
+void MainWindow::processNonSystemdServices()
+{
+    ScopedTimer timer("processNonSystemdServices");
+    const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
+    QRegularExpression re("dpkg-.*$");
+    services.reserve(list.size());
+    for (const auto &item : list) {
+        if (item.trimmed().contains(re) || item.section("]  ", 1) == "debian") {
+            continue;
+        }
+        QString name = item.section("]  ", 1);
+        if (name.isEmpty()) {
+            continue;
+        }
+        services.append(QSharedPointer<Service>::create(name, item.trimmed().startsWith("[ + ]")));
+        services.last()->setEnabled(Service::isEnabled(name) || dependTargets.contains(name));
+    }
+}
+
+void MainWindow::processSystemdServices()
+{
+    QStringList names;
+    processSystemdActiveInactiveServices(names);
+    processSystemdMaskedServices(names);
+}
+
+void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
+{
+    ScopedTimer timer("processSystemdActiveInactiveServices");
+    const auto list = cmd.getOut("systemctl list-units --type=service --all -o json").trimmed();
+    auto doc = QJsonDocument::fromJson(list.toUtf8());
+    if (!doc.isArray()) {
+        qDebug() << "JSON data is not an array for service units.";
+        return;
+    }
+
+    auto jsonArray = doc.array();
+    names.reserve(jsonArray.size() * 2);
+
+    QSet<QString> nameSet(names.begin(), names.end());
+    services.reserve(services.size() + jsonArray.size());
+
+    for (const auto &value : jsonArray) {
+        if (!value.isObject()) {
+            continue;
+        }
+        auto obj = value.toObject();
+        QString name = obj.value("unit").toString().section('.', 0, 0);
+
+        if (name.isEmpty() || nameSet.contains(name) || obj.value("load").toString() == "not-found") {
+            continue;
+        }
+
+        nameSet.insert(name);
+
+        bool isRunning = (obj.value("sub").toString() == "running");
+        bool isEnabled = Service::isEnabled(name) || dependTargets.contains(name);
+
+        services.append(QSharedPointer<Service>::create(name, isRunning));
+        services.last()->setEnabled(isEnabled);
+    }
+    names = QStringList(nameSet.begin(), nameSet.end());
+}
+
+void MainWindow::processSystemdMaskedServices(QStringList &names)
+{
+    ScopedTimer timer("processSystemdMaskedServices");
+    const auto masked = cmd.getOut("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
+    auto doc = QJsonDocument::fromJson(masked.toUtf8());
+    if (!doc.isArray()) {
+        qDebug() << "JSON data is not an array for masked services.";
+        return;
+    }
+
+    auto jsonArray = doc.array();
+    QSet<QString> nameSet(names.begin(), names.end());
+    services.reserve(services.size() + jsonArray.size());
+
+    for (const auto &value : jsonArray) {
+        if (!value.isObject()) {
+            continue;
+        }
+        auto obj = value.toObject();
+        QString name = obj.value("unit_file").toString().section('.', 0, 0);
+
+        if (name.isEmpty() || nameSet.contains(name)) {
+            continue;
+        }
+
+        nameSet.insert(name);
+        auto service = QSharedPointer<Service>::create(name, false);
+        service->setEnabled(false);
+        services.append(std::move(service));
+    }
+    names = QStringList(nameSet.begin(), nameSet.end());
 }
 
 void MainWindow::displayServices()
 {
     ui->listServices->blockSignals(true);
     ui->listServices->clear();
+
     uint countActive = 0;
     uint countEnabled = 0;
     const QString searchText = ui->lineSearch->text().toLower();
     const QStringList incrementalSearchPatterns = {"s", "sa", "sam", "samb", "samba"};
+    const QString currentFilter = ui->comboFilter->currentText();
+
+    auto matchesSearchCriteria = [&](const QString &serviceName) {
+        return searchText.isEmpty() || serviceName.startsWith(searchText)
+               || (serviceName == "smbd" && incrementalSearchPatterns.contains(searchText));
+    };
+
+    auto matchesFilterCriteria = [&](bool isRunning, bool isEnabled) {
+        if (currentFilter == tr("Running services")) {
+            return isRunning;
+        } else if (currentFilter == tr("Services enabled at boot")) {
+            return isEnabled;
+        } else if (currentFilter == tr("Services disabled at boot")) {
+            return !isEnabled;
+        }
+        return true;
+    };
+
     for (const auto &service : services) {
         const QString serviceName = service->getName().toLower();
-        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)
-            && !(serviceName == "smbd" && incrementalSearchPatterns.contains(searchText))) {
+
+        if (!matchesSearchCriteria(serviceName)) {
             continue;
         }
+
+        const bool isRunning = service->isRunning();
+        const bool isEnabled = service->isEnabled();
+
+        if (!matchesFilterCriteria(isRunning, isEnabled)) {
+            continue;
+        }
+
+        if (isRunning) {
+            ++countActive;
+        } else if (isEnabled) {
+            ++countEnabled;
+        }
+
         auto *item = new QListWidgetItem(serviceName, ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
-        if (service->isRunning()) {
-            ++countActive;
-            item->setForeground(runningColor);
-        } else if (service->isEnabled()) {
-            ++countEnabled;
-            item->setForeground(enabledColor);
-        }
-        if ((!service->isRunning() && (ui->comboFilter->currentText() == tr("Running services")))
-            || (!service->isEnabled() && (ui->comboFilter->currentText() == tr("Services enabled at boot")))
-            || (service->isEnabled() && (ui->comboFilter->currentText() == tr("Services disabled at boot")))) {
-            delete item;
-        } else {
-            ui->listServices->addItem(item);
-        }
+
+        item->setForeground(isRunning ? runningColor : (isEnabled ? enabledColor : Qt::black));
+
+        ui->listServices->addItem(item);
     }
-    const QString totalServicesText
-        = tr("%1 total services, %2 currently <font color='%3'>running</font>")
-              .arg(QString::number(services.count()), QString::number(countActive), getHtmlColor(runningColor));
-    const QString enabledAtBootText = tr("%1 <font color='%2'>enabled</font> at boot, but not running")
-                                          .arg(QString::number(countEnabled), getHtmlColor(enabledColor));
-    ui->labelCount->setText(totalServicesText);
-    ui->labelEnabledAtBoot->setText(enabledAtBootText);
-    ui->listServices->blockSignals(false);
+
+    ui->labelCount->setText(tr("%1 total services, %2 currently <font color='%3'>running</font>")
+                                .arg(services.count())
+                                .arg(countActive)
+                                .arg(getHtmlColor(runningColor)));
+
+    ui->labelEnabledAtBoot->setText(tr("%1 <font color='%2'>enabled</font> at boot, but not running")
+                                        .arg(countEnabled)
+                                        .arg(getHtmlColor(enabledColor)));
+
     ui->listServices->sortItems();
+    ui->listServices->blockSignals(false);
     savedRow = qBound(0, savedRow, ui->listServices->count() - 1);
     ui->listServices->setCurrentRow(savedRow);
 }

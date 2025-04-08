@@ -47,8 +47,8 @@ public:
 
 private:
     QString name;
-    bool running {};
-    bool enabled {};
+    bool running = false;
+    bool enabled = false;
     static QString getInfoFromFile(const QString &name);
 };
 
