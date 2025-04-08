@@ -212,9 +212,8 @@ void MainWindow::processNonSystemdServices()
             continue;
         }
 
-        auto service = QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix));
-        service->setEnabled(dependTargets.contains(name) || Service::isEnabled(name));
-        services.append(std::move(service));
+        bool enabled = dependTargets.contains(name) || Service::isEnabled(name);
+        services.append(QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix), enabled));
     }
 }
 
@@ -256,8 +255,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
         const auto obj = value.toObject();
         const QString name = obj.value(unitKey).toString().section(dotSeparator, 0, 0);
 
-        if (name.isEmpty() || nameSet.contains(name)
-            || obj.value(loadKey).toString() == notFoundValue) {
+        if (name.isEmpty() || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) {
             continue;
         }
 
@@ -266,9 +264,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
         const bool isEnabled = dependTargets.contains(name) || Service::isEnabled(name);
 
-        auto service = QSharedPointer<Service>::create(name, isRunning);
-        service->setEnabled(isEnabled);
-        services.append(std::move(service));
+        services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }
@@ -302,10 +298,7 @@ void MainWindow::processSystemdMaskedServices(QStringList &names)
             continue;
         }
         nameSet.insert(name);
-
-        auto service = QSharedPointer<Service>::create(name, false);
-        service->setEnabled(false);
-        services.append(std::move(service));
+        services.append(QSharedPointer<Service>::create(name));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }

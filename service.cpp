@@ -31,9 +31,10 @@
 
 inline const QString initSystem {Service::getInit()};
 
-Service::Service(QString name, bool running)
+Service::Service(QString name, bool running, bool enabled)
     : name {std::move(name)},
-      running {running}
+      running {running},
+      enabled {enabled}
 {
 }
 
