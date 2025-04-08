@@ -314,50 +314,44 @@ void MainWindow::displayServices()
     const QStringList incrementalSearchPatterns = {"s", "sa", "sam", "samb", "samba"};
     const QString currentFilter = ui->comboFilter->currentText();
 
-    auto matchesSearchCriteria = [&](const QString &serviceName) {
-        return searchText.isEmpty() || serviceName.startsWith(searchText)
-               || (serviceName == "smbd" && incrementalSearchPatterns.contains(searchText));
-    };
+    ui->listServices->setUpdatesEnabled(false);
 
-    auto matchesFilterCriteria = [&](bool isRunning, bool isEnabled) {
-        if (currentFilter == tr("Running services")) {
-            return isRunning;
-        } else if (currentFilter == tr("Services enabled at boot")) {
-            return isEnabled;
-        } else if (currentFilter == tr("Services disabled at boot")) {
-            return !isEnabled;
-        }
-        return true;
-    };
+    const bool isFilterAll = currentFilter.isEmpty() || currentFilter == tr("All services");
+    const bool isFilterRunning = currentFilter == tr("Running services");
+    const bool isFilterEnabled = currentFilter == tr("Services enabled at boot");
+    const bool isFilterDisabled = currentFilter == tr("Services disabled at boot");
 
     for (const auto &service : services) {
         const QString serviceName = service->getName().toLower();
-
-        if (!matchesSearchCriteria(serviceName)) {
-            continue;
-        }
-
         const bool isRunning = service->isRunning();
         const bool isEnabled = service->isEnabled();
 
-        if (!matchesFilterCriteria(isRunning, isEnabled)) {
+        // Check search criteria
+        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)
+            && !(serviceName == QLatin1String("smbd") && incrementalSearchPatterns.contains(searchText))) {
             continue;
         }
 
+        // Check filter criteria
+        if ((isFilterRunning && !isRunning) || (isFilterEnabled && !isEnabled) || (isFilterDisabled && isEnabled)
+            || (!isFilterAll && !isFilterRunning && !isFilterEnabled && !isFilterDisabled)) {
+            continue;
+        }
+
+        // Update counters
         if (isRunning) {
             ++countActive;
         } else if (isEnabled) {
             ++countEnabled;
         }
 
+        // Create item and add it directly to the list widget
         auto *item = new QListWidgetItem(serviceName, ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
-
         item->setForeground(isRunning ? runningColor : (isEnabled ? enabledColor : Qt::black));
-
-        ui->listServices->addItem(item);
     }
 
+    // Update status labels
     ui->labelCount->setText(tr("%1 total services, %2 currently <font color='%3'>running</font>")
                                 .arg(services.count())
                                 .arg(countActive)
@@ -368,6 +362,7 @@ void MainWindow::displayServices()
                                         .arg(getHtmlColor(enabledColor)));
 
     ui->listServices->sortItems();
+    ui->listServices->setUpdatesEnabled(true);
     ui->listServices->blockSignals(false);
     savedRow = qBound(0, savedRow, ui->listServices->count() - 1);
     ui->listServices->setCurrentRow(savedRow);
