@@ -58,12 +58,14 @@ QString Service::getInfo() const
 
 bool Service::isEnabled(const QString &name)
 {
-    if (initSystem == "systemd") {
-        return (QProcess::execute("systemctl", {"-q", "is-enabled", name}) == 0);
+    if (initSystem == QLatin1String("systemd")) {
+        return QProcess::execute(QLatin1String("systemctl"),
+                                 {QLatin1String("-q"), QLatin1String("is-enabled"), name + QLatin1String(".service")})
+               == 0;
     } else {
-        return (
-            QProcess::execute("/bin/bash", {"-c", QString("[[ -e /etc/rc5.d/S*%1 || -e /etc/rcS.d/S*%1 ]]").arg(name)})
-            == 0);
+        // Check both runlevel 5 (multi-user with GUI) and runlevel S (single-user/boot)
+        QString command = QString(QLatin1String("[[ -e /etc/rc5.d/S*%1 || -e /etc/rcS.d/S*%1 ]]")).arg(name);
+        return QProcess::execute(QLatin1String("/bin/bash"), {QLatin1String("-c"), command}) == 0;
     }
 }
 
@@ -160,7 +162,7 @@ void Service::setRunning(bool running)
 QString Service::getInfoFromFile(const QString &name)
 {
     // Check for the service file in standard locations
-    QStringList possiblePaths = {"/etc/init.d/" + name, "/etc/init.d/" + name + ".sh"};
+    const QStringList possiblePaths = {"/etc/init.d/" + name, "/etc/init.d/" + name + ".sh"};
 
     QString filePath;
     for (const auto &path : possiblePaths) {
@@ -176,25 +178,31 @@ QString Service::getInfoFromFile(const QString &name)
     }
 
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open file" << filePath;
         return Cmd().getOut("/sbin/service " + name + " status", false, false, true);
     }
 
     QString info;
+    info.reserve(1024); // Pre-allocate memory to avoid reallocations
     bool info_header = false;
 
-    while (!file.atEnd()) {
-        QString line = file.readLine().trimmed();
-        if (line.startsWith("### END INIT INFO")) {
-            info_header = false;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine().trimmed();
+
+        if (line.startsWith("### BEGIN INIT INFO")) {
+            info_header = true;
+            continue;
         }
+
+        if (line.startsWith("### END INIT INFO")) {
+            break; // No need to read the rest of the file
+        }
+
         if (info_header) {
             line.remove(0, 2);
             info.append(line + '\n');
-        }
-        if (line.startsWith("### BEGIN INIT INFO")) {
-            info_header = true;
         }
     }
 

@@ -89,13 +89,10 @@ MainWindow::MainWindow(QWidget *parent)
     });
     connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
         if (auto service = item->data(Qt::UserRole).value<Service *>()) {
-            ui->listServices->blockSignals(true);
             if (item->toolTip().isEmpty()) {
-                ui->lineSearch->blockSignals(true);
-                item->setToolTip(service->getDescription());
-                ui->lineSearch->blockSignals(false);
+                const QString description = service->getDescription();
+                item->setToolTip(description);
             }
-            ui->listServices->blockSignals(false);
         }
     });
 }
@@ -199,16 +196,25 @@ void MainWindow::processNonSystemdServices()
     const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
     QRegularExpression re("dpkg-.*$");
     services.reserve(list.size());
+
+    const QLatin1String sectionDelimiter("]  ");
+    const QLatin1String debian("debian");
+    const QLatin1String runningPrefix("[ + ]");
+
     for (const auto &item : list) {
-        if (item.trimmed().contains(re) || item.section("]  ", 1) == "debian") {
+        const QString trimmedItem = item.trimmed();
+        if (trimmedItem.contains(re) || item.section(sectionDelimiter, 1) == debian) {
             continue;
         }
-        QString name = item.section("]  ", 1);
+
+        const QString name = item.section(sectionDelimiter, 1);
         if (name.isEmpty()) {
             continue;
         }
-        services.append(QSharedPointer<Service>::create(name, item.trimmed().startsWith("[ + ]")));
-        services.last()->setEnabled(Service::isEnabled(name) || dependTargets.contains(name));
+
+        auto service = QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix));
+        service->setEnabled(dependTargets.contains(name) || Service::isEnabled(name));
+        services.append(std::move(service));
     }
 }
 
@@ -230,29 +236,39 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
     }
 
     auto jsonArray = doc.array();
-    names.reserve(jsonArray.size() * 2);
 
     QSet<QString> nameSet(names.begin(), names.end());
     services.reserve(services.size() + jsonArray.size());
+    nameSet.reserve(nameSet.size() + jsonArray.size());
+
+    const QLatin1String unitKey("unit");
+    const QLatin1String loadKey("load");
+    const QLatin1String subKey("sub");
+    const QLatin1String dotSeparator(".");
+    const QLatin1String notFoundValue("not-found");
+    const QLatin1String runningValue("running");
 
     for (const auto &value : jsonArray) {
         if (!value.isObject()) {
             continue;
         }
-        auto obj = value.toObject();
-        QString name = obj.value("unit").toString().section('.', 0, 0);
 
-        if (name.isEmpty() || nameSet.contains(name) || obj.value("load").toString() == "not-found") {
+        const auto obj = value.toObject();
+        const QString name = obj.value(unitKey).toString().section(dotSeparator, 0, 0);
+
+        if (name.isEmpty() || nameSet.contains(name)
+            || obj.value(loadKey).toString() == notFoundValue) {
             continue;
         }
 
         nameSet.insert(name);
 
-        bool isRunning = (obj.value("sub").toString() == "running");
-        bool isEnabled = Service::isEnabled(name) || dependTargets.contains(name);
+        const bool isRunning = (obj.value(subKey).toString() == runningValue);
+        const bool isEnabled = dependTargets.contains(name) || Service::isEnabled(name);
 
-        services.append(QSharedPointer<Service>::create(name, isRunning));
-        services.last()->setEnabled(isEnabled);
+        auto service = QSharedPointer<Service>::create(name, isRunning);
+        service->setEnabled(isEnabled);
+        services.append(std::move(service));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }
@@ -270,19 +286,23 @@ void MainWindow::processSystemdMaskedServices(QStringList &names)
     auto jsonArray = doc.array();
     QSet<QString> nameSet(names.begin(), names.end());
     services.reserve(services.size() + jsonArray.size());
+    nameSet.reserve(nameSet.size() + jsonArray.size());
+
+    const QLatin1String unitFileKey("unit_file");
+    const QLatin1String dotSeparator(".");
 
     for (const auto &value : jsonArray) {
         if (!value.isObject()) {
             continue;
         }
-        auto obj = value.toObject();
-        QString name = obj.value("unit_file").toString().section('.', 0, 0);
+        const auto obj = value.toObject();
+        const QString name = obj.value(unitFileKey).toString().section(dotSeparator, 0, 0);
 
         if (name.isEmpty() || nameSet.contains(name)) {
             continue;
         }
-
         nameSet.insert(name);
+
         auto service = QSharedPointer<Service>::create(name, false);
         service->setEnabled(false);
         services.append(std::move(service));
