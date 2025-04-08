@@ -84,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
             toggle = !toggle;
         });
         listServices();
+        timer.disconnect();
         displayServices();
         ui->listServices->setFocus();
     });
