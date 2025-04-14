@@ -73,16 +73,20 @@ MainWindow::MainWindow(QWidget *parent)
                      true)
               .split(' ', Qt::SkipEmptyParts);
 
-    QTimer::singleShot(0, this, [this] {
-        QTimer timer;
-        timer.start(300ms);
-        connect(&timer, &QTimer::timeout, this, [this] {
-            static bool toggle = false;
-            ui->labelCount->setText(toggle ? tr("Loading...") : QString());
-            toggle = !toggle;
-        });
+    ui->labelCount->setText(tr("Loading..."));
+    auto loadingTimer = new QTimer(this);
+    connect(loadingTimer, &QTimer::timeout, this, [this]() {
+        static bool toggle = false;
+        ui->labelCount->setText(toggle ? tr("Loading...") : QString());
+        toggle = !toggle;
+    });
+    loadingTimer->start(300);
+
+    // Load services asynchronously to keep UI responsive
+    QTimer::singleShot(0, this, [this, loadingTimer] {
         listServices();
-        timer.disconnect();
+        loadingTimer->stop();
+        loadingTimer->deleteLater();
         displayServices();
         ui->listServices->setFocus();
     });
