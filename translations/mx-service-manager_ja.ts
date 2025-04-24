@@ -5,14 +5,14 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>MX Service Manager</source>
         <translation>MX サービスマネージャ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
-        <location filename="../mainwindow.cpp" line="153"/>
-        <location filename="../mainwindow.cpp" line="386"/>
+        <location filename="../mainwindow.cpp" line="157"/>
+        <location filename="../mainwindow.cpp" line="390"/>
         <source>&amp;Enable at boot</source>
         <translation>起動時に有効化(&amp;E)</translation>
     </message>
@@ -63,31 +63,31 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="216"/>
-        <location filename="../mainwindow.cpp" line="135"/>
+        <location filename="../mainwindow.cpp" line="139"/>
         <source>&amp;Stop</source>
         <translation>停止(&amp;S)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="230"/>
-        <location filename="../mainwindow.cpp" line="315"/>
+        <location filename="../mainwindow.cpp" line="319"/>
         <source>All services</source>
         <translation>すべてのサービス</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
-        <location filename="../mainwindow.cpp" line="316"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>Running services</source>
         <translation>稼働中のサービス</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="240"/>
-        <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../mainwindow.cpp" line="321"/>
         <source>Services enabled at boot</source>
         <translation>サービスは起動時に有効</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
-        <location filename="../mainwindow.cpp" line="318"/>
+        <location filename="../mainwindow.cpp" line="322"/>
         <source>Services disabled at boot</source>
         <translation>サービスは起動時に無効</translation>
     </message>
@@ -99,7 +99,8 @@
     <message>
         <location filename="../mainwindow.ui" line="291"/>
         <location filename="../mainwindow.cpp" line="68"/>
-        <location filename="../mainwindow.cpp" line="81"/>
+        <location filename="../mainwindow.cpp" line="76"/>
+        <location filename="../mainwindow.cpp" line="80"/>
         <source>Loading...</source>
         <translation>読み込み中...</translation>
     </message>
@@ -110,10 +111,10 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
-        <location filename="../mainwindow.cpp" line="388"/>
-        <location filename="../mainwindow.cpp" line="395"/>
-        <location filename="../mainwindow.cpp" line="416"/>
-        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="399"/>
+        <location filename="../mainwindow.cpp" line="420"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
@@ -123,101 +124,101 @@
         <translation>init システムを特定できませんでした。このプログラムは systemd または sysvinit で実行されなければなりません。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="140"/>
-        <location filename="../mainwindow.cpp" line="414"/>
+        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="418"/>
         <source>S&amp;tart</source>
         <translation>開始(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="146"/>
+        <location filename="../mainwindow.cpp" line="150"/>
         <source>&amp;Disable at boot</source>
         <translation>起動時に無効(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="351"/>
+        <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
         <translation>全部で %1 個のサービスがあります。現在 %2 個が&lt;font color=&apos;%3&apos;&gt;稼働中です&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
         <translation>%1 が起動時に&lt;font color=&apos;%2&apos;&gt;有効&lt;/font&gt;ですが 、稼働していません</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>About %1</source>
         <translation> %1 について</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="376"/>
         <source>Version: </source>
         <translation>バージョン：</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="373"/>
+        <location filename="../mainwindow.cpp" line="377"/>
         <source>Service and daemon manager</source>
         <translation>サービスとデーモンに関するマネージャ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="379"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="376"/>
+        <location filename="../mainwindow.cpp" line="380"/>
         <source>%1 License</source>
         <translation>%1 ライセンス</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="388"/>
+        <location filename="../mainwindow.cpp" line="392"/>
         <source>Could not enable %1</source>
         <translation>%1 を有効にできませんでした</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
-        <location filename="../mainwindow.cpp" line="399"/>
-        <location filename="../mainwindow.cpp" line="421"/>
-        <location filename="../mainwindow.cpp" line="430"/>
+        <location filename="../mainwindow.cpp" line="396"/>
+        <location filename="../mainwindow.cpp" line="403"/>
+        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="396"/>
         <source>%1 was enabled at boot time.</source>
         <translation>%1 は起動時に有効にしました。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="395"/>
+        <location filename="../mainwindow.cpp" line="399"/>
         <source>Could not disable %1</source>
         <translation>%1 を無効にできませんでした。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="399"/>
+        <location filename="../mainwindow.cpp" line="403"/>
         <source>%1 was disabled.</source>
         <translation>%1 を無効にしました。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="406"/>
+        <location filename="../mainwindow.cpp" line="410"/>
         <source>%1 Help</source>
         <translation>%1 ヘルプ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="416"/>
+        <location filename="../mainwindow.cpp" line="420"/>
         <source>Could not start %1</source>
         <translation>%1 を起動できませんでした。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="421"/>
+        <location filename="../mainwindow.cpp" line="425"/>
         <source>%1 was started.</source>
         <translation>%1 を開始しました。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Could not stop %1</source>
         <translation>%1 を停止できませんでした</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="430"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>%1 was stopped.</source>
         <translation>%1 を停止しました。</translation>
     </message>

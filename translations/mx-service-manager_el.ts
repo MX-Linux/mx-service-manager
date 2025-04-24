@@ -5,14 +5,14 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>MX Service Manager</source>
         <translation>MX Διαχειριστής υπηρεσιών</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
-        <location filename="../mainwindow.cpp" line="153"/>
-        <location filename="../mainwindow.cpp" line="386"/>
+        <location filename="../mainwindow.cpp" line="157"/>
+        <location filename="../mainwindow.cpp" line="390"/>
         <source>&amp;Enable at boot</source>
         <translation>Ενερ&amp;γοποίηση στην εκκίνηση</translation>
     </message>
@@ -63,31 +63,31 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="216"/>
-        <location filename="../mainwindow.cpp" line="135"/>
+        <location filename="../mainwindow.cpp" line="139"/>
         <source>&amp;Stop</source>
         <translation>Δια&amp;κοπή</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="230"/>
-        <location filename="../mainwindow.cpp" line="315"/>
+        <location filename="../mainwindow.cpp" line="319"/>
         <source>All services</source>
         <translation>Όλες οι υπηρεσίες</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
-        <location filename="../mainwindow.cpp" line="316"/>
+        <location filename="../mainwindow.cpp" line="320"/>
         <source>Running services</source>
         <translation>Υπηρεσίες σε λειτουργία</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="240"/>
-        <location filename="../mainwindow.cpp" line="317"/>
+        <location filename="../mainwindow.cpp" line="321"/>
         <source>Services enabled at boot</source>
         <translation>Ενεργοποιημένες υπηρεσίες στην εκκίνηση</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
-        <location filename="../mainwindow.cpp" line="318"/>
+        <location filename="../mainwindow.cpp" line="322"/>
         <source>Services disabled at boot</source>
         <translation>Απενεργοποιημένες υπηρεσίες στην εκκίνηση</translation>
     </message>
@@ -99,7 +99,8 @@
     <message>
         <location filename="../mainwindow.ui" line="291"/>
         <location filename="../mainwindow.cpp" line="68"/>
-        <location filename="../mainwindow.cpp" line="81"/>
+        <location filename="../mainwindow.cpp" line="76"/>
+        <location filename="../mainwindow.cpp" line="80"/>
         <source>Loading...</source>
         <translation>Φόρτωση...</translation>
     </message>
@@ -110,10 +111,10 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
-        <location filename="../mainwindow.cpp" line="388"/>
-        <location filename="../mainwindow.cpp" line="395"/>
-        <location filename="../mainwindow.cpp" line="416"/>
-        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="399"/>
+        <location filename="../mainwindow.cpp" line="420"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
@@ -123,101 +124,101 @@
         <translation>Δεν προσδιορίστηκε το σύστημα εκκίνησης. Αυτό το πρόγραμμα υποτίθεται ότι εκτελείται είτε με systemd είτε με sysvinit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="140"/>
-        <location filename="../mainwindow.cpp" line="414"/>
+        <location filename="../mainwindow.cpp" line="144"/>
+        <location filename="../mainwindow.cpp" line="418"/>
         <source>S&amp;tart</source>
         <translation>Εκκί&amp;νηση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="146"/>
+        <location filename="../mainwindow.cpp" line="150"/>
         <source>&amp;Disable at boot</source>
         <translation>Απενε&amp;ργοποίηση στην εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="351"/>
+        <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
         <translation>%1 υπηρεσίες συνολικά, %2 &lt;font color=&apos;%3&apos;&gt;σε λειτουργία&lt;/font&gt; αυτή τη στιγμή</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="356"/>
+        <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
         <translation>%1 &lt;font color=&apos;%2&apos;&gt;ενεργοποιημένες&lt;/font&gt; στην εκκίνηση, αλλά δεν εκτελούνται</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="371"/>
+        <location filename="../mainwindow.cpp" line="375"/>
         <source>About %1</source>
         <translation>Περί του %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="372"/>
+        <location filename="../mainwindow.cpp" line="376"/>
         <source>Version: </source>
         <translation>Έκδοση: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="373"/>
+        <location filename="../mainwindow.cpp" line="377"/>
         <source>Service and daemon manager</source>
         <translation>Διαχειριστής υπηρεσιών και διεργασιών</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="375"/>
+        <location filename="../mainwindow.cpp" line="379"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Πνευματικά δικαιώματα (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="376"/>
+        <location filename="../mainwindow.cpp" line="380"/>
         <source>%1 License</source>
         <translation>Άδεια %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="388"/>
+        <location filename="../mainwindow.cpp" line="392"/>
         <source>Could not enable %1</source>
         <translation>Δεν ήταν δυνατή η ενεργοποίηση του %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
-        <location filename="../mainwindow.cpp" line="399"/>
-        <location filename="../mainwindow.cpp" line="421"/>
-        <location filename="../mainwindow.cpp" line="430"/>
+        <location filename="../mainwindow.cpp" line="396"/>
+        <location filename="../mainwindow.cpp" line="403"/>
+        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>Success</source>
         <translation>Επιτυχία</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="392"/>
+        <location filename="../mainwindow.cpp" line="396"/>
         <source>%1 was enabled at boot time.</source>
         <translation>Το %1 ενεργοποιήθηκε στην εκκίνηση.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="395"/>
+        <location filename="../mainwindow.cpp" line="399"/>
         <source>Could not disable %1</source>
         <translation>Δεν ήταν δυνατή η απενεργοποίηση του %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="399"/>
+        <location filename="../mainwindow.cpp" line="403"/>
         <source>%1 was disabled.</source>
         <translation>Το %1 απενεργοποιήθηκε.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="406"/>
+        <location filename="../mainwindow.cpp" line="410"/>
         <source>%1 Help</source>
         <translation>Βοήθεια %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="416"/>
+        <location filename="../mainwindow.cpp" line="420"/>
         <source>Could not start %1</source>
         <translation>Δεν μπόρεσε να ξεκινήσει το %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="421"/>
+        <location filename="../mainwindow.cpp" line="425"/>
         <source>%1 was started.</source>
         <translation>Το %1 ξεκίνησε.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="425"/>
+        <location filename="../mainwindow.cpp" line="429"/>
         <source>Could not stop %1</source>
         <translation>Δεν μπόρεσε να σταματήσει το %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="430"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>%1 was stopped.</source>
         <translation>Το %1 σταμάτησε.</translation>
     </message>
