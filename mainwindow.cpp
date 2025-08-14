@@ -387,6 +387,7 @@ void MainWindow::pushAbout_clicked()
 
 void MainWindow::pushEnableDisable_clicked()
 {
+    ui->pushEnableDisable->setEnabled(false);
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
@@ -405,6 +406,7 @@ void MainWindow::pushEnableDisable_clicked()
         emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
         QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
     }
+    ui->pushEnableDisable->setEnabled(true);
 }
 
 void MainWindow::pushHelp_clicked()
@@ -415,6 +417,7 @@ void MainWindow::pushHelp_clicked()
 
 void MainWindow::pushStartStop_clicked()
 {
+    ui->pushStartStop->setEnabled(false);
     savedRow = ui->listServices->currentRow();
     auto service = ui->listServices->currentItem()->text();
     auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
@@ -437,4 +440,5 @@ void MainWindow::pushStartStop_clicked()
             QMessageBox::information(this, tr("Success"), tr("%1 was stopped.").arg(service));
         }
     }
+    ui->pushStartStop->setEnabled(true);
 }

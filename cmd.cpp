@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QEventLoop>
 #include <QFileInfo>
+#include <QMessageBox>
+#include <QTimer>
 
 #include <unistd.h>
 
@@ -46,6 +48,17 @@ bool Cmd::run(const QString &cmd, bool quiet, bool asRoot, bool waitForFinish)
     } else {
         waitForFinished();
     }
+
+    // Check for permission denied or command not found errors when running as root
+    // These can occur when elevation fails (canceled dialog or incorrect password)
+    if (asRoot && getuid() != 0) {
+        if (exitCode() == EXIT_CODE_PERMISSION_DENIED || exitCode() == EXIT_CODE_COMMAND_NOT_FOUND) {
+            handleElevationError();
+        } else {
+            qDebug() << "DEBUG: Exit code" << exitCode() << "does not match expected elevation error codes";
+        }
+    }
+
     emit done();
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
 }
@@ -53,4 +66,13 @@ bool Cmd::run(const QString &cmd, bool quiet, bool asRoot, bool waitForFinish)
 bool Cmd::runAsRoot(const QString &cmd, bool quiet)
 {
     return run(cmd, quiet, true);
+}
+
+void Cmd::handleElevationError()
+{
+    QMessageBox::critical(nullptr, tr("Administrator Access Required"),
+                          tr("This operation requires administrator privileges. Please restart the application "
+                             "and enter your password when prompted."));
+    QTimer::singleShot(0, qApp, &QApplication::quit);
+    exit(EXIT_FAILURE);
 }
