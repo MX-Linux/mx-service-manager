@@ -34,7 +34,7 @@ public:
     [[nodiscard]] QString getDescription() const;
     [[nodiscard]] QString getInfo() const;
     [[nodiscard]] QString getName() const;
-    [[nodiscard]] bool isEnabled() const;
+    [[nodiscard]] bool isEnabled() const noexcept;
     [[nodiscard]] bool isRunning() const;
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name);
@@ -42,8 +42,8 @@ public:
     bool enable();
     bool start();
     bool stop();
-    void setEnabled(bool enabled);
-    void setRunning(bool running);
+    void setEnabled(bool enabled) noexcept ;
+    void setRunning(bool running) noexcept;
 
 private:
     QString name;

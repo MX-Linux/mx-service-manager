@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::Window); // Enable close, minimize, and maximize buttons
     setGeneralConnections();
 
+    // Cache authentication for elevated commands
+    Cmd().runAsRoot("true", true);
+
     const auto size = this->size();
     if (settings.contains("geometry")) {
         restoreGeometry(settings.value("geometry").toByteArray());
@@ -163,7 +166,7 @@ void MainWindow::cmdDone()
     setCursor(QCursor(Qt::ArrowCursor));
 }
 
-void MainWindow::setGeneralConnections()
+void MainWindow::setGeneralConnections() noexcept
 {
     connect(ui->comboFilter, &QComboBox::currentTextChanged, this, &MainWindow::displayServices);
     connect(ui->lineSearch, &QLineEdit::textChanged, this, &MainWindow::displayServices);
@@ -175,7 +178,7 @@ void MainWindow::setGeneralConnections()
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
 }
 
-QString MainWindow::getHtmlColor(const QColor &color)
+QString MainWindow::getHtmlColor(const QColor &color) noexcept
 {
     return QString("#%1%2%3")
         .arg(color.red(), 2, 16, QChar('0'))
@@ -195,7 +198,7 @@ void MainWindow::listServices()
 
 void MainWindow::processNonSystemdServices()
 {
-    const auto list = cmd.getOut("/sbin/service --status-all", true).trimmed().split("\n");
+    const auto list = cmd.getOutAsRoot("/sbin/service --status-all", true).trimmed().split("\n");
     QRegularExpression re("dpkg-.*$");
     services.reserve(list.size());
 
@@ -303,7 +306,7 @@ void MainWindow::processSystemdMaskedServices(QStringList &names)
     names = QStringList(nameSet.begin(), nameSet.end());
 }
 
-void MainWindow::displayServices()
+void MainWindow::displayServices() noexcept
 {
     ui->listServices->blockSignals(true);
     ui->listServices->clear();

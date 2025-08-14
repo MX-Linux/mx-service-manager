@@ -47,7 +47,7 @@ QString Service::getInfo() const
 {
     QString info;
     if (initSystem == "systemd") {
-        info = Cmd().getOut("/sbin/service " + name + " status", true).trimmed();
+        info = Cmd().getOutAsRoot("/sbin/service " + name + " status", true).trimmed();
         if (!isEnabled()) {
             info.append("\nDescription: " + getDescription());
         }
@@ -101,15 +101,16 @@ QString Service::getDescription() const
         // Try to get description from systemctl list-units first
         QString out
             = Cmd()
-                  .getOut("systemctl list-units " + name + ".service -o json | jq -r '.[0].description // empty'", true,
-                          false, true)
+                  .getOutAsRoot("systemctl list-units " + name + ".service -o json | jq -r '.[0].description // empty'",
+                                true, true)
                   .trimmed();
 
         // If that fails, try systemctl status
         if (out.isEmpty()) {
             out = Cmd()
-                      .getOut("systemctl status " + name + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'",
-                              true, false, true)
+                      .getOutAsRoot("systemctl status " + name
+                                        + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'",
+                                    true, true)
                       .trimmed();
         }
 
@@ -127,7 +128,7 @@ QString Service::getDescription() const
     }
 }
 
-bool Service::isEnabled() const
+bool Service::isEnabled() const noexcept
 {
     return enabled;
 }
@@ -150,12 +151,12 @@ bool Service::stop()
     return false;
 }
 
-void Service::setEnabled(bool enabled)
+void Service::setEnabled(bool enabled) noexcept
 {
     this->enabled = enabled;
 }
 
-void Service::setRunning(bool running)
+void Service::setRunning(bool running) noexcept
 {
     this->running = running;
 }
@@ -175,13 +176,13 @@ QString Service::getInfoFromFile(const QString &name)
 
     if (filePath.isEmpty()) {
         qDebug() << "Could not find unit file for" << name;
-        return Cmd().getOut("/sbin/service " + name + " status", false, false, true);
+        return Cmd().getOutAsRoot("/sbin/service " + name + " status", false, true);
     }
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open file" << filePath;
-        return Cmd().getOut("/sbin/service " + name + " status", false, false, true);
+        return Cmd().getOutAsRoot("/sbin/service " + name + " status", false, true);
     }
 
     QString info;

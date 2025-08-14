@@ -52,7 +52,7 @@ private slots:
     void pushEnableDisable_clicked();
     void pushHelp_clicked();
     void pushStartStop_clicked();
-    void setGeneralConnections();
+    void setGeneralConnections() noexcept;
 
 private:
     Ui::MainWindow *ui;
@@ -65,8 +65,8 @@ private:
     QList<QSharedPointer<Service>> services;
     int savedRow = 0;
 
-    static QString getHtmlColor(const QColor &color);
-    void displayServices();
+    static QString getHtmlColor(const QColor &color) noexcept;
+    void displayServices() noexcept;
     void listServices();
     void processNonSystemdServices();
     void processSystemdActiveInactiveServices(QStringList &names);
