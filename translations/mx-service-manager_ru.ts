@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>MainWindow</name>
     <message>
@@ -107,7 +105,7 @@
     <message>
         <location filename="../mainwindow.ui" line="310"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
@@ -121,7 +119,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="63"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="144"/>
@@ -137,12 +135,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="375"/>
@@ -157,7 +155,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="377"/>
         <source>Service and daemon manager</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="379"/>
@@ -260,7 +258,7 @@
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../service.cpp" line="124"/>

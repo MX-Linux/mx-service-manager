@@ -1,20 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="lt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="lt">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="375"/>
         <source>MX Service Manager</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="157"/>
         <location filename="../mainwindow.cpp" line="390"/>
         <source>&amp;Enable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
@@ -71,25 +69,25 @@
         <location filename="../mainwindow.ui" line="230"/>
         <location filename="../mainwindow.cpp" line="319"/>
         <source>All services</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
         <location filename="../mainwindow.cpp" line="320"/>
         <source>Running services</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="240"/>
         <location filename="../mainwindow.cpp" line="321"/>
         <source>Services enabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
         <location filename="../mainwindow.cpp" line="322"/>
         <source>Services disabled at boot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="281"/>
@@ -132,17 +130,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="150"/>
         <source>&amp;Disable at boot</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="375"/>
@@ -185,7 +183,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="396"/>
         <source>%1 was enabled at boot time.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="399"/>
@@ -255,17 +253,17 @@
     <message>
         <location filename="../main.cpp" line="75"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../service.cpp" line="124"/>
         <source>Could not find service description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr_BE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr_BE">
 <context>
     <name>MainWindow</name>
     <message>
@@ -24,7 +22,7 @@
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation>À &amp;propos ...</translation>
+        <translation>À &amp;propos …</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="71"/>
@@ -102,7 +100,7 @@
         <location filename="../mainwindow.cpp" line="76"/>
         <location filename="../mainwindow.cpp" line="80"/>
         <source>Loading...</source>
-        <translation>Chargement ...</translation>
+        <translation>Chargement …</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="310"/>

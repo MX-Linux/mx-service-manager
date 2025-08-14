@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="tr">
 <context>
     <name>MainWindow</name>
     <message>
@@ -137,12 +135,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="375"/>

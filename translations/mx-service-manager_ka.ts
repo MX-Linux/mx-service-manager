@@ -1,28 +1,28 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ka">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="14"/>
         <location filename="../mainwindow.cpp" line="375"/>
         <source>MX Service Manager</source>
-        <translation>Përgjegjës Shërbimesh MX</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="26"/>
         <location filename="../mainwindow.cpp" line="157"/>
         <location filename="../mainwindow.cpp" line="390"/>
         <source>&amp;Enable at boot</source>
-        <translation>&amp;Aktivizoje gjatë nisjes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="62"/>
         <source>About this application</source>
-        <translation>Mbi këtë aplikacion</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation>&amp;Mbi…</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="71"/>
@@ -32,67 +32,67 @@
     <message>
         <location filename="../mainwindow.ui" line="125"/>
         <source>Display help </source>
-        <translation>Shfaq ndihmë </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="128"/>
         <source>&amp;Help</source>
-        <translation>&amp;Ndihmë</translation>
+        <translation>&amp;დახმარება</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="134"/>
         <source>Alt+H</source>
-        <translation>Alt+N</translation>
+        <translation>Alt+H</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="166"/>
         <source>Quit application</source>
-        <translation>Mbylle aplikacionin</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="169"/>
         <source>&amp;Close</source>
-        <translation>&amp;Mbylle</translation>
+        <translation>&amp;დახურვა</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="175"/>
         <source>Alt+N</source>
-        <translation>Alt+M</translation>
+        <translation>Alt+N</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="216"/>
         <location filename="../mainwindow.cpp" line="139"/>
         <source>&amp;Stop</source>
-        <translation>&amp;Ndale</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="230"/>
         <location filename="../mainwindow.cpp" line="319"/>
         <source>All services</source>
-        <translation>Krejt shërbimet</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="235"/>
         <location filename="../mainwindow.cpp" line="320"/>
         <source>Running services</source>
-        <translation>Shërbime në xhirim</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="240"/>
         <location filename="../mainwindow.cpp" line="321"/>
         <source>Services enabled at boot</source>
-        <translation>Shërbime të aktivizuara gjatë nisjes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
         <location filename="../mainwindow.cpp" line="322"/>
         <source>Services disabled at boot</source>
-        <translation>Shërbime të çaktivizuara gjatë nisjes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="281"/>
         <source>search</source>
-        <translation>kërko</translation>
+        <translation>ძებნა</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="291"/>
@@ -100,12 +100,12 @@
         <location filename="../mainwindow.cpp" line="76"/>
         <location filename="../mainwindow.cpp" line="80"/>
         <source>Loading...</source>
-        <translation>Po ngarkohet…</translation>
+        <translation>იტვირთება...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="310"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Ky mjet paraqet shërbime dhe demonë (procese që xhirojnë në prapaskenë) që gjen në këtë sistem. Bëni kujdes të shmangni ndaljen e diçkaje që mund të ndalë punën e një përbërësi kritik; më mirë të lihet pa prekur, nëse nuk e dini se ç’është.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="62"/>
@@ -114,63 +114,63 @@
         <location filename="../mainwindow.cpp" line="420"/>
         <location filename="../mainwindow.cpp" line="429"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>შეცდომა</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="63"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation>S’u përcaktua dot sistemi init. Ky program është menduar të xhirojë ose me systemd, ose me sysvinit</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="144"/>
         <location filename="../mainwindow.cpp" line="418"/>
         <source>S&amp;tart</source>
-        <translation>&amp;Nise</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="150"/>
         <source>&amp;Disable at boot</source>
-        <translation>&amp;Çaktivizoje gjatë nisjes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="355"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation>%1 shërbime gjithsej, %2 aktualisht &lt;font color=&apos;%3&apos;&gt;duke xhiruar&lt;/font&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="360"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation>%1 &lt;font color=&apos;%2&apos;&gt;aktivizuar&lt;/font&gt; gjatë nisjes, por nuk po xhiron</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="375"/>
         <source>About %1</source>
-        <translation>Mbi %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="376"/>
         <source>Version: </source>
-        <translation>Version: </translation>
+        <translation>ვერსია:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="377"/>
         <source>Service and daemon manager</source>
-        <translation>Përgjegjës shërbimesh dhe demonësh</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="379"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Të drejta kopjimi (c) MX Linux</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="380"/>
         <source>%1 License</source>
-        <translation>Licencë %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="392"/>
         <source>Could not enable %1</source>
-        <translation>S’u aktivizua dot %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="396"/>
@@ -178,47 +178,47 @@
         <location filename="../mainwindow.cpp" line="425"/>
         <location filename="../mainwindow.cpp" line="434"/>
         <source>Success</source>
-        <translation>Sukses</translation>
+        <translation>წარმატება</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="396"/>
         <source>%1 was enabled at boot time.</source>
-        <translation>%1 qe aktivizuar gjatë nisjes.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="399"/>
         <source>Could not disable %1</source>
-        <translation>S’u çaktivizua dot %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="403"/>
         <source>%1 was disabled.</source>
-        <translation>%1 u çaktivizua.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="410"/>
         <source>%1 Help</source>
-        <translation>Ndihmë për %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="420"/>
         <source>Could not start %1</source>
-        <translation>S’u nis dot %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="425"/>
         <source>%1 was started.</source>
-        <translation>%1 u nis.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="429"/>
         <source>Could not stop %1</source>
-        <translation>S’u ndal dot %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="434"/>
         <source>%1 was stopped.</source>
-        <translation>%1 u ndal.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -226,44 +226,44 @@
     <message>
         <location filename="../about.cpp" line="70"/>
         <source>License</source>
-        <translation>Licencë</translation>
+        <translation>ლიცენზია</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="71"/>
         <location filename="../about.cpp" line="81"/>
         <source>Changelog</source>
-        <translation>Regjistër ndryshimesh</translation>
+        <translation>ცვლილებების ჟურნალი</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="72"/>
         <source>Cancel</source>
-        <translation>Anuloje</translation>
+        <translation>გაუქმება</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="94"/>
         <source>&amp;Close</source>
-        <translation>&amp;Mbylle</translation>
+        <translation>&amp;დახურვა</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="74"/>
         <location filename="../main.cpp" line="82"/>
         <source>Error</source>
-        <translation>Gabim</translation>
+        <translation>შეცდომა</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="75"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Duket të jeni futur si rrënjë, ju lutemi, që të përdorni këtë program, dilni nga llogaria dhe hyni si përdorues i zakonshëm.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>You must run this program with admin access.</source>
-        <translation>Këtë program duhet ta xhironi me leje përgjegjësi.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../service.cpp" line="124"/>
         <source>Could not find service description</source>
-        <translation>S’u gjet dot përshkrim shërbimi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>
