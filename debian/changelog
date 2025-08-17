@@ -1,8 +1,8 @@
-mx-service-manager (25.08.02) mx; urgency=medium
+mx-service-manager (25.08.03) mx; urgency=medium
 
-  * Fix exitCode check for elevation
+  * Remove potentially confusing debug message
 
- -- Adrian <adrian@mxlinux.org>  Sun, 17 Aug 2025 16:40:35 -0400
+ -- Adrian <adrian@mxlinux.org>  Sun, 17 Aug 2025 18:04:29 -0400
 
 mx-service-manager (25.8) mx; urgency=medium
 
