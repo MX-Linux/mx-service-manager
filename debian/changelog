@@ -1,4 +1,4 @@
-mx-service-manager (25.08.01) mx; urgency=medium
+mx-service-manager (25.08.02) mx; urgency=medium
 
   * Fix exitCode check for elevation
 
