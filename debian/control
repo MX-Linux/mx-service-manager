@@ -14,6 +14,8 @@ Homepage: https://github.com/MX-Linux/mx-service-manager
 Package: mx-service-manager
 Architecture: any
 Depends: xdg-utils | mx-viewer,
+         jq,
+         gawk,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: mx-launcher-l10n, gksu | pkexec
