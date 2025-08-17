@@ -1,3 +1,9 @@
+mx-service-manager (25.08.01) mx; urgency=medium
+
+  * Fix exitCode check for elevation
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 17 Aug 2025 16:40:35 -0400
+
 mx-service-manager (25.8) mx; urgency=medium
 
   * Require elevation at the start of the app for more accurate listing
