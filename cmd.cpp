@@ -50,8 +50,10 @@ bool Cmd::run(const QString &cmd, bool quiet, bool asRoot, bool waitForFinish)
     }
 
     // Check for permission denied
-    if (asRoot && getuid() != 0 && exitCode() == EXIT_CODE_PERMISSION_DENIED) {
-        handleElevationError();
+    if (asRoot && getuid() != 0) {
+        if (exitCode() == EXIT_CODE_PERMISSION_DENIED || exitCode() == EXIT_CODE_COMMAND_NOT_FOUND) {
+            handleElevationError();
+        }
     }
 
     emit done();
