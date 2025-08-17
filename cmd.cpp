@@ -51,7 +51,7 @@ bool Cmd::run(const QString &cmd, bool quiet, bool asRoot, bool waitForFinish)
 
     // Check for permission denied or command not found errors when running as root
     // These can occur when elevation fails (canceled dialog or incorrect password)
-    if (asRoot && getuid() != 0) {
+    if (asRoot && getuid() != 0 && exitCode() != 0) {
         if (exitCode() == EXIT_CODE_PERMISSION_DENIED || exitCode() == EXIT_CODE_COMMAND_NOT_FOUND) {
             handleElevationError();
         } else {
