@@ -24,6 +24,9 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QProcess>
 #include <QRegularExpression>
 
@@ -99,19 +102,41 @@ QString Service::getDescription() const
         return {};
     } else {
         // Try to get description from systemctl list-units first
-        QString out
-            = Cmd()
-                  .getOutAsRoot("systemctl list-units " + name + ".service -o json | jq -r '.[0].description // empty'",
-                                true, true)
-                  .trimmed();
+        QString jsonOutput = Cmd()
+                                .getOutAsRoot("systemctl list-units " + name + ".service -o json",
+                                              true, true)
+                                .trimmed();
+
+        QString out;
+        if (!jsonOutput.isEmpty()) {
+            QJsonParseError error;
+            QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
+            if (error.error == QJsonParseError::NoError && doc.isArray()) {
+                QJsonArray array = doc.array();
+                if (!array.isEmpty()) {
+                    QJsonObject obj = array[0].toObject();
+                    out = obj["description"].toString();
+                }
+            }
+        }
 
         // If that fails, try systemctl status
         if (out.isEmpty()) {
-            out = Cmd()
-                      .getOutAsRoot("systemctl status " + name
-                                        + " | awk -F' - ' 'NR == 1 { print $2 } NR > 1 { exit }'",
-                                    true, true)
+            QString statusOutput = Cmd()
+                      .getOutAsRoot("systemctl status " + name, true, true)
                       .trimmed();
+
+            // Parse the first line to extract description after " - "
+            if (!statusOutput.isEmpty()) {
+                QStringList lines = statusOutput.split('\n');
+                if (!lines.isEmpty()) {
+                    const QString firstLine = lines.first();
+                    int dashPos = firstLine.indexOf(" - ");
+                    if (dashPos != -1) {
+                        out = firstLine.mid(dashPos + 3).trimmed();
+                    }
+                }
+            }
         }
 
         // If still empty, try to get from init file
