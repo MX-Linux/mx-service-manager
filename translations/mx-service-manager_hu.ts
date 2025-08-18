@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/cmd.cpp" line="70"/>
         <source>Administrator Access Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendszergazdai jogosultság szükséges</translation>
     </message>
     <message>
         <location filename="../src/cmd.cpp" line="71"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ehhez a művelethez rendszergazdai jogosultságok kellenek. Kérjük, indítsa újra az alkalmazást, és adja meg a jelszavát, amikor kéri.</translation>
     </message>
 </context>
 <context>

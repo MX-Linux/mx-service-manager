@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/cmd.cpp" line="70"/>
         <source>Administrator Access Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Se requiere acceso de administrador</translation>
     </message>
     <message>
         <location filename="../src/cmd.cpp" line="71"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esta operación requiere privilegios de administrador. Reinicia la aplicación e ingresa tu contraseña cuando se te solicite.</translation>
     </message>
 </context>
 <context>
@@ -193,7 +193,7 @@
         <location filename="../src/mainwindow.cpp" line="431"/>
         <location filename="../src/mainwindow.cpp" line="440"/>
         <source>Success</source>
-        <translation>Exito</translation>
+        <translation>Éxito</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="400"/>

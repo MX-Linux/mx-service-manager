@@ -6,12 +6,12 @@
     <message>
         <location filename="../src/cmd.cpp" line="70"/>
         <source>Administrator Access Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Lyp Hyrje Përgjegjësi</translation>
     </message>
     <message>
         <location filename="../src/cmd.cpp" line="71"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ky veprim lyp privilegje përgjegjësi. Ju lutemi, rinisni aplikacionin dhe jepni fjalëkalimin tuaj kur t’ju kërkohet.</translation>
     </message>
 </context>
 <context>
