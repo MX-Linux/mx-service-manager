@@ -1,7 +1,7 @@
 /**********************************************************************
  *
  **********************************************************************
- * Copyright (C) 2023 MX Authors
+ * Copyright (C) 2023-2025 MX Authors
  *
  * Authors: Adrian <adrian@mxlinux.org>
  *          MX Linux <http://mxlinux.org>
@@ -21,7 +21,35 @@
  **********************************************************************/
 #pragma once
 
+#include <QObject>
 #include <QString>
 
-inline const QString starting_home {qEnvironmentVariable("HOME")};
-extern const QString initSystem;
+class Service
+{
+    Q_DISABLE_COPY(Service)
+
+public:
+    Service() = default;
+    explicit Service(QString name, bool running = false, bool enabled = false);
+    [[nodiscard]] QString getDescription() const;
+    [[nodiscard]] QString getInfo() const;
+    [[nodiscard]] QString getName() const;
+    [[nodiscard]] bool isEnabled() const noexcept;
+    [[nodiscard]] bool isRunning() const;
+    [[nodiscard]] static QString getInit();
+    [[nodiscard]] static bool isEnabled(const QString &name);
+    bool disable();
+    bool enable();
+    bool start();
+    bool stop();
+    void setEnabled(bool enabled) noexcept ;
+    void setRunning(bool running) noexcept;
+
+private:
+    QString name;
+    bool running = false;
+    bool enabled = false;
+    static QString getInfoFromFile(const QString &name);
+};
+
+Q_DECLARE_METATYPE(Service *)

@@ -14,8 +14,7 @@
 *.dll
 *.dylib
 
-# Qt-es
-
+# Qt-es (qmake - keep for reference)
 /.qmake.cache
 /.qmake.stash
 *.pro*.user
@@ -24,12 +23,21 @@
 moc_*.cpp
 qrc_*.cpp
 ui_*.h
-Makefile*
 *-build-*
+
+# CMake build system
+build/
+*.cmake
+CMakeCache.txt
+CMakeFiles/
+compile_commands.json
+install_manifest.txt
+CTestTestfile.cmake
 
 # QtCreator
 
 *.autosave
+CMakeLists.txt.user*
 
 #QtCtreator Qml
 *.qmlproject.user
@@ -38,4 +46,8 @@ Makefile*
 # Transifex ignore
 .tx/
 
+# Executables
 mx-service-manager
+
+# Generated version file
+src/version.h
