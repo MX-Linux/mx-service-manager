@@ -1,3 +1,9 @@
+mx-service-manager (25.08.05) mx; urgency=medium
+
+  * Remove extra dependencies
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 18 Aug 2025 00:36:25 -0400
+
 mx-service-manager (25.08.04) mx; urgency=medium
 
   * Add missing dependencies
