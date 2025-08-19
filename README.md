@@ -93,9 +93,11 @@ sudo apt install mx-service-manager
 4. Test your changes thoroughly
 5. Submit a pull request
 
-### Translation
+### Translation Contributions
 
-The application supports multiple languages. Translation files are located in the `translations/` directory. To contribute translations, edit the appropriate `.ts` file and submit a pull request.
+- Please join Translation Forum: https://forum.mxlinux.org/viewforum.php?f=96
+- Please register on Transifex: https://forum.mxlinux.org/viewtopic.php?t=38671
+- Choose your language and start translating: https://app.transifex.com/anticapitalista/antix-development
 
 ## License
 
