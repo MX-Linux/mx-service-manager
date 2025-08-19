@@ -148,9 +148,12 @@ target_compile_definitions(mx-service-manager PRIVATE
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(mx-service-manager PRIVATE NDEBUG)
     target_compile_options(mx-service-manager PRIVATE -O3)
-    
-    # Only add LTO for GCC, not Clang
-    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT USE_CLANG)
+
+    # Add LTO - different flags for different compilers
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(mx-service-manager PRIVATE -flto=thin)
+        target_link_options(mx-service-manager PRIVATE -flto=thin)
+    else()
         target_compile_options(mx-service-manager PRIVATE -flto=auto)
         target_link_options(mx-service-manager PRIVATE -flto=auto)
     endif()
@@ -178,5 +181,8 @@ set_target_properties(mx-service-manager PROPERTIES
 # Add build directory to include path for generated version.h
 target_include_directories(mx-service-manager PRIVATE ${CMAKE_BINARY_DIR}/src)
 
-# Note: Installation is handled by debian/install for debian packaging
-# No install() commands needed here
+# Install target (required by Debian build system)
+# Other files are handled by debian/install
+install(TARGETS mx-service-manager
+    RUNTIME DESTINATION bin
+)
