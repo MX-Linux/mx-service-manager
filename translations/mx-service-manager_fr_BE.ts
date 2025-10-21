@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr_BE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr_BE">
 <context>
     <name>Cmd</name>
     <message>
@@ -37,7 +35,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation>À &amp;propos&#xa0;…</translation>
+        <translation>À &amp;propos …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
@@ -115,7 +113,7 @@
         <location filename="../src/mainwindow.cpp" line="79"/>
         <location filename="../src/mainwindow.cpp" line="83"/>
         <source>Loading...</source>
-        <translation>Chargement&#xa0;…</translation>
+        <translation>Chargement …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="310"/>

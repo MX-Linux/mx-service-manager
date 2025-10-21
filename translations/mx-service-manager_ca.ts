@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
 <context>
     <name>Cmd</name>
     <message>
@@ -11,7 +9,7 @@
     <message>
         <location filename="../src/cmd.cpp" line="71"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation>Per aquesta operació cal tenir privilegis d&apos;administrador: Si us plau, torneu a arrencar l&apos;aplicació i entreu la vostra contrasenya us la demani.</translation>
+        <translation>Per aquesta operació cal tenir privilegis d&apos;administrador: Si us plau, torneu a arrencar l&apos;aplicació i entreu la vostra contrasenya quan la demani.</translation>
     </message>
 </context>
 <context>
@@ -27,7 +25,7 @@
         <location filename="../src/mainwindow.cpp" line="160"/>
         <location filename="../src/mainwindow.cpp" line="394"/>
         <source>&amp;Enable at boot</source>
-        <translation>&amp;Activa en arrencar</translation>
+        <translation>Activa &amp;en arrencar</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="62"/>
@@ -120,7 +118,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="310"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Aquesta eina llista els serveis i els dimonis (processos que s&apos;executen en segon pla) que es troben al sistema. Tingueu compte de no aturar quelcom que trencar un component crític; millor deixar-lo si no sabeu el que és.</translation>
+        <translation>Aquesta eina llista els serveis i els dimonis (processos que s&apos;executen en segon pla) que hi ha al sistema. Tingueu compte de no aturar quelcom que pot trencar un component crític; millor deixar-lo si no sabeu el que és.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="65"/>
@@ -134,7 +132,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="66"/>
         <source>Could not determine the init system. This program is supposed to run either with systemd or sysvinit</source>
-        <translation>No puc determinar el sistema d&apos;inici. Es suposa que el programa es pot executar tant en systemd com en sysvinit</translation>
+        <translation>No puc determinar el sistema d&apos;inici. SE suposa que el programa es pot executar tant en systemd com en sysvinit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="147"/>
@@ -150,7 +148,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="358"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation>%1 en total, %2 &lt;font color=&apos;%3&apos;&gt;executant-se&lt;/font&gt; actualment</translation>
+        <translation>%1 Serveis en total, %2 &lt;font color=&apos;%3&apos;&gt;executant-se&lt;/font&gt; ara</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="363"/>

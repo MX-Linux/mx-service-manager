@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
 <context>
     <name>Cmd</name>
     <message>
@@ -120,7 +118,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="310"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Cet outil dresse la liste des services et des daemons (processus qui s’exécutent en arrière-plan) présents sur ce système. Veillez à ne pas arrêter un service qui pourrait perturber un composant critique&#xa0;; il est préférable de ne pas intervenir si vous ne savez pas de quoi il s’agit.</translation>
+        <translation>Cet outil dresse la liste des services et des daemons (processus qui s’exécutent en arrière-plan) présents sur ce système. Veillez à ne pas arrêter un service qui pourrait perturber un composant critique ; il est préférable de ne pas intervenir si vous ne savez pas de quoi il s’agit.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="65"/>
@@ -165,7 +163,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="379"/>
         <source>Version: </source>
-        <translation>Version&#xa0;: </translation>
+        <translation>Version : </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="380"/>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
 <context>
     <name>Cmd</name>
     <message>
@@ -20,14 +18,14 @@
         <location filename="../src/mainwindow.ui" line="14"/>
         <location filename="../src/mainwindow.cpp" line="378"/>
         <source>MX Service Manager</source>
-        <translation>MX Palvelu Manageri</translation>
+        <translation>MX Taustapalvelut</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="26"/>
         <location filename="../src/mainwindow.cpp" line="160"/>
         <location filename="../src/mainwindow.cpp" line="394"/>
         <source>&amp;Enable at boot</source>
-        <translation>&amp;Ota käyttöön käynnistyksen yhteydessä</translation>
+        <translation>&amp;Ota käyttöön käynnistyksessä</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="62"/>
@@ -37,7 +35,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="65"/>
         <source>&amp;About...</source>
-        <translation>&amp;Noin...</translation>
+        <translation>&amp;Tietoja...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="71"/>
@@ -120,7 +118,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="310"/>
         <source>This tool lists services and daemons (processes that run in the background) found on this system. Be careful to avoid stopping something that might disrupt a critical component; best to leave it alone if you don&apos;t know what it is.</source>
-        <translation>Tämä työkalu luettelee tästä järjestelmästä löydetyt palvelut ja demonit (taustalla toimivat prosessit). Varo pysäyttämästä jotain, joka saattaa häiritä kriittistä komponenttia. parasta jättää se rauhaan, jos et tiedä mitä se on.</translation>
+        <translation>Työkalu listaa järjestelmästä löytyvät palvelut ja taustaprosessit (taustalla suoritettavat prosessit). Varo pysäyttämästä kriittisiä komponentteja. parempi jättää se sikseen, jos et tiedä mistä on kyse.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="65"/>
@@ -140,22 +138,22 @@
         <location filename="../src/mainwindow.cpp" line="147"/>
         <location filename="../src/mainwindow.cpp" line="424"/>
         <source>S&amp;tart</source>
-        <translation>&amp;Aloita</translation>
+        <translation>&amp;Käynnistä</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="153"/>
         <source>&amp;Disable at boot</source>
-        <translation>&amp;Poista käytöstä käynnistyksen yhteydessä</translation>
+        <translation>&amp;Poista käytöstä käynnistyksessä</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="358"/>
         <source>%1 total services, %2 currently &lt;font color=&apos;%3&apos;&gt;running&lt;/font&gt;</source>
-        <translation>%1 palvelua, %2 nyt &lt;font color=&apos;%3&apos;&gt;käynnissä&lt;/font&gt;</translation>
+        <translation>%1 palvelua, %2 &lt;font color=&apos;%3&apos;&gt;käynnissä&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="363"/>
         <source>%1 &lt;font color=&apos;%2&apos;&gt;enabled&lt;/font&gt; at boot, but not running</source>
-        <translation>%1 &lt;font color=&apos;%2&apos;&gt;käytössä&lt;/font&gt; käynnistymiseen, mutta ei käynnissä</translation>
+        <translation>%1 käynnistyksessä&lt;font color=&apos;%2&apos;&gt;käytössä&lt;/font&gt;, mutta ei käynnissä</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="378"/>
@@ -170,7 +168,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="380"/>
         <source>Service and daemon manager</source>
-        <translation>Palvelu- ja daemon manageri</translation>
+        <translation>Palveluiden ja prosessien hallinta</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="382"/>
@@ -180,7 +178,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="383"/>
         <source>%1 License</source>
-        <translation>%1 lupa</translation>
+        <translation>%1 lisenssi</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="396"/>
@@ -213,7 +211,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="415"/>
         <source>%1 Help</source>
-        <translation>%1 Apuopas</translation>
+        <translation>%1 ohje</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="426"/>
