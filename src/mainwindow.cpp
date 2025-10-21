@@ -29,6 +29,7 @@
 #include <QJsonObject>
 #include <QScreen>
 #include <QScrollBar>
+#include <QShortcut>
 #include <QTextStream>
 #include <QTimer>
 
@@ -100,6 +101,12 @@ MainWindow::MainWindow(QWidget *parent)
                 item->setToolTip(description);
             }
         }
+    });
+
+    auto *findShortcut = new QShortcut(QKeySequence::Find, this);
+    connect(findShortcut, &QShortcut::activated, this, [this]() {
+        ui->lineSearch->setFocus(Qt::ShortcutFocusReason);
+        ui->lineSearch->selectAll();
     });
 }
 
