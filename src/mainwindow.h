@@ -65,12 +65,14 @@ private:
     QColor enabledColor {Qt::darkYellow};
     QList<QSharedPointer<Service>> services;
     int savedRow = 0;
+    QTimer *searchTimer = nullptr;
 
-    static QString getHtmlColor(const QColor &color) noexcept;
+    QString decodeEscapeSequences(const QString &input);
+    QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
     void listServices();
     void processNonSystemdServices();
-    void processSystemdActiveInactiveServices(QStringList &names);
-    void processSystemdMaskedServices(QStringList &names);
+    void processSystemdActiveInactiveServices(QStringList &names, bool isUserService = false);
+    void processSystemdMaskedServices(QStringList &names, bool isUserService = false);
     void processSystemdServices();
 };

@@ -176,7 +176,15 @@ void MainWindow::cmdDone()
 void MainWindow::setGeneralConnections() noexcept
 {
     connect(ui->comboFilter, &QComboBox::currentTextChanged, this, &MainWindow::displayServices);
-    connect(ui->lineSearch, &QLineEdit::textChanged, this, &MainWindow::displayServices);
+    connect(ui->lineSearch, &QLineEdit::textChanged, this, [this]() {
+        // Debounce search to prevent excessive updates
+        if (!searchTimer) {
+            searchTimer = new QTimer(this);
+            searchTimer->setSingleShot(true);
+            connect(searchTimer, &QTimer::timeout, this, &MainWindow::displayServices);
+        }
+        searchTimer->start(150); // 150ms delay
+    });
     connect(ui->listServices, &QListWidget::currentItemChanged, this, &MainWindow::onSelectionChanged);
     connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAbout_clicked);
     connect(ui->pushCancel, &QPushButton::pressed, this, &MainWindow::close);
@@ -184,6 +192,52 @@ void MainWindow::setGeneralConnections() noexcept
     connect(ui->pushEnableDisable, &QPushButton::clicked, this, &MainWindow::pushEnableDisable_clicked);
     connect(ui->pushRefresh, &QPushButton::clicked, this, &MainWindow::pushRefresh_clicked);
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
+}
+
+QString MainWindow::decodeEscapeSequences(const QString &input)
+{
+    QString result = input;
+
+    // Decode \xXX sequences (hex)
+    QRegularExpression hexRegex("\\\\x([0-9a-fA-F]{2})");
+    QRegularExpressionMatchIterator hexIt = hexRegex.globalMatch(result);
+    while (hexIt.hasNext()) {
+        QRegularExpressionMatch match = hexIt.next();
+        bool ok;
+        int hexValue = match.captured(1).toInt(&ok, 16);
+        if (ok) {
+            result.replace(match.captured(0), QChar(hexValue));
+        }
+    }
+
+    // Decode \uXXXX sequences (Unicode)
+    QRegularExpression unicodeRegex("\\\\u([0-9a-fA-F]{4})");
+    QRegularExpressionMatchIterator unicodeIt = unicodeRegex.globalMatch(result);
+    while (unicodeIt.hasNext()) {
+        QRegularExpressionMatch match = unicodeIt.next();
+        bool ok;
+        int unicodeValue = match.captured(1).toInt(&ok, 16);
+        if (ok) {
+            result.replace(match.captured(0), QChar(unicodeValue));
+        }
+    }
+
+    // Decode \OOO sequences (octal)
+    QRegularExpression octalRegex("\\\\([0-7]{1,3})");
+    QRegularExpressionMatchIterator octalIt = octalRegex.globalMatch(result);
+    while (octalIt.hasNext()) {
+        QRegularExpressionMatch match = octalIt.next();
+        bool ok;
+        int octalValue = match.captured(1).toInt(&ok, 8);
+        if (ok) {
+            result.replace(match.captured(0), QChar(octalValue));
+        }
+    }
+
+    // Remove any remaining backslashes that aren't part of valid escape sequences
+    result = result.remove(QRegularExpression("\\\\(?![0-7]{1,3}|[xu][0-9a-fA-F]+)"));
+
+    return result;
 }
 
 QString MainWindow::getHtmlColor(const QColor &color) noexcept
@@ -226,20 +280,26 @@ void MainWindow::processNonSystemdServices()
         }
 
         bool enabled = dependTargets.contains(name) || Service::isEnabled(name);
-        services.append(QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix), enabled));
+        services.append(QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix), enabled, false));
     }
 }
 
 void MainWindow::processSystemdServices()
 {
     QStringList names;
-    processSystemdActiveInactiveServices(names);
-    processSystemdMaskedServices(names);
+    processSystemdActiveInactiveServices(names, false); // System services
+    processSystemdMaskedServices(names, false); // System services
+    processSystemdActiveInactiveServices(names, true); // User services
+    processSystemdMaskedServices(names, true); // User services
 }
 
-void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
+void MainWindow::processSystemdActiveInactiveServices(QStringList &names, bool isUserService)
 {
-    const auto list = cmd.getOut("systemctl list-units --type=service --all -o json").trimmed();
+    QString cmdStr = "systemctl list-units --type=service --all -o json";
+    if (isUserService) {
+        cmdStr = "systemctl --user list-units --type=service --all -o json";
+    }
+    const auto list = cmd.getOut(cmdStr).trimmed();
     auto doc = QJsonDocument::fromJson(list.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for service units.";
@@ -265,7 +325,16 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
         }
 
         const auto obj = value.toObject();
-        const QString name = obj.value(unitKey).toString().section(dotSeparator, 0, 0);
+        QString name = obj.value(unitKey).toString().section(dotSeparator, 0, 0);
+
+        // Sanitize service name to prevent crashes from malformed strings
+        name = name.simplified();
+        name = decodeEscapeSequences(name);
+
+        // Additional validation: skip services with suspicious names
+        if (name.contains(QRegularExpression("[^a-zA-Z0-9._@:+-]")) || name.length() > 100) {
+            continue;
+        }
 
         if (name.isEmpty() || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) {
             continue;
@@ -274,16 +343,21 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names)
         nameSet.insert(name);
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
-        const bool isEnabled = dependTargets.contains(name) || Service::isEnabled(name);
+        const bool isEnabled = (!isUserService && dependTargets.contains(name))
+            || Service::isEnabled(name, isUserService);
 
-        services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled));
+        services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }
 
-void MainWindow::processSystemdMaskedServices(QStringList &names)
+void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserService)
 {
-    const auto masked = cmd.getOut("systemctl list-unit-files --type=service --state=masked -o json").trimmed();
+    QString cmdStr = "systemctl list-unit-files --type=service --state=masked -o json";
+    if (isUserService) {
+        cmdStr = "systemctl --user list-unit-files --type=service --state=masked -o json";
+    }
+    const auto masked = cmd.getOut(cmdStr).trimmed();
     auto doc = QJsonDocument::fromJson(masked.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for masked services.";
@@ -303,13 +377,22 @@ void MainWindow::processSystemdMaskedServices(QStringList &names)
             continue;
         }
         const auto obj = value.toObject();
-        const QString name = obj.value(unitFileKey).toString().section(dotSeparator, 0, 0);
+        QString name = obj.value(unitFileKey).toString().section(dotSeparator, 0, 0);
+
+        // Sanitize service name to prevent crashes from malformed strings
+        name = name.simplified();
+        name = decodeEscapeSequences(name);
+
+        // Additional validation: skip services with suspicious names
+        if (name.contains(QRegularExpression("[^a-zA-Z0-9._@:+-]")) || name.length() > 100) {
+            continue;
+        }
 
         if (name.isEmpty() || nameSet.contains(name)) {
             continue;
         }
         nameSet.insert(name);
-        services.append(QSharedPointer<Service>::create(name));
+        services.append(QSharedPointer<Service>::create(name, false, false, isUserService));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }
@@ -331,11 +414,21 @@ void MainWindow::displayServices() noexcept
     const bool isFilterRunning = currentFilter == tr("Running services");
     const bool isFilterEnabled = currentFilter == tr("Services enabled at boot");
     const bool isFilterDisabled = currentFilter == tr("Services disabled at boot");
+    const bool isFilterUser = currentFilter == tr("User services");
 
     for (const auto &service : services) {
-        const QString serviceName = service->getName().toLower();
+        if (!service || !service.get()) {
+            continue;
+        }
+        QString serviceName = service->getName();
+        // Ensure service name is valid to prevent crashes
+        if (serviceName.isNull() || serviceName.isEmpty()) {
+            continue;
+        }
+        serviceName = serviceName.toLower();
         const bool isRunning = service->isRunning();
         const bool isEnabled = service->isEnabled();
+        const bool isUserService = service->isUserService();
 
         // Check search criteria
         if (!searchText.isEmpty() && !serviceName.startsWith(searchText)
@@ -345,7 +438,8 @@ void MainWindow::displayServices() noexcept
 
         // Check filter criteria
         if ((isFilterRunning && !isRunning) || (isFilterEnabled && !isEnabled) || (isFilterDisabled && isEnabled)
-            || (!isFilterAll && !isFilterRunning && !isFilterEnabled && !isFilterDisabled)) {
+            || (isFilterUser && !isUserService)
+            || (!isFilterAll && !isFilterRunning && !isFilterEnabled && !isFilterDisabled && !isFilterUser)) {
             continue;
         }
 
@@ -357,7 +451,11 @@ void MainWindow::displayServices() noexcept
         }
 
         // Create item and add it directly to the list widget
-        auto *item = new QListWidgetItem(serviceName, ui->listServices);
+        QString displayName = serviceName;
+        if (isUserService) {
+            displayName = tr("[User] ") + serviceName;
+        }
+        auto *item = new QListWidgetItem(displayName, ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
         item->setForeground(isRunning ? runningColor : (isEnabled ? enabledColor : Qt::black));
     }
