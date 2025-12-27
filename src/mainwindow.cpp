@@ -516,7 +516,7 @@ void MainWindow::displayServices() noexcept
         const bool isUserService = service->isUserService();
 
         // Check search criteria
-        if (!searchText.isEmpty() && !serviceName.startsWith(searchText)
+        if (!searchText.isEmpty() && !serviceName.contains(searchText, Qt::CaseInsensitive)
             && !(serviceName == QLatin1String("smbd") && incrementalSearchPatterns.contains(searchText))) {
             continue;
         }
