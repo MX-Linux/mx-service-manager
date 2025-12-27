@@ -21,8 +21,10 @@
  **********************************************************************/
 #pragma once
 
+#include <QFutureWatcher>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QPersistentModelIndex>
 #include <QProcess>
 #include <QSettings>
 
@@ -67,6 +69,16 @@ private:
     int savedRow = 0;
     QTimer *searchTimer = nullptr;
 
+    // Tooltip management
+    QTimer *tooltipTimer = nullptr;
+    QFutureWatcher<QString> *tooltipWatcher = nullptr;
+    QPersistentModelIndex pendingTooltipIndex;
+    QPersistentModelIndex activeTooltipIndex;
+    Service *activeTooltipService = nullptr;
+    bool tooltipInProgress = false;
+
+    void cancelPendingTooltip();
+    void fetchTooltipDescription();
     QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;

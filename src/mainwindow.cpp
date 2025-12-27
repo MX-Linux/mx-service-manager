@@ -32,14 +32,20 @@
 #include <QShortcut>
 #include <QTextStream>
 #include <QTimer>
+#include <QtConcurrent>
 
 #include "about.h"
 #include "common.h"
 #include "service.h"
 
+#include <algorithm>
 #include <chrono>
 
 using namespace std::chrono_literals;
+
+namespace {
+constexpr int kTooltipFetchedRole = Qt::UserRole + 1;
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent),
@@ -95,10 +101,23 @@ MainWindow::MainWindow(QWidget *parent)
         ui->listServices->setFocus();
     });
     connect(ui->listServices, &QListWidget::itemEntered, this, [this](QListWidgetItem *item) {
-        if (auto service = item->data(Qt::UserRole).value<Service *>()) {
-            if (item->toolTip().isEmpty()) {
-                const QString description = service->getDescription();
-                item->setToolTip(description);
+        // Cancel any pending tooltip
+        cancelPendingTooltip();
+
+        if (item->data(Qt::UserRole).value<Service *>()) {
+            if (item->toolTip().isEmpty() && !item->data(kTooltipFetchedRole).toBool()) {
+                pendingTooltipIndex = ui->listServices->indexFromItem(item);
+                if (!pendingTooltipIndex.isValid()) {
+                    return;
+                }
+
+                // Start tooltip timer with delay
+                if (!tooltipTimer) {
+                    tooltipTimer = new QTimer(this);
+                    tooltipTimer->setSingleShot(true);
+                    connect(tooltipTimer, &QTimer::timeout, this, &MainWindow::fetchTooltipDescription);
+                }
+                tooltipTimer->start(300); // 300ms delay
             }
         }
     });
@@ -113,6 +132,10 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     settings.setValue("geometry", saveGeometry());
+    if (tooltipWatcher) {
+        tooltipWatcher->cancel();
+        tooltipWatcher->waitForFinished();
+    }
     delete ui;
 }
 
@@ -192,6 +215,65 @@ void MainWindow::setGeneralConnections() noexcept
     connect(ui->pushEnableDisable, &QPushButton::clicked, this, &MainWindow::pushEnableDisable_clicked);
     connect(ui->pushRefresh, &QPushButton::clicked, this, &MainWindow::pushRefresh_clicked);
     connect(ui->pushStartStop, &QPushButton::clicked, this, &MainWindow::pushStartStop_clicked);
+}
+
+void MainWindow::cancelPendingTooltip()
+{
+    if (tooltipTimer) {
+        tooltipTimer->stop();
+    }
+    pendingTooltipIndex = QPersistentModelIndex();
+}
+
+void MainWindow::fetchTooltipDescription()
+{
+    if (!pendingTooltipIndex.isValid() || tooltipInProgress) {
+        return;
+    }
+
+    QListWidgetItem *item = ui->listServices->itemFromIndex(pendingTooltipIndex);
+    if (!item) {
+        pendingTooltipIndex = QPersistentModelIndex();
+        return;
+    }
+
+    auto *service = item->data(Qt::UserRole).value<Service *>();
+    if (!service) {
+        pendingTooltipIndex = QPersistentModelIndex();
+        return;
+    }
+
+    tooltipInProgress = true;
+    activeTooltipIndex = pendingTooltipIndex;
+    pendingTooltipIndex = QPersistentModelIndex();
+    activeTooltipService = service;
+
+    if (!tooltipWatcher) {
+        tooltipWatcher = new QFutureWatcher<QString>(this);
+        connect(tooltipWatcher, &QFutureWatcher<QString>::finished, this, [this]() {
+            const QString description = tooltipWatcher->result();
+            QListWidgetItem *activeItem = ui->listServices->itemFromIndex(activeTooltipIndex);
+            const bool serviceValid = activeTooltipService
+                && std::any_of(services.begin(), services.end(),
+                               [this](const auto &svc) { return svc.get() == activeTooltipService; });
+
+            if (activeItem && activeItem->listWidget() && activeTooltipIndex.isValid() && serviceValid) {
+                if (!description.isEmpty()) {
+                    activeItem->setToolTip(description);
+                }
+                activeItem->setData(kTooltipFetchedRole, true);
+            }
+
+            tooltipInProgress = false;
+            activeTooltipIndex = QPersistentModelIndex();
+            activeTooltipService = nullptr;
+            if (pendingTooltipIndex.isValid()) {
+                fetchTooltipDescription();
+            }
+        });
+    }
+
+    tooltipWatcher->setFuture(QtConcurrent::run([service]() { return service->getDescription(); }));
 }
 
 QString MainWindow::decodeEscapeSequences(const QString &input)
@@ -399,6 +481,9 @@ void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserSer
 
 void MainWindow::displayServices() noexcept
 {
+    // Cancel any pending tooltips since items are being recreated
+    cancelPendingTooltip();
+
     ui->listServices->blockSignals(true);
     ui->listServices->clear();
 
