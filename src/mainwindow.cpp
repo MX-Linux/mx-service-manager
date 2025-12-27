@@ -206,7 +206,7 @@ void MainWindow::listServices()
 
 void MainWindow::processNonSystemdServices()
 {
-    const auto list = cmd.getOutAsRoot("/sbin/service --status-all", true).trimmed().split("\n");
+    const auto list = cmd.getOutAsRoot("service --status-all", true).trimmed().split("\n");
     QRegularExpression re("dpkg-.*$");
     services.reserve(list.size());
 

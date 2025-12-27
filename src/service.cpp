@@ -50,7 +50,7 @@ QString Service::getInfo() const
 {
     QString info;
     if (initSystem == "systemd") {
-        info = Cmd().getOutAsRoot("/sbin/service " + name + " status", true).trimmed();
+        info = Cmd().getOutAsRoot("service " + name + " status", true).trimmed();
         if (!isEnabled()) {
             info.append("\nDescription: " + getDescription());
         }
@@ -101,21 +101,27 @@ QString Service::getDescription() const
         }
         return {};
     } else {
-        // Try to get description from systemctl list-units first
-        QString jsonOutput = Cmd()
-                                .getOutAsRoot("systemctl list-units " + name + ".service -o json",
-                                              true, true)
-                                .trimmed();
+        const QString unitName = name + QLatin1String(".service");
 
-        QString out;
-        if (!jsonOutput.isEmpty()) {
-            QJsonParseError error;
-            QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
-            if (error.error == QJsonParseError::NoError && doc.isArray()) {
-                QJsonArray array = doc.array();
-                if (!array.isEmpty()) {
-                    QJsonObject obj = array[0].toObject();
-                    out = obj["description"].toString();
+        // Prefer systemctl show which works for inactive/disabled units
+        QString out = Cmd()
+                          .getOutAsRoot("systemctl show -p Description --value " + unitName, true, true)
+                          .trimmed();
+
+        // Try list-units (covers active units; empty for inactive)
+        if (out.isEmpty()) {
+            const QString jsonOutput
+                = Cmd().getOutAsRoot("systemctl list-units " + unitName + " -o json", true, true).trimmed();
+
+            if (!jsonOutput.isEmpty()) {
+                QJsonParseError error;
+                QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
+                if (error.error == QJsonParseError::NoError && doc.isArray()) {
+                    QJsonArray array = doc.array();
+                    if (!array.isEmpty()) {
+                        QJsonObject obj = array[0].toObject();
+                        out = obj["description"].toString();
+                    }
                 }
             }
         }
@@ -123,7 +129,7 @@ QString Service::getDescription() const
         // If that fails, try systemctl status
         if (out.isEmpty()) {
             QString statusOutput = Cmd()
-                      .getOutAsRoot("systemctl status " + name, true, true)
+                      .getOutAsRoot("systemctl status " + unitName, true, true)
                       .trimmed();
 
             // Parse the first line to extract description after " - "
@@ -141,11 +147,12 @@ QString Service::getDescription() const
 
         // If still empty, try to get from init file
         if (out.isEmpty()) {
+            const QString initInfo = getInfoFromFile(name);
             QRegularExpression regex("\nShort-Description:([^\n]*)");
-            QRegularExpressionMatch match = regex.match(getInfoFromFile(name));
+            QRegularExpressionMatch match = regex.match(initInfo);
             if (match.captured(1).isEmpty()) {
                 regex.setPattern("\nDescription:\\s*(.*)\n");
-                match = regex.match(getInfoFromFile(name));
+                match = regex.match(initInfo);
             }
             out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
         }
@@ -160,7 +167,7 @@ bool Service::isEnabled() const noexcept
 
 bool Service::start()
 {
-    if (Cmd().runAsRoot("/sbin/service " + name + " start")) {
+    if (Cmd().runAsRoot("service " + name + " start")) {
         setRunning(true);
         return true;
     }
@@ -169,7 +176,7 @@ bool Service::start()
 
 bool Service::stop()
 {
-    if (Cmd().runAsRoot("/sbin/service " + name + " stop")) {
+    if (Cmd().runAsRoot("service " + name + " stop")) {
         setRunning(false);
         return true;
     }
@@ -201,13 +208,13 @@ QString Service::getInfoFromFile(const QString &name)
 
     if (filePath.isEmpty()) {
         qDebug() << "Could not find unit file for" << name;
-        return Cmd().getOutAsRoot("/sbin/service " + name + " status", false, true);
+        return Cmd().getOutAsRoot("service " + name + " status", false, true);
     }
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open file" << filePath;
-        return Cmd().getOutAsRoot("/sbin/service " + name + " status", false, true);
+        return Cmd().getOutAsRoot("service " + name + " status", false, true);
     }
 
     QString info;
