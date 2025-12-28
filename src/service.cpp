@@ -52,7 +52,7 @@ QString Service::getName() const
 QString Service::getInfo() const
 {
     QString info;
-    if (initSystem == "systemd") {
+    if (initSystem == QLatin1String("systemd")) {
         if (userService) {
             Cmd cmd;
             info = cmd.getOut("systemctl --user status " + name, true).trimmed();
@@ -101,7 +101,7 @@ QString Service::getDescription() const
     static const QRegularExpression shortDescRegex("\nShort-Description:([^\n]*)");
     static const QRegularExpression descRegex("\nDescription:\\s*(.*)\n");
 
-    if (initSystem != "systemd") {
+    if (initSystem != QLatin1String("systemd")) {
         QString info = getInfo();
         QRegularExpressionMatch match = shortDescRegex.match(info);
         if (match.captured(1).isEmpty()) {
@@ -178,7 +178,7 @@ bool Service::isUserService() const noexcept
 
 bool Service::start()
 {
-    if (initSystem == "systemd") {
+    if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
         if (userService ? cmd.run(cmdPrefix + "start " + name) : cmd.runAsRoot(cmdPrefix + "start " + name)) {
@@ -196,7 +196,7 @@ bool Service::start()
 
 bool Service::stop()
 {
-    if (initSystem == "systemd") {
+    if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
         if (userService ? cmd.run(cmdPrefix + "stop " + name) : cmd.runAsRoot(cmdPrefix + "stop " + name)) {
@@ -254,12 +254,12 @@ QString Service::getInfoFromFile(const QString &name)
     while (!in.atEnd()) {
         QString line = in.readLine().trimmed();
 
-        if (line.startsWith("### BEGIN INIT INFO")) {
+        if (line.startsWith(QLatin1String("### BEGIN INIT INFO"))) {
             info_header = true;
             continue;
         }
 
-        if (line.startsWith("### END INIT INFO")) {
+        if (line.startsWith(QLatin1String("### END INIT INFO"))) {
             break; // No need to read the rest of the file
         }
 
@@ -274,7 +274,7 @@ QString Service::getInfoFromFile(const QString &name)
 
 bool Service::enable()
 {
-    if (initSystem == "systemd") {
+    if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
         // First unmask the service if it's masked
@@ -298,7 +298,7 @@ bool Service::enable()
 
 bool Service::disable()
 {
-    if (initSystem == "systemd") {
+    if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
         if (userService ? cmd.run(cmdPrefix + "disable " + name) : Cmd().runAsRoot(cmdPrefix + "disable " + name)) {

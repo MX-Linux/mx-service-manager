@@ -66,8 +66,8 @@ MainWindow::MainWindow(QWidget *parent)
             centerWindow();
         }
     }
-    if (initSystem != "systemd"
-        && !initSystem.startsWith("init")) { // Can be "init(mxlinux)" when running in WSL for example
+    if (initSystem != QLatin1String("systemd")
+        && !initSystem.startsWith(QLatin1String("init"))) { // Can be "init(mxlinux)" when running in WSL for example
         QMessageBox::warning(
             this, tr("Error"),
             tr("Could not determine the init system. This program is supposed to run either with systemd or sysvinit")
@@ -381,7 +381,7 @@ QString MainWindow::getHtmlColor(const QColor &color) noexcept
 void MainWindow::listServices()
 {
     services.clear();
-    if (initSystem != "systemd") {
+    if (initSystem != QLatin1String("systemd")) {
         processNonSystemdServices();
     } else {
         processSystemdServices();
