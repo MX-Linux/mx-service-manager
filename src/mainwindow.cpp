@@ -326,10 +326,14 @@ QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
 
 QString MainWindow::decodeEscapeSequences(const QString &input)
 {
+    static const QRegularExpression hexRegex("\\\\x([0-9a-fA-F]{2})");
+    static const QRegularExpression unicodeRegex("\\\\u([0-9a-fA-F]{4})");
+    static const QRegularExpression octalRegex("\\\\([0-7]{1,3})");
+    static const QRegularExpression backslashCleanup("\\\\(?![0-7]{1,3}|[xu][0-9a-fA-F]+)");
+
     QString result = input;
 
     // Decode \xXX sequences (hex)
-    QRegularExpression hexRegex("\\\\x([0-9a-fA-F]{2})");
     QRegularExpressionMatchIterator hexIt = hexRegex.globalMatch(result);
     while (hexIt.hasNext()) {
         QRegularExpressionMatch match = hexIt.next();
@@ -341,7 +345,6 @@ QString MainWindow::decodeEscapeSequences(const QString &input)
     }
 
     // Decode \uXXXX sequences (Unicode)
-    QRegularExpression unicodeRegex("\\\\u([0-9a-fA-F]{4})");
     QRegularExpressionMatchIterator unicodeIt = unicodeRegex.globalMatch(result);
     while (unicodeIt.hasNext()) {
         QRegularExpressionMatch match = unicodeIt.next();
@@ -353,7 +356,6 @@ QString MainWindow::decodeEscapeSequences(const QString &input)
     }
 
     // Decode \OOO sequences (octal)
-    QRegularExpression octalRegex("\\\\([0-7]{1,3})");
     QRegularExpressionMatchIterator octalIt = octalRegex.globalMatch(result);
     while (octalIt.hasNext()) {
         QRegularExpressionMatch match = octalIt.next();
@@ -365,7 +367,7 @@ QString MainWindow::decodeEscapeSequences(const QString &input)
     }
 
     // Remove any remaining backslashes that aren't part of valid escape sequences
-    result = result.remove(QRegularExpression("\\\\(?![0-7]{1,3}|[xu][0-9a-fA-F]+)"));
+    result = result.remove(backslashCleanup);
 
     return result;
 }
@@ -390,8 +392,8 @@ void MainWindow::listServices()
 
 void MainWindow::processNonSystemdServices()
 {
+    static const QRegularExpression dpkgRegex("dpkg-.*$");
     const auto list = cmd.getOutAsRoot("/sbin/service --status-all", true).trimmed().split("\n");
-    QRegularExpression re("dpkg-.*$");
     services.reserve(list.size());
 
     const QLatin1String sectionDelimiter("]  ");
@@ -400,7 +402,7 @@ void MainWindow::processNonSystemdServices()
 
     for (const auto &item : list) {
         const QString trimmedItem = item.trimmed();
-        if (item.section(sectionDelimiter, 1) == debian || trimmedItem.contains(re)) {
+        if (item.section(sectionDelimiter, 1) == debian || trimmedItem.contains(dpkgRegex)) {
             continue;
         }
 

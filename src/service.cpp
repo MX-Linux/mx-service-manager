@@ -96,13 +96,14 @@ bool Service::isRunning() const
 
 QString Service::getDescription() const
 {
+    static const QRegularExpression shortDescRegex("\nShort-Description:([^\n]*)");
+    static const QRegularExpression descRegex("\nDescription:\\s*(.*)\n");
+
     if (initSystem != "systemd") {
-        QRegularExpression regex("\nShort-Description:([^\n]*)");
         QString info = getInfo();
-        QRegularExpressionMatch match = regex.match(info);
+        QRegularExpressionMatch match = shortDescRegex.match(info);
         if (match.captured(1).isEmpty()) {
-            regex.setPattern("\nDescription:\\s*(.*)\n");
-            match = regex.match(info);
+            match = descRegex.match(info);
         }
         if (match.hasMatch()) {
             return match.captured(1);
@@ -151,11 +152,9 @@ QString Service::getDescription() const
 
         // If still empty, try to get from init file (only for system services)
         if (out.isEmpty() && !userService) {
-            QRegularExpression regex("\nShort-Description:([^\n]*)");
-            QRegularExpressionMatch match = regex.match(getInfoFromFile(name));
+            QRegularExpressionMatch match = shortDescRegex.match(getInfoFromFile(name));
             if (match.captured(1).isEmpty()) {
-                regex.setPattern("\nDescription:\\s*(.*)\n");
-                match = regex.match(getInfoFromFile(name));
+                match = descRegex.match(getInfoFromFile(name));
             }
             out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
         } else if (out.isEmpty() && userService) {
