@@ -27,6 +27,7 @@
 #include <QPersistentModelIndex>
 #include <QProcess>
 #include <QSettings>
+#include <QSet>
 
 #include "cmd.h"
 #include "service.h"
@@ -79,12 +80,16 @@ private:
 
     void cancelPendingTooltip();
     void fetchTooltipDescription();
+    QString sanitizeServiceName(const QString &rawName);
+    QSet<QString> loadSystemdEnabledServices(bool isUserService);
     QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
     void listServices();
     void processNonSystemdServices();
-    void processSystemdActiveInactiveServices(QStringList &names, bool isUserService = false);
+    void processSystemdActiveInactiveServices(QStringList &names,
+                                              const QSet<QString> &enabledServices,
+                                              bool isUserService = false);
     void processSystemdMaskedServices(QStringList &names, bool isUserService = false);
     void processSystemdServices();
 };

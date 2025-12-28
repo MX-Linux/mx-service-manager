@@ -276,6 +276,54 @@ void MainWindow::fetchTooltipDescription()
     tooltipWatcher->setFuture(QtConcurrent::run([service]() { return service->getDescription(); }));
 }
 
+QString MainWindow::sanitizeServiceName(const QString &rawName)
+{
+    const QLatin1String dotSeparator(".");
+    QString name = rawName.section(dotSeparator, 0, 0);
+    name = name.simplified();
+    name = decodeEscapeSequences(name);
+
+    static const QRegularExpression invalidRegex("[^a-zA-Z0-9._@:+-]");
+    if (name.isEmpty() || name.length() > 100 || name.contains(invalidRegex)) {
+        return {};
+    }
+
+    return name;
+}
+
+QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
+{
+    QString cmdStr = "systemctl list-unit-files --type=service --state=enabled -o json";
+    if (isUserService) {
+        cmdStr = "systemctl --user list-unit-files --type=service --state=enabled -o json";
+    }
+    const auto enabled = cmd.getOut(cmdStr).trimmed();
+    auto doc = QJsonDocument::fromJson(enabled.toUtf8());
+    if (!doc.isArray()) {
+        qDebug() << "JSON data is not an array for enabled services.";
+        return {};
+    }
+
+    QSet<QString> enabledNames;
+    const auto jsonArray = doc.array();
+    enabledNames.reserve(jsonArray.size());
+
+    const QLatin1String unitFileKey("unit_file");
+    for (const auto &value : jsonArray) {
+        if (!value.isObject()) {
+            continue;
+        }
+        const auto obj = value.toObject();
+        const QString name = sanitizeServiceName(obj.value(unitFileKey).toString());
+        if (name.isEmpty()) {
+            continue;
+        }
+        enabledNames.insert(name);
+    }
+
+    return enabledNames;
+}
+
 QString MainWindow::decodeEscapeSequences(const QString &input)
 {
     QString result = input;
@@ -369,13 +417,18 @@ void MainWindow::processNonSystemdServices()
 void MainWindow::processSystemdServices()
 {
     QStringList names;
-    processSystemdActiveInactiveServices(names, false); // System services
+    const QSet<QString> enabledSystemServices = loadSystemdEnabledServices(false);
+    const QSet<QString> enabledUserServices = loadSystemdEnabledServices(true);
+
+    processSystemdActiveInactiveServices(names, enabledSystemServices, false); // System services
     processSystemdMaskedServices(names, false); // System services
-    processSystemdActiveInactiveServices(names, true); // User services
+    processSystemdActiveInactiveServices(names, enabledUserServices, true); // User services
     processSystemdMaskedServices(names, true); // User services
 }
 
-void MainWindow::processSystemdActiveInactiveServices(QStringList &names, bool isUserService)
+void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
+                                                      const QSet<QString> &enabledServices,
+                                                      bool isUserService)
 {
     QString cmdStr = "systemctl list-units --type=service --all -o json";
     if (isUserService) {
@@ -397,7 +450,6 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names, bool i
     const QLatin1String unitKey("unit");
     const QLatin1String loadKey("load");
     const QLatin1String subKey("sub");
-    const QLatin1String dotSeparator(".");
     const QLatin1String notFoundValue("not-found");
     const QLatin1String runningValue("running");
 
@@ -407,16 +459,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names, bool i
         }
 
         const auto obj = value.toObject();
-        QString name = obj.value(unitKey).toString().section(dotSeparator, 0, 0);
-
-        // Sanitize service name to prevent crashes from malformed strings
-        name = name.simplified();
-        name = decodeEscapeSequences(name);
-
-        // Additional validation: skip services with suspicious names
-        if (name.contains(QRegularExpression("[^a-zA-Z0-9._@:+-]")) || name.length() > 100) {
-            continue;
-        }
+        const QString name = sanitizeServiceName(obj.value(unitKey).toString());
 
         if (name.isEmpty() || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) {
             continue;
@@ -426,7 +469,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names, bool i
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
         const bool isEnabled = (!isUserService && dependTargets.contains(name))
-            || Service::isEnabled(name, isUserService);
+            || enabledServices.contains(name);
 
         services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
     }
@@ -452,23 +495,13 @@ void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserSer
     nameSet.reserve(nameSet.size() + jsonArray.size());
 
     const QLatin1String unitFileKey("unit_file");
-    const QLatin1String dotSeparator(".");
 
     for (const auto &value : jsonArray) {
         if (!value.isObject()) {
             continue;
         }
         const auto obj = value.toObject();
-        QString name = obj.value(unitFileKey).toString().section(dotSeparator, 0, 0);
-
-        // Sanitize service name to prevent crashes from malformed strings
-        name = name.simplified();
-        name = decodeEscapeSequences(name);
-
-        // Additional validation: skip services with suspicious names
-        if (name.contains(QRegularExpression("[^a-zA-Z0-9._@:+-]")) || name.length() > 100) {
-            continue;
-        }
+        const QString name = sanitizeServiceName(obj.value(unitFileKey).toString());
 
         if (name.isEmpty() || nameSet.contains(name)) {
             continue;
