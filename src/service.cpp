@@ -30,6 +30,8 @@
 #include <QProcess>
 #include <QRegularExpression>
 
+#include <array>
+
 #include "cmd.h"
 
 inline const QString initSystem {Service::getInit()};
@@ -223,7 +225,7 @@ void Service::setRunning(bool running) noexcept
 QString Service::getInfoFromFile(const QString &name)
 {
     // Check for the service file in standard locations
-    const QStringList possiblePaths = {"/etc/init.d/" + name, "/etc/init.d/" + name + ".sh"};
+    const std::array possiblePaths = {"/etc/init.d/" + name, "/etc/init.d/" + name + ".sh"};
 
     QString filePath;
     for (const auto &path : possiblePaths) {
