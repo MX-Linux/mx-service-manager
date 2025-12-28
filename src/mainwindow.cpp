@@ -536,6 +536,7 @@ void MainWindow::displayServices() noexcept
     const bool isFilterEnabled = currentFilter == tr("Services enabled at boot");
     const bool isFilterDisabled = currentFilter == tr("Services disabled at boot");
     const bool isFilterUser = currentFilter == tr("User services");
+    const bool isFilterSystem = currentFilter == tr("System services");
 
     for (const auto &service : services) {
         if (!service || !service.get()) [[unlikely]] {
@@ -559,8 +560,8 @@ void MainWindow::displayServices() noexcept
 
         // Check filter criteria
         if ((isFilterRunning && !isRunning) || (isFilterEnabled && !isEnabled) || (isFilterDisabled && isEnabled)
-            || (isFilterUser && !isUserService)
-            || (!isFilterAll && !isFilterRunning && !isFilterEnabled && !isFilterDisabled && !isFilterUser)) {
+            || (isFilterUser && !isUserService) || (isFilterSystem && isUserService)
+            || (!isFilterAll && !isFilterRunning && !isFilterEnabled && !isFilterDisabled && !isFilterUser && !isFilterSystem)) {
             continue;
         }
 

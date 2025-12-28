@@ -250,6 +250,11 @@
         <string>User services</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>System services</string>
+       </property>
+      </item>
      </widget>
    </item>
    <item row="5" column="0">
