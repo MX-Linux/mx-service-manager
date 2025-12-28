@@ -276,7 +276,7 @@ void MainWindow::fetchTooltipDescription()
     tooltipWatcher->setFuture(QtConcurrent::run([service]() { return service->getDescription(); }));
 }
 
-QString MainWindow::sanitizeServiceName(const QString &rawName)
+std::optional<QString> MainWindow::sanitizeServiceName(const QString &rawName)
 {
     const QLatin1String dotSeparator(".");
     QString name = rawName.section(dotSeparator, 0, 0);
@@ -285,7 +285,7 @@ QString MainWindow::sanitizeServiceName(const QString &rawName)
 
     static const QRegularExpression invalidRegex("[^a-zA-Z0-9._@:+-]");
     if (name.isEmpty() || name.length() > 100 || name.contains(invalidRegex)) {
-        return {};
+        return std::nullopt;
     }
 
     return name;
@@ -314,11 +314,9 @@ QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
             continue;
         }
         const auto obj = value.toObject();
-        const QString name = sanitizeServiceName(obj.value(unitFileKey).toString());
-        if (name.isEmpty()) {
-            continue;
+        if (const auto name = sanitizeServiceName(obj.value(unitFileKey).toString())) {
+            enabledNames.insert(*name);
         }
-        enabledNames.insert(name);
     }
 
     return enabledNames;
@@ -461,12 +459,13 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
         }
 
         const auto obj = value.toObject();
-        const QString name = sanitizeServiceName(obj.value(unitKey).toString());
+        const auto nameOpt = sanitizeServiceName(obj.value(unitKey).toString());
 
-        if (name.isEmpty() || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) {
+        if (!nameOpt || nameSet.contains(*nameOpt) || obj.value(loadKey).toString() == notFoundValue) {
             continue;
         }
 
+        const QString &name = *nameOpt;
         nameSet.insert(name);
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
@@ -503,11 +502,13 @@ void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserSer
             continue;
         }
         const auto obj = value.toObject();
-        const QString name = sanitizeServiceName(obj.value(unitFileKey).toString());
+        const auto nameOpt = sanitizeServiceName(obj.value(unitFileKey).toString());
 
-        if (name.isEmpty() || nameSet.contains(name)) {
+        if (!nameOpt || nameSet.contains(*nameOpt)) {
             continue;
         }
+
+        const QString &name = *nameOpt;
         nameSet.insert(name);
         services.append(QSharedPointer<Service>::create(name, false, false, isUserService));
     }

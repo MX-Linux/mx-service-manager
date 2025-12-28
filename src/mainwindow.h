@@ -29,6 +29,8 @@
 #include <QSettings>
 #include <QSet>
 
+#include <optional>
+
 #include "cmd.h"
 #include "service.h"
 
@@ -80,7 +82,7 @@ private:
 
     void cancelPendingTooltip();
     void fetchTooltipDescription();
-    QString sanitizeServiceName(const QString &rawName);
+    [[nodiscard]] std::optional<QString> sanitizeServiceName(const QString &rawName);
     QSet<QString> loadSystemdEnabledServices(bool isUserService);
     QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
