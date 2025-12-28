@@ -294,7 +294,7 @@ std::optional<QString> MainWindow::sanitizeServiceName(const QString &rawName)
 QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
 {
     QString cmdStr = "systemctl list-unit-files --type=service --state=enabled -o json";
-    if (isUserService) {
+    if (isUserService) [[unlikely]] {
         cmdStr = "systemctl --user list-unit-files --type=service --state=enabled -o json";
     }
     const auto enabled = cmd.getOut(cmdStr).trimmed();
@@ -310,7 +310,7 @@ QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
 
     const QLatin1String unitFileKey("unit_file");
     for (const auto &value : jsonArray) {
-        if (!value.isObject()) {
+        if (!value.isObject()) [[unlikely]] {
             continue;
         }
         const auto obj = value.toObject();
@@ -431,7 +431,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
                                                       bool isUserService)
 {
     QString cmdStr = "systemctl list-units --type=service --all -o json";
-    if (isUserService) {
+    if (isUserService) [[unlikely]] {
         cmdStr = "systemctl --user list-units --type=service --all -o json";
     }
     const auto list = cmd.getOut(cmdStr).trimmed();
@@ -454,14 +454,14 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
     const QLatin1String runningValue("running");
 
     for (const auto &value : jsonArray) {
-        if (!value.isObject()) {
+        if (!value.isObject()) [[unlikely]] {
             continue;
         }
 
         const auto obj = value.toObject();
         const auto nameOpt = sanitizeServiceName(obj.value(unitKey).toString());
 
-        if (!nameOpt || nameSet.contains(*nameOpt) || obj.value(loadKey).toString() == notFoundValue) {
+        if (!nameOpt || nameSet.contains(*nameOpt) || obj.value(loadKey).toString() == notFoundValue) [[unlikely]] {
             continue;
         }
 
@@ -480,7 +480,7 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
 void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserService)
 {
     QString cmdStr = "systemctl list-unit-files --type=service --state=masked -o json";
-    if (isUserService) {
+    if (isUserService) [[unlikely]] {
         cmdStr = "systemctl --user list-unit-files --type=service --state=masked -o json";
     }
     const auto masked = cmd.getOut(cmdStr).trimmed();
@@ -498,13 +498,13 @@ void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserSer
     const QLatin1String unitFileKey("unit_file");
 
     for (const auto &value : jsonArray) {
-        if (!value.isObject()) {
+        if (!value.isObject()) [[unlikely]] {
             continue;
         }
         const auto obj = value.toObject();
         const auto nameOpt = sanitizeServiceName(obj.value(unitFileKey).toString());
 
-        if (!nameOpt || nameSet.contains(*nameOpt)) {
+        if (!nameOpt || nameSet.contains(*nameOpt)) [[unlikely]] {
             continue;
         }
 
@@ -538,12 +538,12 @@ void MainWindow::displayServices() noexcept
     const bool isFilterUser = currentFilter == tr("User services");
 
     for (const auto &service : services) {
-        if (!service || !service.get()) {
+        if (!service || !service.get()) [[unlikely]] {
             continue;
         }
         QString serviceName = service->getName();
         // Ensure service name is valid to prevent crashes
-        if (serviceName.isNull() || serviceName.isEmpty()) {
+        if (serviceName.isNull() || serviceName.isEmpty()) [[unlikely]] {
             continue;
         }
         serviceName = serviceName.toLower();
@@ -573,7 +573,7 @@ void MainWindow::displayServices() noexcept
 
         // Create item and add it directly to the list widget
         QString displayName = serviceName;
-        if (isUserService) {
+        if (isUserService) [[unlikely]] {
             displayName = tr("[User] ") + serviceName;
         }
         auto *item = new QListWidgetItem(displayName, ui->listServices);

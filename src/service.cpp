@@ -72,7 +72,7 @@ bool Service::isEnabled(const QString &name, bool isUserService)
 {
     if (initSystem == QLatin1String("systemd")) {
         QStringList args = {QLatin1String("-q"), QLatin1String("is-enabled"), name + QLatin1String(".service")};
-        if (isUserService) {
+        if (isUserService) [[unlikely]] {
             args.insert(0, QLatin1String("--user"));
         }
         return QProcess::execute(QLatin1String("systemctl"), args) == 0;
