@@ -532,7 +532,7 @@ void MainWindow::displayServices() noexcept
 
     ui->listServices->setUpdatesEnabled(false);
 
-    const bool isFilterAll = currentFilter.isEmpty() || currentFilter == tr("All services");
+    const bool isFilterAll = currentFilter.isEmpty() || currentFilter == tr("System services");
     const bool isFilterRunning = currentFilter == tr("Running services");
     const bool isFilterEnabled = currentFilter == tr("Services enabled at boot");
     const bool isFilterDisabled = currentFilter == tr("Services disabled at boot");
