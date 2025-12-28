@@ -20,6 +20,7 @@
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 
+#define QT_USE_QSTRINGBUILDER
 #include <QApplication>
 #include <QDebug>
 #include <QFile>

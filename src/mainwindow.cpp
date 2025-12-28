@@ -19,6 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
+#define QT_USE_QSTRINGBUILDER
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -71,7 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
         QMessageBox::warning(
             this, tr("Error"),
             tr("Could not determine the init system. This program is supposed to run either with systemd or sysvinit")
-                + "\nINIT:" + initSystem);
+                % "\nINIT:" % initSystem);
     }
     QPalette palette = ui->listServices->palette();
     defaultForeground = palette.color(QPalette::Text);
@@ -575,7 +576,7 @@ void MainWindow::displayServices() noexcept
         // Create item and add it directly to the list widget
         QString displayName = serviceName;
         if (isUserService) [[unlikely]] {
-            displayName = tr("[User] ") + serviceName;
+            displayName = tr("[User] ") % serviceName;
         }
         auto *item = new QListWidgetItem(displayName, ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
@@ -603,11 +604,11 @@ void MainWindow::pushAbout_clicked()
 {
     hide();
     displayAboutMsgBox(
-        tr("About %1") + tr("MX Service Manager"),
-        R"(<p align="center"><b><h2>MX Service Manager</h2></b></p><p align="center">)" + tr("Version: ")
-            + QApplication::applicationVersion() + "</p><p align=\"center\"><h3>" + tr("Service and daemon manager")
-            + R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
-            + tr("Copyright (c) MX Linux") + "<br /><br /></p>",
+        tr("About %1") % tr("MX Service Manager"),
+        R"(<p align="center"><b><h2>MX Service Manager</h2></b></p><p align="center">)" % tr("Version: ")
+            % QApplication::applicationVersion() % "</p><p align=\"center\"><h3>" % tr("Service and daemon manager")
+            % R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
+            % tr("Copyright (c) MX Linux") % "<br /><br /></p>",
         "/usr/share/doc/mx-service-manager/license.html", tr("%1 License").arg(windowTitle()));
 
     show();

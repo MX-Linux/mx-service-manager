@@ -19,6 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this package. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
+#define QT_USE_QSTRINGBUILDER
 #include "about.h"
 
 #include <QApplication>
@@ -86,7 +87,7 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         QProcess proc;
         proc.start(
             "zless",
-            {"/usr/share/doc/" + QFileInfo(QCoreApplication::applicationFilePath()).fileName() + "/changelog.gz"},
+            {"/usr/share/doc/" % QFileInfo(QCoreApplication::applicationFilePath()).fileName() % "/changelog.gz"},
             QIODevice::ReadOnly);
         proc.waitForFinished();
         text->setText(proc.readAllStandardOutput());
