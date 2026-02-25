@@ -116,14 +116,17 @@ QString Service::getDescription() const
         const QString unitName = name % QLatin1String(".service");
 
         // Prefer systemctl show which works for inactive/disabled units
-        QString out = Cmd()
-                          .getOutAsRoot("systemctl show -p Description --value " + unitName, true, true)
-                          .trimmed();
+        Cmd cmd;
+        QString out = userService
+                          ? cmd.getOut("systemctl --user show -p Description --value " + unitName, true, true)
+                          : Cmd().getOutAsRoot("systemctl show -p Description --value " + unitName, true, true);
+        out = out.trimmed();
 
         // Try list-units (covers active units; empty for inactive)
         if (out.isEmpty()) {
-            const QString jsonOutput
-                = Cmd().getOutAsRoot("systemctl list-units " + unitName + " -o json", true, true).trimmed();
+            const QString jsonOutput = userService
+                                           ? cmd.getOut("systemctl --user list-units " + unitName + " -o json", true, true).trimmed()
+                                           : Cmd().getOutAsRoot("systemctl list-units " + unitName + " -o json", true, true).trimmed();
 
             if (!jsonOutput.isEmpty()) {
                 QJsonParseError error;
@@ -140,9 +143,9 @@ QString Service::getDescription() const
 
         // If that fails, try systemctl status
         if (out.isEmpty()) {
-            QString statusOutput = Cmd()
-                      .getOutAsRoot("systemctl status " % unitName, true, true)
-                      .trimmed();
+            const QString statusOutput = userService
+                                             ? cmd.getOut("systemctl --user status " % unitName, true, true).trimmed()
+                                             : Cmd().getOutAsRoot("systemctl status " % unitName, true, true).trimmed();
 
             // Parse the first line to extract description after " - "
             if (!statusOutput.isEmpty()) {
@@ -164,8 +167,6 @@ QString Service::getDescription() const
                 match = descRegex.match(getInfoFromFile(name));
             }
             out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
-        } else if (out.isEmpty() && userService) {
-            out = QObject::tr("Could not find service description");
         }
         return out;
     }

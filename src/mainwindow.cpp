@@ -392,7 +392,7 @@ void MainWindow::listServices()
 void MainWindow::processNonSystemdServices()
 {
     static const QRegularExpression dpkgRegex("dpkg-.*$");
-    const auto list = cmd.getOutAsRoot("systemctl list-units --type=service --all --no-pager --no-legend", true).trimmed().split("\n");
+    const auto list = cmd.getOutAsRoot("/sbin/service --status-all", true).trimmed().split("\n");
     services.reserve(list.size());
 
     const QLatin1String sectionDelimiter("]  ");
