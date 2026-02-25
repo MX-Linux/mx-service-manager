@@ -51,8 +51,11 @@ else()
     endif()
 endif()
 
+# CMake project() VERSION only accepts numeric components; strip any alpha suffix (e.g. "26.02arch" -> "26.02")
+string(REGEX REPLACE "[a-zA-Z]+.*$" "" PROJECT_VERSION_NUMERIC "${PROJECT_VERSION_FROM_CHANGELOG}")
+
 project(mx-service-manager
-    VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
+    VERSION ${PROJECT_VERSION_NUMERIC}
     DESCRIPTION "Service Manager - MX Linux service management tool"
     LANGUAGES CXX
 )
@@ -162,7 +165,7 @@ endif()
 target_compile_definitions(mx-service-manager PRIVATE
     QT_DEPRECATED_WARNINGS
     QT_DISABLE_DEPRECATED_BEFORE=0x060000
-    VERSION="${PROJECT_VERSION}"
+    VERSION="${PROJECT_VERSION_FROM_CHANGELOG}"
 )
 
 # Release-specific optimizations
