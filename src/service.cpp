@@ -58,7 +58,7 @@ QString Service::getInfo() const
             Cmd cmd;
             info = cmd.getOut("systemctl --user status " % name, true).trimmed();
         } else {
-            info = Cmd().getOutAsRoot("/sbin/service " % name % " status", true).trimmed();
+            info = Cmd().getOutAsRoot("systemctl status " % name, true).trimmed();
         }
         if (!isEnabled() && !info.isEmpty()) {
             info.append("\nDescription: " % getDescription());
@@ -113,32 +113,39 @@ QString Service::getDescription() const
         }
         return {};
     } else {
-        // Try to get description from systemctl list-units first
-        QString cmdStr = userService ? QString("systemctl --user list-units " % name % ".service -o json")
-                                     : QString("systemctl list-units " % name % ".service -o json");
-        Cmd cmd;
-        QString jsonOutput = userService ? cmd.getOut(cmdStr, true, true).trimmed()
-                                         : Cmd().getOutAsRoot(cmdStr, true, true).trimmed();
+        const QString unitName = name % QLatin1String(".service");
 
-        QString out;
-        if (!jsonOutput.isEmpty()) {
-            QJsonParseError error;
-            QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
-            if (error.error == QJsonParseError::NoError && doc.isArray()) {
-                QJsonArray array = doc.array();
-                if (!array.isEmpty()) {
-                    QJsonObject obj = array[0].toObject();
-                    out = obj["description"].toString();
+        // Prefer systemctl show which works for inactive/disabled units
+        Cmd cmd;
+        QString out = userService
+                          ? cmd.getOut("systemctl --user show -p Description --value " + unitName, true, true)
+                          : Cmd().getOutAsRoot("systemctl show -p Description --value " + unitName, true, true);
+        out = out.trimmed();
+
+        // Try list-units (covers active units; empty for inactive)
+        if (out.isEmpty()) {
+            const QString jsonOutput = userService
+                                           ? cmd.getOut("systemctl --user list-units " + unitName + " -o json", true, true).trimmed()
+                                           : Cmd().getOutAsRoot("systemctl list-units " + unitName + " -o json", true, true).trimmed();
+
+            if (!jsonOutput.isEmpty()) {
+                QJsonParseError error;
+                QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
+                if (error.error == QJsonParseError::NoError && doc.isArray()) {
+                    QJsonArray array = doc.array();
+                    if (!array.isEmpty()) {
+                        QJsonObject obj = array[0].toObject();
+                        out = obj["description"].toString();
+                    }
                 }
             }
         }
 
         // If that fails, try systemctl status
         if (out.isEmpty()) {
-            QString cmdStr = userService ? QString("systemctl --user status " % name) : QString("systemctl status " % name);
-            Cmd cmd;
-            QString statusOutput = userService ? cmd.getOut(cmdStr, true, true).trimmed()
-                                               : Cmd().getOutAsRoot(cmdStr, true, true).trimmed();
+            const QString statusOutput = userService
+                                             ? cmd.getOut("systemctl --user status " % unitName, true, true).trimmed()
+                                             : Cmd().getOutAsRoot("systemctl status " % unitName, true, true).trimmed();
 
             // Parse the first line to extract description after " - "
             if (!statusOutput.isEmpty()) {
@@ -153,15 +160,13 @@ QString Service::getDescription() const
             }
         }
 
-        // If still empty, try to get from init file (only for system services)
-        if (out.isEmpty() && !userService) {
+        // If still empty, try to get from init file
+        if (out.isEmpty()) {
             QRegularExpressionMatch match = shortDescRegex.match(getInfoFromFile(name));
             if (match.captured(1).isEmpty()) {
                 match = descRegex.match(getInfoFromFile(name));
             }
             out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
-        } else if (out.isEmpty() && userService) {
-            out = QObject::tr("Could not find service description");
         }
         return out;
     }
@@ -182,7 +187,7 @@ bool Service::start()
     if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
-        if (userService ? cmd.run(cmdPrefix % "start " % name) : cmd.runAsRoot(cmdPrefix % "start " % name)) {
+        if (userService ? cmd.run(cmdPrefix % "start " % name) : Cmd().runAsRoot(cmdPrefix % "start " % name)) {
             setRunning(true);
             return true;
         }
@@ -200,7 +205,7 @@ bool Service::stop()
     if (initSystem == QLatin1String("systemd")) {
         QString cmdPrefix = userService ? "systemctl --user " : "systemctl ";
         Cmd cmd;
-        if (userService ? cmd.run(cmdPrefix % "stop " % name) : cmd.runAsRoot(cmdPrefix % "stop " % name)) {
+        if (userService ? cmd.run(cmdPrefix % "stop " % name) : Cmd().runAsRoot(cmdPrefix % "stop " % name)) {
             setRunning(false);
             return true;
         }
@@ -238,13 +243,13 @@ QString Service::getInfoFromFile(const QString &name)
 
     if (filePath.isEmpty()) {
         qDebug() << "Could not find unit file for" << name;
-        return Cmd().getOutAsRoot("/sbin/service " % name % " status", false, true);
+        return Cmd().getOutAsRoot("systemctl status " % name, false, true);
     }
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open file" << filePath;
-        return Cmd().getOutAsRoot("/sbin/service " % name % " status", false, true);
+        return Cmd().getOutAsRoot("systemctl status " % name, false, true);
     }
 
     QString info;
