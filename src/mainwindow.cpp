@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent)
     setGeneralConnections();
 
     // Cache authentication for elevated commands
-    Cmd().runAsRoot("true", true);
+    Cmd().runAsRoot({"true"}, true);
 
     const auto size = this->size();
     if (settings.contains("geometry")) {
@@ -418,7 +418,7 @@ void MainWindow::listServices()
 void MainWindow::processNonSystemdServices()
 {
     static const QRegularExpression dpkgRegex("dpkg-.*$");
-    const auto list = cmd.getOutAsRoot("/sbin/service --status-all", true).trimmed().split("\n");
+    const auto list = cmd.getOutAsRoot({"service", "--status-all"}, true).trimmed().split("\n");
     services.reserve(list.size());
 
     const QLatin1String sectionDelimiter("]  ");

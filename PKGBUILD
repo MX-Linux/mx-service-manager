@@ -41,7 +41,7 @@ package() {
 
     # Install helper and polkit policy
     install -dm755 "${pkgdir}/usr/lib/mx-service-manager"
-    install -Dm755 scripts/helper "${pkgdir}/usr/lib/mx-service-manager/helper"
+    install -Dm755 build/helper "${pkgdir}/usr/lib/mx-service-manager/helper"
     install -Dm644 scripts/org.mxlinux.pkexec.mxsm-helper.policy \
         "${pkgdir}/usr/share/polkit-1/actions/org.mxlinux.pkexec.mxsm-helper.policy"
 

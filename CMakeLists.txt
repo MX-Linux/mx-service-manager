@@ -196,8 +196,53 @@ set_target_properties(mx-service-manager PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-# Install target (required by Debian build system)
+# Helper executable (compiled privileged helper — no bash fallthrough)
+add_executable(helper
+    src/helper.cpp
+)
+
+target_link_libraries(helper
+    Qt6::Core
+)
+
+target_compile_options(helper PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+    -Werror
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(helper PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(helper PRIVATE -Werror=return-local-addr)
+endif()
+
+target_compile_definitions(helper PRIVATE
+    QT_DEPRECATED_WARNINGS
+    QT_DISABLE_DEPRECATED_BEFORE=0x060000
+)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_compile_definitions(helper PRIVATE NDEBUG)
+    target_compile_options(helper PRIVATE -O3)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(helper PRIVATE -flto=thin)
+        target_link_options(helper PRIVATE -flto=thin)
+    else()
+        target_compile_options(helper PRIVATE -flto=auto)
+        target_link_options(helper PRIVATE -flto=auto)
+    endif()
+endif()
+
+# Install targets (required by Debian build system)
 # Other files are handled by debian/install
 install(TARGETS mx-service-manager
     RUNTIME DESTINATION bin
+)
+
+install(TARGETS helper
+    RUNTIME DESTINATION lib/mx-service-manager
 )
