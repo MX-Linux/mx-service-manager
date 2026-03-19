@@ -278,14 +278,12 @@ show_push_instructions() {
     echo -e "${BLUE}  MANUAL PUSH REQUIRED${NC}"
     echo -e "${BLUE}========================================${NC}"
     echo
-    print_warning "Please run these commands manually:"
-    echo
-    echo "# Push tag to GitHub:"
-    echo -e "${YELLOW}git push origin ${version}${NC}"
+    print_warning "Please run this command manually:"
     echo
     echo "# Push AUR package update:"
     echo -e "${YELLOW}cd aur && git push${NC}"
     echo
+    print_step "The tag has been created and pushed automatically."
     print_step "After pushing the AUR changes, the package will be ready for AUR submission."
 }
 
@@ -297,7 +295,7 @@ main() {
     # Parse arguments
     if [ $# -eq 0 ]; then
         print_error "Usage: $0 <version> [--update|--force]"
-        echo "Example: $0 1.0.0 or $0 v1.0.0"
+        echo "Example: $0 25.12.3 or $0 v25.12.3"
         echo "         $0 26.01 --update"
         exit 1
     fi
@@ -386,21 +384,20 @@ main() {
     # Create the tag
     create_tag "$version" "$annotation"
 
-    # Update AUR package (checksum requires the tag to be pushed first)
-    print_warning "Tag created locally. Push it now so the tarball is available for checksum calculation."
-    echo -e "${YELLOW}git push origin ${version}${NC}"
-    echo "Press Enter once pushed, or Ctrl+C to abort..."
-    read -r
+    # Push the tag immediately (needed for checksum calculation)
+    print_step "Pushing tag to GitHub..."
+    git push origin "$version"
+    print_success "Tag pushed to GitHub"
 
     # Update AUR package (now with real checksum)
     update_aur_package "$version" "$annotation"
 
-    # Show manual push instructions
+    # Show manual push instructions (only AUR now)
     show_push_instructions "$version"
 
     echo
     print_success "Release preparation complete!"
-    print_step "Don't forget to push the AUR changes manually"
+    print_step "Don't forget to push the changes manually"
 }
 
 # Run main function with all arguments
