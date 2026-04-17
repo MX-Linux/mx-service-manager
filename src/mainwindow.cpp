@@ -25,8 +25,10 @@
 
 #include <QDebug>
 #include <QDir>
+#include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <QRegularExpression>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -80,11 +82,21 @@ MainWindow::MainWindow(QWidget *parent)
     defaultForeground = palette.color(QPalette::Text);
     ui->listServices->addItem(tr("Loading..."));
 
-    dependTargets
-        = cmd.getOut("grep --no-filename \"TARGETS = \" /etc/init.d/.depend.start /etc/init.d/.depend.boot |  "
-                     "sed  -e ':a;N;$!ba;s/\\n/ /' -e 's/TARGETS = //g'",
-                     true)
-              .split(' ', Qt::SkipEmptyParts);
+    dependTargets.clear();
+    for (const QString &path : {QStringLiteral("/etc/init.d/.depend.start"), QStringLiteral("/etc/init.d/.depend.boot")}) {
+        QFile file(path);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            continue;
+        }
+        while (!file.atEnd()) {
+            const QString line = QString::fromUtf8(file.readLine());
+            const int idx = line.indexOf(QLatin1String("TARGETS = "));
+            if (idx >= 0) {
+                dependTargets.append(
+                    line.mid(idx + 10).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts));
+            }
+        }
+    }
 
     ui->labelCount->setText(tr("Loading..."));
     auto loadingTimer = new QTimer(this);
