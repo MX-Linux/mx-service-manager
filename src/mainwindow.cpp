@@ -330,13 +330,18 @@ std::optional<QString> MainWindow::sanitizeServiceName(const QString &rawName)
     return name;
 }
 
+QString MainWindow::systemctlCmd(const QString &baseCmd, bool isUserService)
+{
+    if (isUserService) [[unlikely]] {
+        return QStringLiteral("systemctl --user ") % baseCmd;
+    }
+    return QStringLiteral("systemctl ") % baseCmd;
+}
+
 QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
 {
-    QString cmdStr = "systemctl list-unit-files --type=service --state=enabled -o json";
-    if (isUserService) [[unlikely]] {
-        cmdStr = "systemctl --user list-unit-files --type=service --state=enabled -o json";
-    }
-    const auto enabled = cmd.getOut(cmdStr).trimmed();
+    const auto enabled = cmd.getOut(
+        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=enabled -o json"), isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(enabled.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for enabled services.";
@@ -469,11 +474,8 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
                                                       const QSet<QString> &enabledServices,
                                                       bool isUserService)
 {
-    QString cmdStr = "systemctl list-units --type=service --all -o json";
-    if (isUserService) [[unlikely]] {
-        cmdStr = "systemctl --user list-units --type=service --all -o json";
-    }
-    const auto list = cmd.getOut(cmdStr).trimmed();
+    const auto list = cmd.getOut(
+        systemctlCmd(QStringLiteral("list-units --type=service --all -o json"), isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(list.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for service units.";
@@ -518,11 +520,8 @@ void MainWindow::processSystemdActiveInactiveServices(QStringList &names,
 
 void MainWindow::processSystemdMaskedServices(QStringList &names, bool isUserService)
 {
-    QString cmdStr = "systemctl list-unit-files --type=service --state=masked -o json";
-    if (isUserService) [[unlikely]] {
-        cmdStr = "systemctl --user list-unit-files --type=service --state=masked -o json";
-    }
-    const auto masked = cmd.getOut(cmdStr).trimmed();
+    const auto masked = cmd.getOut(
+        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=masked -o json"), isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(masked.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for masked services.";

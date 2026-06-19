@@ -84,6 +84,7 @@ private:
     [[nodiscard]] QString docPath(const QString &fileName) const;
     void fetchTooltipDescription();
     [[nodiscard]] std::optional<QString> sanitizeServiceName(const QString &rawName);
+    [[nodiscard]] static QString systemctlCmd(const QString &baseCmd, bool isUserService);
     QSet<QString> loadSystemdEnabledServices(bool isUserService);
     QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
