@@ -639,7 +639,6 @@ void MainWindow::displayServices() noexcept
 
 void MainWindow::pushAbout_clicked()
 {
-    hide();
     displayAboutMsgBox(
         this,
         tr("About %1") % tr("MX Service Manager"),
@@ -648,8 +647,6 @@ void MainWindow::pushAbout_clicked()
             % R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
             % tr("Copyright (c) MX Linux") % "<br /><br /></p>",
         docPath(QStringLiteral("license.html")), tr("%1 License").arg(windowTitle()));
-
-    show();
 }
 
 void MainWindow::pushEnableDisable_clicked()
