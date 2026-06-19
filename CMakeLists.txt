@@ -146,7 +146,6 @@ target_link_libraries(mx-service-manager
 
 # Set compiler flags
 target_compile_options(mx-service-manager PRIVATE
-    -Wpedantic
     -pedantic
     -Werror=return-type
     -Werror=switch
@@ -183,6 +182,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     endif()
 endif()
 
+# Test infrastructure
+option(BUILD_TESTS "Build tests" OFF)
+if(BUILD_TESTS)
+    enable_testing()
+    add_test(NAME helper_smoke COMMAND helper true)
+endif()
+
 # Handle translations
 qt6_add_translations(mx-service-manager
     TS_FILES ${TRANSLATION_FILES}
@@ -206,7 +212,6 @@ target_link_libraries(helper
 )
 
 target_compile_options(helper PRIVATE
-    -Wpedantic
     -pedantic
     -Werror=return-type
     -Werror=switch
