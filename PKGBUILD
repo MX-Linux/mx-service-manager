@@ -21,6 +21,7 @@ build() {
     cmake -G Ninja \
         -B build \
         -DCMAKE_BUILD_TYPE=Release \
+        -DHELPER_INSTALL_DIR=/usr/lib/mx-service-manager \
         -DCMAKE_INSTALL_PREFIX=/usr \
         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
         -DPROJECT_VERSION_OVERRIDE="${pkgver}"
@@ -42,7 +43,7 @@ package() {
     # Install helper and polkit policy
     install -dm755 "${pkgdir}/usr/lib/mx-service-manager"
     install -Dm755 build/helper "${pkgdir}/usr/lib/mx-service-manager/helper"
-    install -Dm644 scripts/org.mxlinux.pkexec.mxsm-helper.policy \
+    install -Dm644 build/org.mxlinux.pkexec.mxsm-helper.policy \
         "${pkgdir}/usr/share/polkit-1/actions/org.mxlinux.pkexec.mxsm-helper.policy"
 
     # Install desktop file
