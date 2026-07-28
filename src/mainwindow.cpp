@@ -662,8 +662,12 @@ void MainWindow::pushEnableDisable_clicked()
         ui->pushEnableDisable->setEnabled(true);
         return;
     }
-    auto service = currentItem->text();
     auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
+    if (ptrService == nullptr) {
+        ui->pushEnableDisable->setEnabled(true);
+        return;
+    }
+    auto service = currentItem->text();
     if (ui->pushEnableDisable->text() == tr("&Enable at boot")) {
         if (!ptrService->enable()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
@@ -721,8 +725,12 @@ void MainWindow::pushStartStop_clicked()
         ui->pushStartStop->setEnabled(true);
         return;
     }
-    auto service = currentItem->text();
     auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
+    if (ptrService == nullptr) {
+        ui->pushStartStop->setEnabled(true);
+        return;
+    }
+    auto service = currentItem->text();
     if (ui->pushStartStop->text() == tr("S&tart")) {
         if (!ptrService->start()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
