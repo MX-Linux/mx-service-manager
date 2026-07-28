@@ -50,7 +50,7 @@ package() {
     install -Dm644 mx-service-manager.desktop "${pkgdir}/usr/share/applications/mx-service-manager.desktop"
 
     # Install icons
-    install -Dm644 mx-service-manager.png "${pkgdir}/usr/share/icons/hicolor/48x48/apps/mx-service-manager.png"
+    install -Dm644 mx-service-manager.png "${pkgdir}/usr/share/icons/hicolor/64x64/apps/mx-service-manager.png"
     install -Dm644 mx-service-manager.png "${pkgdir}/usr/share/pixmaps/mx-service-manager.png"
 
     # Install documentation
