@@ -204,9 +204,13 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     if (!current) {
         return;
     }
-    ui->textBrowser->setText(current->data(Qt::UserRole).value<Service *>()->getInfo());
-    bool running = current->data(Qt::UserRole).value<Service *>()->isRunning();
-    bool enabled = current->data(Qt::UserRole).value<Service *>()->isEnabled();
+    const auto *service = current->data(Qt::UserRole).value<Service *>();
+    if (!service) {
+        return;
+    }
+    ui->textBrowser->setText(service->getInfo());
+    bool running = service->isRunning();
+    bool enabled = service->isEnabled();
     if (running) {
         ui->pushStartStop->setText(tr("&Stop"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("stop"));
