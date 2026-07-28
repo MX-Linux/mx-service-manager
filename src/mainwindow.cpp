@@ -653,8 +653,13 @@ void MainWindow::pushEnableDisable_clicked()
 {
     ui->pushEnableDisable->setEnabled(false);
     savedRow = ui->listServices->currentRow();
-    auto service = ui->listServices->currentItem()->text();
-    auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
+    const auto *currentItem = ui->listServices->currentItem();
+    if (currentItem == nullptr) {
+        ui->pushEnableDisable->setEnabled(true);
+        return;
+    }
+    auto service = currentItem->text();
+    auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
     if (ui->pushEnableDisable->text() == tr("&Enable at boot")) {
         if (!ptrService->enable()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
@@ -707,8 +712,13 @@ void MainWindow::pushStartStop_clicked()
 {
     ui->pushStartStop->setEnabled(false);
     savedRow = ui->listServices->currentRow();
-    auto service = ui->listServices->currentItem()->text();
-    auto *ptrService = ui->listServices->currentItem()->data(Qt::UserRole).value<Service *>();
+    const auto *currentItem = ui->listServices->currentItem();
+    if (currentItem == nullptr) {
+        ui->pushStartStop->setEnabled(true);
+        return;
+    }
+    auto service = currentItem->text();
+    auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
     if (ui->pushStartStop->text() == tr("S&tart")) {
         if (!ptrService->start()) {
             QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
