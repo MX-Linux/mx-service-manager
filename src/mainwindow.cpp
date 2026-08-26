@@ -286,6 +286,21 @@ void MainWindow::fetchTooltipDescription()
         return;
     }
 
+    // Keep the Service alive for the duration of the background fetch: a refresh
+    // (listServices()) can clear the `services` list and drop the last QSharedPointer
+    // reference to this Service while the background thread is still using it.
+    QSharedPointer<Service> serviceShared;
+    for (const auto &svc : services) {
+        if (svc.get() == service) {
+            serviceShared = svc;
+            break;
+        }
+    }
+    if (!serviceShared) {
+        pendingTooltipIndex = QPersistentModelIndex();
+        return;
+    }
+
     tooltipInProgress = true;
     activeTooltipIndex = pendingTooltipIndex;
     pendingTooltipIndex = QPersistentModelIndex();
@@ -316,7 +331,7 @@ void MainWindow::fetchTooltipDescription()
         });
     }
 
-    tooltipWatcher->setFuture(QtConcurrent::run([service]() { return service->getDescription(); }));
+    tooltipWatcher->setFuture(QtConcurrent::run([serviceShared]() { return serviceShared->getDescription(); }));
 }
 
 std::optional<QString> MainWindow::sanitizeServiceName(const QString &rawName)
