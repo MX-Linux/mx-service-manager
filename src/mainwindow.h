@@ -83,9 +83,20 @@ private:
     QFutureWatcher<QList<QSharedPointer<Service>>> *servicesWatcher = nullptr;
     std::function<void()> onServicesLoaded;
 
+    // Selected-service detail fetching (async, mirrors the tooltip mechanism)
+    QTimer *selectionInfoTimer = nullptr;
+    QFutureWatcher<QString> *selectionInfoWatcher = nullptr;
+    QPersistentModelIndex pendingSelectionIndex;
+    QPersistentModelIndex activeSelectionIndex;
+    Service *activeSelectionService = nullptr;
+    bool selectionInfoInProgress = false;
+
     void cancelPendingTooltip();
+    void cancelPendingSelectionInfo();
     [[nodiscard]] QString docPath(const QString &fileName) const;
+    [[nodiscard]] QSharedPointer<Service> findServiceShared(Service *raw) const;
     void fetchTooltipDescription();
+    void fetchSelectionInfo();
     void loadServicesAsync(std::function<void()> onLoaded);
     [[nodiscard]] static std::optional<QString> sanitizeServiceName(const QString &rawName);
     [[nodiscard]] static QString systemctlCmd(const QString &baseCmd, bool isUserService);

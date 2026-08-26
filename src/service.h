@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QString>
 
+#include <atomic>
+
 class Service
 {
     Q_DISABLE_COPY(Service)
@@ -48,8 +50,11 @@ public:
 
 private:
     QString name;
-    bool running = false;
-    bool enabled = false;
+    // Written on the GUI thread by start()/stop()/enable()/disable(), read from a
+    // background thread by getInfo()/getDescription() during async detail/tooltip
+    // fetches (see MainWindow::fetchSelectionInfo/fetchTooltipDescription).
+    std::atomic<bool> running = false;
+    std::atomic<bool> enabled = false;
     bool userService = false;
     static QString getInfoFromFile(const QString &name);
 };

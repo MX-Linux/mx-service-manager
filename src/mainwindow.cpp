@@ -44,7 +44,6 @@
 #include "common.h"
 #include "service.h"
 
-#include <algorithm>
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -158,6 +157,10 @@ MainWindow::~MainWindow()
         tooltipWatcher->cancel();
         tooltipWatcher->waitForFinished();
     }
+    if (selectionInfoWatcher) {
+        selectionInfoWatcher->cancel();
+        selectionInfoWatcher->waitForFinished();
+    }
     if (servicesWatcher) {
         servicesWatcher->waitForFinished();
     }
@@ -211,6 +214,8 @@ void MainWindow::itemUpdated()
 void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     Q_UNUSED(previous);
+    cancelPendingSelectionInfo();
+
     if (!current) {
         return;
     }
@@ -218,7 +223,20 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     if (!service) {
         return;
     }
-    ui->textBrowser->setText(service->getInfo());
+
+    ui->textBrowser->setText(tr("Loading..."));
+    pendingSelectionIndex = ui->listServices->indexFromItem(current);
+    if (pendingSelectionIndex.isValid()) {
+        if (!selectionInfoTimer) {
+            selectionInfoTimer = new QTimer(this);
+            selectionInfoTimer->setSingleShot(true);
+            connect(selectionInfoTimer, &QTimer::timeout, this, &MainWindow::fetchSelectionInfo);
+        }
+        // Short debounce so holding an arrow key or dragging the scrollbar doesn't spawn
+        // a (possibly root-elevated) subprocess for every item passed through.
+        selectionInfoTimer->start(150);
+    }
+
     bool running = service->isRunning();
     bool enabled = service->isEnabled();
     if (running) {
@@ -293,6 +311,16 @@ void MainWindow::loadServicesAsync(std::function<void()> onLoaded)
     servicesWatcher->setFuture(QtConcurrent::run(&MainWindow::buildServiceList, dependTargets));
 }
 
+QSharedPointer<Service> MainWindow::findServiceShared(Service *raw) const
+{
+    for (const auto &svc : services) {
+        if (svc.get() == raw) {
+            return svc;
+        }
+    }
+    return {};
+}
+
 void MainWindow::cancelPendingTooltip()
 {
     if (tooltipTimer) {
@@ -322,13 +350,7 @@ void MainWindow::fetchTooltipDescription()
     // Keep the Service alive for the duration of the background fetch: a refresh
     // (listServices()) can clear the `services` list and drop the last QSharedPointer
     // reference to this Service while the background thread is still using it.
-    QSharedPointer<Service> serviceShared;
-    for (const auto &svc : services) {
-        if (svc.get() == service) {
-            serviceShared = svc;
-            break;
-        }
-    }
+    const QSharedPointer<Service> serviceShared = findServiceShared(service);
     if (!serviceShared) {
         pendingTooltipIndex = QPersistentModelIndex();
         return;
@@ -344,9 +366,7 @@ void MainWindow::fetchTooltipDescription()
         connect(tooltipWatcher, &QFutureWatcher<QString>::finished, this, [this]() {
             const QString description = tooltipWatcher->result();
             QListWidgetItem *activeItem = ui->listServices->itemFromIndex(activeTooltipIndex);
-            const bool serviceValid = activeTooltipService
-                && std::any_of(services.begin(), services.end(),
-                               [this](const auto &svc) { return svc.get() == activeTooltipService; });
+            const bool serviceValid = activeTooltipService && findServiceShared(activeTooltipService);
 
             if (activeItem && activeItem->listWidget() && activeTooltipIndex.isValid() && serviceValid) {
                 if (!description.isEmpty()) {
@@ -365,6 +385,68 @@ void MainWindow::fetchTooltipDescription()
     }
 
     tooltipWatcher->setFuture(QtConcurrent::run([serviceShared]() { return serviceShared->getDescription(); }));
+}
+
+void MainWindow::cancelPendingSelectionInfo()
+{
+    if (selectionInfoTimer) {
+        selectionInfoTimer->stop();
+    }
+    pendingSelectionIndex = QPersistentModelIndex();
+}
+
+void MainWindow::fetchSelectionInfo()
+{
+    if (!pendingSelectionIndex.isValid() || selectionInfoInProgress) {
+        return;
+    }
+
+    QListWidgetItem *item = ui->listServices->itemFromIndex(pendingSelectionIndex);
+    if (!item) {
+        pendingSelectionIndex = QPersistentModelIndex();
+        return;
+    }
+
+    auto *service = item->data(Qt::UserRole).value<Service *>();
+    if (!service) {
+        pendingSelectionIndex = QPersistentModelIndex();
+        return;
+    }
+
+    const QSharedPointer<Service> serviceShared = findServiceShared(service);
+    if (!serviceShared) {
+        pendingSelectionIndex = QPersistentModelIndex();
+        return;
+    }
+
+    selectionInfoInProgress = true;
+    activeSelectionIndex = pendingSelectionIndex;
+    pendingSelectionIndex = QPersistentModelIndex();
+    activeSelectionService = service;
+
+    if (!selectionInfoWatcher) {
+        selectionInfoWatcher = new QFutureWatcher<QString>(this);
+        connect(selectionInfoWatcher, &QFutureWatcher<QString>::finished, this, [this]() {
+            const QString info = selectionInfoWatcher->result();
+            QListWidgetItem *activeItem = ui->listServices->itemFromIndex(activeSelectionIndex);
+            const bool serviceValid = activeSelectionService && findServiceShared(activeSelectionService);
+            const bool stillSelected = activeItem && activeItem->listWidget()
+                && activeItem == ui->listServices->currentItem();
+
+            if (stillSelected && activeSelectionIndex.isValid() && serviceValid) {
+                ui->textBrowser->setText(info);
+            }
+
+            selectionInfoInProgress = false;
+            activeSelectionIndex = QPersistentModelIndex();
+            activeSelectionService = nullptr;
+            if (pendingSelectionIndex.isValid()) {
+                fetchSelectionInfo();
+            }
+        });
+    }
+
+    selectionInfoWatcher->setFuture(QtConcurrent::run([serviceShared]() { return serviceShared->getInfo(); }));
 }
 
 // static
