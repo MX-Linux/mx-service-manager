@@ -89,7 +89,7 @@ private:
     void loadServicesAsync(std::function<void()> onLoaded);
     [[nodiscard]] static std::optional<QString> sanitizeServiceName(const QString &rawName);
     [[nodiscard]] static QString systemctlCmd(const QString &baseCmd, bool isUserService);
-    static QSet<QString> loadSystemdEnabledServices(bool isUserService);
+    static void loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames);
     static QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
@@ -100,6 +100,7 @@ private:
                                               const QSet<QString> &enabledServices,
                                               const QStringList &dependTargets,
                                               bool isUserService = false);
-    static void processSystemdMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names, bool isUserService = false);
+    static void appendMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+                                    const QStringList &maskedNames, bool isUserService = false);
     static void processSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets);
 };

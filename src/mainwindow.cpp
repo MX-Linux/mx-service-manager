@@ -392,32 +392,42 @@ QString MainWindow::systemctlCmd(const QString &baseCmd, bool isUserService)
 }
 
 // static
-QSet<QString> MainWindow::loadSystemdEnabledServices(bool isUserService)
+void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames)
 {
-    const auto enabled = Cmd().getOut(
-        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=enabled -o json"), isUserService)).trimmed();
-    auto doc = QJsonDocument::fromJson(enabled.toUtf8());
+    // A single call covering both states, instead of one "list-unit-files" call per state.
+    const auto out = Cmd().getOut(
+        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=enabled,masked -o json"), isUserService)).trimmed();
+    auto doc = QJsonDocument::fromJson(out.toUtf8());
     if (!doc.isArray()) {
-        qDebug() << "JSON data is not an array for enabled services.";
-        return {};
+        qDebug() << "JSON data is not an array for enabled/masked services.";
+        return;
     }
 
-    QSet<QString> enabledNames;
     const auto jsonArray = doc.array();
-    enabledNames.reserve(jsonArray.size());
+    enabledNames.reserve(enabledNames.size() + jsonArray.size());
 
     const QLatin1String unitFileKey("unit_file");
+    const QLatin1String stateKey("state");
+    const QLatin1String enabledValue("enabled");
+    const QLatin1String maskedValue("masked");
+
     for (const auto &value : jsonArray) {
         if (!value.isObject()) [[unlikely]] {
             continue;
         }
         const auto obj = value.toObject();
-        if (const auto name = sanitizeServiceName(obj.value(unitFileKey).toString())) {
-            enabledNames.insert(*name);
+        const auto nameOpt = sanitizeServiceName(obj.value(unitFileKey).toString());
+        if (!nameOpt) [[unlikely]] {
+            continue;
+        }
+
+        const QString state = obj.value(stateKey).toString();
+        if (state == enabledValue) {
+            enabledNames.insert(*nameOpt);
+        } else if (state == maskedValue) {
+            maskedNames.append(*nameOpt);
         }
     }
-
-    return enabledNames;
 }
 
 // static
@@ -520,13 +530,19 @@ void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &servi
 void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets)
 {
     QStringList names;
-    const QSet<QString> enabledSystemServices = loadSystemdEnabledServices(false);
-    const QSet<QString> enabledUserServices = loadSystemdEnabledServices(true);
+
+    QSet<QString> enabledSystemServices;
+    QStringList maskedSystemServices;
+    loadSystemdUnitFileStates(false, enabledSystemServices, maskedSystemServices);
+
+    QSet<QString> enabledUserServices;
+    QStringList maskedUserServices;
+    loadSystemdUnitFileStates(true, enabledUserServices, maskedUserServices);
 
     processSystemdActiveInactiveServices(services, names, enabledSystemServices, dependTargets, false); // System services
-    processSystemdMaskedServices(services, names, false); // System services
+    appendMaskedServices(services, names, maskedSystemServices, false); // System services
     processSystemdActiveInactiveServices(services, names, enabledUserServices, dependTargets, true); // User services
-    processSystemdMaskedServices(services, names, true); // User services
+    appendMaskedServices(services, names, maskedUserServices, true); // User services
 }
 
 // static
@@ -581,35 +597,17 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
 }
 
 // static
-void MainWindow::processSystemdMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names, bool isUserService)
+void MainWindow::appendMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+                                     const QStringList &maskedNames, bool isUserService)
 {
-    const auto masked = Cmd().getOut(
-        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=masked -o json"), isUserService)).trimmed();
-    auto doc = QJsonDocument::fromJson(masked.toUtf8());
-    if (!doc.isArray()) {
-        qDebug() << "JSON data is not an array for masked services.";
-        return;
-    }
-
-    auto jsonArray = doc.array();
     QSet<QString> nameSet(names.begin(), names.end());
-    services.reserve(services.size() + jsonArray.size());
-    nameSet.reserve(nameSet.size() + jsonArray.size());
+    services.reserve(services.size() + maskedNames.size());
+    nameSet.reserve(nameSet.size() + maskedNames.size());
 
-    const QLatin1String unitFileKey("unit_file");
-
-    for (const auto &value : jsonArray) {
-        if (!value.isObject()) [[unlikely]] {
+    for (const auto &name : maskedNames) {
+        if (nameSet.contains(name)) [[unlikely]] {
             continue;
         }
-        const auto obj = value.toObject();
-        const auto nameOpt = sanitizeServiceName(obj.value(unitFileKey).toString());
-
-        if (!nameOpt || nameSet.contains(*nameOpt)) [[unlikely]] {
-            continue;
-        }
-
-        const QString &name = *nameOpt;
         nameSet.insert(name);
         services.append(QSharedPointer<Service>::create(name, false, false, isUserService));
     }
