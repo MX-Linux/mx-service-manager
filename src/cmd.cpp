@@ -6,7 +6,7 @@
 #include <QEventLoop>
 #include <QFile>
 #include <QMessageBox>
-#include <QTimer>
+#include <QMetaObject>
 
 #include <unistd.h>
 
@@ -87,9 +87,16 @@ bool Cmd::runAsRoot(const QStringList &helperArgs, bool quiet, bool waitForFinis
 
 void Cmd::handleElevationError()
 {
-    QMessageBox::critical(nullptr, tr("Administrator Access Required"),
-                          tr("This operation requires administrator privileges. Please restart the application "
-                             "and enter your password when prompted."));
-    QTimer::singleShot(0, qApp, &QApplication::quit);
-    exit(EXIT_FAILURE);
+    // runAsRoot() can be called from a background thread (e.g. QtConcurrent service
+    // discovery), but QMessageBox must only be created on the GUI thread. Compute the
+    // translated text here (translation lookup itself is thread-safe) and marshal the
+    // actual dialog/quit onto the main thread; QMetaObject::invokeMethod runs it
+    // synchronously if we're already there.
+    const QString title = tr("Administrator Access Required");
+    const QString message = tr("This operation requires administrator privileges. Please restart the application "
+                                "and enter your password when prompted.");
+    QMetaObject::invokeMethod(qApp, [title, message] {
+        QMessageBox::critical(nullptr, title, message);
+        exit(EXIT_FAILURE);
+    });
 }

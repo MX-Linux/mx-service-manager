@@ -29,9 +29,9 @@
 #include <QSettings>
 #include <QSet>
 
+#include <functional>
 #include <optional>
 
-#include "cmd.h"
 #include "service.h"
 
 namespace Ui
@@ -63,7 +63,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSettings settings;
-    Cmd cmd;
     QStringList dependTargets {};
     QColor defaultForeground;
     QColor runningColor {Qt::darkGreen};
@@ -80,20 +79,27 @@ private:
     Service *activeTooltipService = nullptr;
     bool tooltipInProgress = false;
 
+    // Background service-list loading
+    QFutureWatcher<QList<QSharedPointer<Service>>> *servicesWatcher = nullptr;
+    std::function<void()> onServicesLoaded;
+
     void cancelPendingTooltip();
     [[nodiscard]] QString docPath(const QString &fileName) const;
     void fetchTooltipDescription();
-    [[nodiscard]] std::optional<QString> sanitizeServiceName(const QString &rawName);
+    void loadServicesAsync(std::function<void()> onLoaded);
+    [[nodiscard]] static std::optional<QString> sanitizeServiceName(const QString &rawName);
     [[nodiscard]] static QString systemctlCmd(const QString &baseCmd, bool isUserService);
-    QSet<QString> loadSystemdEnabledServices(bool isUserService);
-    QString decodeEscapeSequences(const QString &input);
+    static QSet<QString> loadSystemdEnabledServices(bool isUserService);
+    static QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
-    void listServices();
-    void processNonSystemdServices();
-    void processSystemdActiveInactiveServices(QStringList &names,
+    [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList(const QStringList &dependTargets);
+    static void processNonSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets);
+    static void processSystemdActiveInactiveServices(QList<QSharedPointer<Service>> &services,
+                                              QStringList &names,
                                               const QSet<QString> &enabledServices,
+                                              const QStringList &dependTargets,
                                               bool isUserService = false);
-    void processSystemdMaskedServices(QStringList &names, bool isUserService = false);
-    void processSystemdServices();
+    static void processSystemdMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names, bool isUserService = false);
+    static void processSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets);
 };
