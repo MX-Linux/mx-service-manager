@@ -86,10 +86,11 @@ bool Service::isEnabled(const QString &name, bool isUserService)
 
 QString Service::getInit()
 {
-    QProcess proc;
-    proc.start("cat", {"/proc/1/comm"});
-    proc.waitForFinished();
-    return proc.readAll().trimmed();
+    QFile file(QStringLiteral("/proc/1/comm"));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return {};
+    }
+    return QString::fromUtf8(file.readAll()).trimmed();
 }
 
 bool Service::isRunning() const
