@@ -299,7 +299,13 @@ bool Service::enable()
     unrestoredMaskChange = false;
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
-        const bool wasMasked = getUnitFileState(name, userService) == QLatin1String("masked");
+        // systemd reports two distinct mask variants via is-enabled: "masked" (persistent,
+        // /etc symlink) and "masked-runtime" (temporary, /run symlink, cleared on reboot).
+        // Both must be unmasked before enable can succeed, and rollback must restore the
+        // same variant rather than always re-applying a persistent mask.
+        const QString initialMaskState = getUnitFileState(name, userService);
+        const bool wasRuntimeMasked = initialMaskState == QLatin1String("masked-runtime");
+        const bool wasMasked = wasRuntimeMasked || initialMaskState == QLatin1String("masked");
         if (wasMasked) {
             (userService ? cmd.run("systemctl --user unmask " % name) : Cmd().runAsRoot({"systemctl", "unmask", name}));
         }
@@ -313,9 +319,15 @@ bool Service::enable()
             // Restore the previous masked state rather than leaving the unit unmasked
             // while still reporting that nothing was applied. Verify the rollback itself
             // actually landed -- it can fail too (e.g. a cancelled auth prompt).
-            const bool remaskOk = (userService ? cmd.run("systemctl --user mask " % name)
-                                                : Cmd().runAsRoot({"systemctl", "mask", name}));
-            if (!remaskOk || getUnitFileState(name, userService) != QLatin1String("masked")) {
+            const QString maskUserCmd = wasRuntimeMasked ? QString("systemctl --user mask --runtime " % name)
+                                                          : QString("systemctl --user mask " % name);
+            const bool remaskOk = (userService
+                                        ? cmd.run(maskUserCmd)
+                                        : Cmd().runAsRoot(wasRuntimeMasked
+                                                               ? QStringList{"systemctl", "mask", "--runtime", name}
+                                                               : QStringList{"systemctl", "mask", name}));
+            const QString expectedMaskState = wasRuntimeMasked ? QLatin1String("masked-runtime") : QLatin1String("masked");
+            if (!remaskOk || getUnitFileState(name, userService) != expectedMaskState) {
                 unrestoredMaskChange = true;
                 qWarning().noquote() << "Could not restore masked state for" << name
                                      << "after a failed enable attempt -- it may now be unmasked"
