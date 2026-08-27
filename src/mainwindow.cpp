@@ -809,18 +809,34 @@ void MainWindow::pushEnableDisable_clicked()
     auto service = currentItem->text();
     if (ui->pushEnableDisable->text() == tr("&Enable at boot")) {
         if (!ptrService->enable()) {
-            QMessageBox::warning(this, tr("Error"), tr("Could not enable %1").arg(service));
+            // Re-query the item's live status even on failure: a preceding step (e.g.
+            // unmasking) can still have changed real state that a failed enable() didn't
+            // restore, and this refreshes what's shown for it.
+            itemUpdated();
+            emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
+            if (ptrService->hadUnrestoredMaskChange()) {
+                QMessageBox::warning(
+                    this, tr("Error"),
+                    tr("Could not enable %1, and its previous state could not be fully restored. Please check its status.")
+                        .arg(service));
+            } else {
+                QMessageBox::warning(this, tr("Error"),
+                                      tr("Could not enable %1. Settings were not applied.").arg(service));
+            }
+        } else {
+            itemUpdated();
+            emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
+            QMessageBox::information(this, tr("Success"), tr("%1 was enabled at boot time.").arg(service));
         }
-        itemUpdated();
-        emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
-        QMessageBox::information(this, tr("Success"), tr("%1 was enabled at boot time.").arg(service));
     } else {
         if (!ptrService->disable()) {
-            QMessageBox::warning(this, tr("Error"), tr("Could not disable %1").arg(service));
+            QMessageBox::warning(this, tr("Error"),
+                                  tr("Could not disable %1. Settings were not applied.").arg(service));
+        } else {
+            itemUpdated();
+            emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
+            QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
         }
-        itemUpdated();
-        emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
-        QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
     }
     ui->pushEnableDisable->setEnabled(true);
 }

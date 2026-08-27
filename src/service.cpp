@@ -72,16 +72,28 @@ QString Service::getInfo() const
 bool Service::isEnabled(const QString &name, bool isUserService)
 {
     if (initSystem == QLatin1String("systemd")) {
-        QStringList args = {QLatin1String("-q"), QLatin1String("is-enabled"), name + QLatin1String(".service")};
-        if (isUserService) [[unlikely]] {
-            args.insert(0, QLatin1String("--user"));
-        }
-        return QProcess::execute(QLatin1String("systemctl"), args) == 0;
+        // Only the literal "enabled" state counts, matching
+        // MainWindow::loadSystemdUnitFileStates(): `is-enabled` also exits 0 for states
+        // like "static", "alias", "generated" or "indirect", none of which mean the unit
+        // was actually enabled by us.
+        return getUnitFileState(name, isUserService) == QLatin1String("enabled");
     } else {
         // Check both runlevel 5 (multi-user with GUI) and runlevel S (single-user/boot)
         QString command = QString(QLatin1String("[[ -e /etc/rc5.d/S*%1 || -e /etc/rcS.d/S*%1 ]]")).arg(name);
         return QProcess::execute(QLatin1String("/bin/bash"), {QLatin1String("-c"), command}) == 0;
     }
+}
+
+QString Service::getUnitFileState(const QString &name, bool isUserService)
+{
+    QStringList args = {QLatin1String("is-enabled"), name + QLatin1String(".service")};
+    if (isUserService) [[unlikely]] {
+        args.insert(0, QLatin1String("--user"));
+    }
+    QProcess process;
+    process.start(QLatin1String("systemctl"), args);
+    process.waitForFinished();
+    return QString::fromUtf8(process.readAllStandardOutput()).trimmed();
 }
 
 QString Service::getInit()
@@ -277,27 +289,53 @@ QString Service::getInfoFromFile(const QString &name)
     return info;
 }
 
+bool Service::hadUnrestoredMaskChange() const noexcept
+{
+    return unrestoredMaskChange;
+}
+
 bool Service::enable()
 {
+    unrestoredMaskChange = false;
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
-        // First unmask the service if it's masked
-        (userService ? cmd.run("systemctl --user unmask " % name) : Cmd().runAsRoot({"systemctl", "unmask", name}));
+        const bool wasMasked = getUnitFileState(name, userService) == QLatin1String("masked");
+        if (wasMasked) {
+            (userService ? cmd.run("systemctl --user unmask " % name) : Cmd().runAsRoot({"systemctl", "unmask", name}));
+        }
 
-        if (userService ? cmd.run("systemctl --user enable " % name) : Cmd().runAsRoot({"systemctl", "enable", name})) {
-            setEnabled(true);
-            return true;
+        (userService ? cmd.run("systemctl --user enable " % name) : Cmd().runAsRoot({"systemctl", "enable", name}));
+
+        // Base the rollback decision on the verified unit-file state, not the enable
+        // command's raw exit code: systemctl can exit 0 without the unit ending up
+        // "enabled" (or the reverse), so trust reality over the return code.
+        if (getUnitFileState(name, userService) != QLatin1String("enabled") && wasMasked) {
+            // Restore the previous masked state rather than leaving the unit unmasked
+            // while still reporting that nothing was applied. Verify the rollback itself
+            // actually landed -- it can fail too (e.g. a cancelled auth prompt).
+            const bool remaskOk = (userService ? cmd.run("systemctl --user mask " % name)
+                                                : Cmd().runAsRoot({"systemctl", "mask", name}));
+            if (!remaskOk || getUnitFileState(name, userService) != QLatin1String("masked")) {
+                unrestoredMaskChange = true;
+                qWarning().noquote() << "Could not restore masked state for" << name
+                                     << "after a failed enable attempt -- it may now be unmasked"
+                                        " even though enabling it did not succeed";
+            }
         }
     } else {
-        // For SysV init, first set defaults then enable
+        // For SysV init, first set defaults then enable. `defaults` alone can already
+        // enable the service (it creates the runlevel symlinks), so a failure of the
+        // later `enable` step doesn't necessarily mean nothing was applied.
         Cmd().runAsRoot({"update-rc.d", name, "defaults"});
 
-        if (Cmd().runAsRoot({"update-rc.d", name, "enable"})) {
-            setEnabled(true);
-            return true;
-        }
+        Cmd().runAsRoot({"update-rc.d", name, "enable"});
     }
-    return false;
+    // Re-check the real state instead of trusting the last sub-command's exit code: a
+    // preceding step (unmask, or SysV defaults) can succeed and change the effective
+    // enabled state even when the final command fails.
+    const bool nowEnabled = isEnabled(name, userService);
+    setEnabled(nowEnabled);
+    return nowEnabled;
 }
 
 bool Service::disable()
