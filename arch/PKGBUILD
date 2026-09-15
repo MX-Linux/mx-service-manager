@@ -46,8 +46,11 @@ package() {
 
     install -Dm755 build/mx-service-manager "${pkgdir}/usr/bin/mx-service-manager"
 
-    install -dm755 "${pkgdir}/usr/share/mx-service-manager/locale"
-    install -Dm644 build/*.qm "${pkgdir}/usr/share/mx-service-manager/locale/" 2>/dev/null || true
+    # "install -D" with several sources needs -t, and then creates the
+    # destination directory itself, so the separate install -dm755 is gone. No
+    # error suppression either: the old "2>/dev/null || true" swallowed a glob
+    # that matched nothing, shipping the package with no translations at all.
+    install -Dm644 -t "${pkgdir}/usr/share/mx-service-manager/locale/" build/*.qm
 
     install -Dm644 mx-service-manager.desktop "${pkgdir}/usr/share/applications/mx-service-manager.desktop"
 
