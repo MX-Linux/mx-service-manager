@@ -1,6 +1,6 @@
 # Maintainer: Adrian <adrian@mxlinux.org>
 pkgname=mx-service-manager
-pkgver=${PKGVER:-25.10}
+pkgver=${PKGVER:-26.08}
 pkgrel=1
 pkgdesc="Service Manager - MX Linux service management tool"
 arch=('x86_64' 'i686')
