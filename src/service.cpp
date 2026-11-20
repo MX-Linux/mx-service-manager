@@ -135,6 +135,11 @@ bool Service::isMasked() const
     return state == "masked" || state == "masked-runtime";
 }
 
+bool Service::isRunningSubState(const QString &subState)
+{
+    return subState == "running";
+}
+
 bool Service::isRunning() const
 {
     return running;
@@ -228,7 +233,14 @@ bool Service::start()
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
         if (userService ? cmd.run({"systemctl", "--user", "start", "--", name}) : Cmd().runAsRoot({"systemctl", "start", name})) {
-            setRunning(true);
+            QStringList query {"systemctl", "show", "-p", "SubState", "--value", "--", name};
+            if (userService) {
+                query.insert(1, "--user");
+            }
+            const QString subState = cmd.getOut(query, true).trimmed();
+            if (!subState.isEmpty()) {
+                setRunning(isRunningSubState(subState));
+            }
             return true;
         }
     } else {

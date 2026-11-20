@@ -38,6 +38,7 @@ public:
     [[nodiscard]] QString getName() const;
     [[nodiscard]] bool isEnabled() const noexcept;
     [[nodiscard]] bool isRunning() const;
+    [[nodiscard]] static bool isRunningSubState(const QString &subState);
     [[nodiscard]] bool isMasked() const;
     [[nodiscard]] bool isUserService() const noexcept;
     // True after enable() failed to restore a mask state it changed along the way (e.g. the

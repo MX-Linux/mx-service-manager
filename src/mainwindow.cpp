@@ -566,7 +566,6 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
     const QLatin1String loadKey("load");
     const QLatin1String subKey("sub");
     const QLatin1String notFoundValue("not-found");
-    const QLatin1String runningValue("running");
 
     for (const auto &value : jsonArray) {
         if (!value.isObject()) [[unlikely]] {
@@ -582,7 +581,7 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
 
         names.insert(name);
 
-        const bool isRunning = (obj.value(subKey).toString() == runningValue);
+        const bool isRunning = Service::isRunningSubState(obj.value(subKey).toString());
         const bool isEnabled = enabledServices.contains(name);
 
         services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
@@ -821,7 +820,6 @@ void MainWindow::pushStartStop_clicked()
                                      ? tr("%1 is masked. Unmask it before starting it manually.").arg(service)
                                      : tr("Could not start %1").arg(service));
         } else {
-            ptrService->setRunning(true);
             itemUpdated();
             emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
             QMessageBox::information(this, tr("Success"), tr("%1 was started.").arg(service));
