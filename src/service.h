@@ -45,6 +45,7 @@ public:
     [[nodiscard]] bool hadUnrestoredMaskChange() const noexcept;
     [[nodiscard]] static QString getInit();
     [[nodiscard]] static bool isEnabled(const QString &name, bool isUserService = false);
+    [[nodiscard]] static bool unitEnabled(const QString &name, const QString &state, bool isUserService);
     bool disable();
     bool enable();
     bool start();

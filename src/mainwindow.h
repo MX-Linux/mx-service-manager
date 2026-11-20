@@ -62,7 +62,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QSettings settings;
-    QStringList dependTargets {};
     QColor defaultForeground;
     QColor runningColor {Qt::darkGreen};
     QColor enabledColor {Qt::darkYellow};
@@ -104,14 +103,13 @@ private:
     static void loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
-    [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList(const QStringList &dependTargets);
-    static void processNonSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets);
+    [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList();
+    static void processNonSystemdServices(QList<QSharedPointer<Service>> &services);
     static void processSystemdActiveInactiveServices(QList<QSharedPointer<Service>> &services,
                                               QStringList &names,
                                               const QSet<QString> &enabledServices,
-                                              const QStringList &dependTargets,
                                               bool isUserService = false);
     static void appendMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
                                     const QStringList &maskedNames, bool isUserService = false);
-    static void processSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets);
+    static void processSystemdServices(QList<QSharedPointer<Service>> &services);
 };

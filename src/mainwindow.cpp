@@ -36,7 +36,6 @@
 #include <QScreen>
 #include <QScrollBar>
 #include <QShortcut>
-#include <QTextStream>
 #include <QTimer>
 #include <QtConcurrent>
 
@@ -83,22 +82,6 @@ MainWindow::MainWindow(QWidget *parent)
     QPalette palette = ui->listServices->palette();
     defaultForeground = palette.color(QPalette::Text);
     ui->listServices->addItem(tr("Loading..."));
-
-    dependTargets.clear();
-    for (const QString &path : {QStringLiteral("/etc/init.d/.depend.start"), QStringLiteral("/etc/init.d/.depend.boot")}) {
-        QFile file(path);
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            continue;
-        }
-        while (!file.atEnd()) {
-            const QString line = QString::fromUtf8(file.readLine());
-            const int idx = line.indexOf(QLatin1String("TARGETS = "));
-            if (idx >= 0) {
-                dependTargets.append(
-                    line.mid(idx + 10).split(QRegularExpression("\\s+"), Qt::SkipEmptyParts));
-            }
-        }
-    }
 
     ui->labelCount->setText(tr("Loading..."));
     auto loadingTimer = new QTimer(this);
@@ -308,7 +291,7 @@ void MainWindow::loadServicesAsync(std::function<void()> onLoaded)
         });
     }
 
-    servicesWatcher->setFuture(QtConcurrent::run(&MainWindow::buildServiceList, dependTargets));
+    servicesWatcher->setFuture(QtConcurrent::run(&MainWindow::buildServiceList));
 }
 
 QSharedPointer<Service> MainWindow::findServiceShared(Service *raw) const
@@ -464,7 +447,7 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
 {
     // A single call covering both states, instead of one "list-unit-files" call per state.
     const auto out = Cmd().getOut(
-        systemctlCmd({"list-unit-files", "--type=service", "--state=enabled,masked", "-o", "json"}, isUserService)).trimmed();
+        systemctlCmd({"list-unit-files", "--type=service", "--state=enabled,masked,generated", "-o", "json"}, isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(out.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for enabled/masked services.";
@@ -476,7 +459,6 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
 
     const QLatin1String unitFileKey("unit_file");
     const QLatin1String stateKey("state");
-    const QLatin1String enabledValue("enabled");
     const QLatin1String maskedValue("masked");
 
     for (const auto &value : jsonArray) {
@@ -490,7 +472,7 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
         }
 
         const QString state = obj.value(stateKey).toString();
-        if (state == enabledValue) {
+        if (Service::unitEnabled(name, state, isUserService)) {
             enabledNames.insert(name);
         } else if (state == maskedValue) {
             maskedNames.append(name);
@@ -507,19 +489,19 @@ QString MainWindow::getHtmlColor(const QColor &color) noexcept
 }
 
 // static
-QList<QSharedPointer<Service>> MainWindow::buildServiceList(const QStringList &dependTargets)
+QList<QSharedPointer<Service>> MainWindow::buildServiceList()
 {
     QList<QSharedPointer<Service>> services;
     if (initSystem != QLatin1String("systemd")) {
-        processNonSystemdServices(services, dependTargets);
+        processNonSystemdServices(services);
     } else {
-        processSystemdServices(services, dependTargets);
+        processSystemdServices(services);
     }
     return services;
 }
 
 // static
-void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets)
+void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &services)
 {
     static const QRegularExpression dpkgRegex("dpkg-.*$");
     const auto list = Cmd().getOutAsRoot({"service", "--status-all"}, true).trimmed().split("\n");
@@ -540,13 +522,13 @@ void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &servi
             continue;
         }
 
-        bool enabled = dependTargets.contains(name) || Service::isEnabled(name);
+        bool enabled = Service::isEnabled(name);
         services.append(QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix), enabled, false));
     }
 }
 
 // static
-void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services, const QStringList &dependTargets)
+void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services)
 {
     QStringList names;
 
@@ -558,9 +540,9 @@ void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services
     QStringList maskedUserServices;
     loadSystemdUnitFileStates(true, enabledUserServices, maskedUserServices);
 
-    processSystemdActiveInactiveServices(services, names, enabledSystemServices, dependTargets, false); // System services
+    processSystemdActiveInactiveServices(services, names, enabledSystemServices, false); // System services
     appendMaskedServices(services, names, maskedSystemServices, false); // System services
-    processSystemdActiveInactiveServices(services, names, enabledUserServices, dependTargets, true); // User services
+    processSystemdActiveInactiveServices(services, names, enabledUserServices, true); // User services
     appendMaskedServices(services, names, maskedUserServices, true); // User services
 }
 
@@ -568,7 +550,6 @@ void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services
 void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Service>> &services,
                                                       QStringList &names,
                                                       const QSet<QString> &enabledServices,
-                                                      const QStringList &dependTargets,
                                                       bool isUserService)
 {
     const auto list = Cmd().getOut(
@@ -606,8 +587,7 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
         nameSet.insert(name);
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
-        const bool isEnabled = (!isUserService && dependTargets.contains(name.chopped(8)))
-            || enabledServices.contains(name);
+        const bool isEnabled = enabledServices.contains(name);
 
         services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
     }

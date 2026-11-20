@@ -70,26 +70,39 @@ QString Service::getInfo() const
     return info;
 }
 
-bool Service::isEnabled(const QString &name, bool isUserService)
+namespace {
+bool sysvEnabled(const QString &name)
 {
-    if (initSystem == QLatin1String("systemd")) {
-        // Only the literal "enabled" state counts, matching
-        // MainWindow::loadSystemdUnitFileStates(): `is-enabled` also exits 0 for states
-        // like "static", "alias", "generated" or "indirect", none of which mean the unit
-        // was actually enabled by us.
-        return getUnitFileState(name, isUserService) == QLatin1String("enabled");
-    } else {
-        for (const QChar level : QStringLiteral("S2345")) {
-            const QDir directory(QStringLiteral("/etc/rc%1.d").arg(level));
-            const auto entries = directory.entryInfoList({QStringLiteral("S[0-9][0-9]*")}, QDir::Files | QDir::CaseSensitive);
-            for (const QFileInfo &entry : entries) {
-                if (entry.isSymLink() && entry.fileName().mid(3) == name) {
-                    return true;
-                }
+    for (const QChar level : QStringLiteral("S2345")) {
+        const QDir directory(QStringLiteral("/etc/rc%1.d").arg(level));
+        const auto entries = directory.entryInfoList({QStringLiteral("S[0-9][0-9]*")}, QDir::Files | QDir::CaseSensitive);
+        for (const QFileInfo &entry : entries) {
+            if (entry.isSymLink() && entry.fileName().mid(3) == name) {
+                return true;
             }
         }
-        return false;
     }
+    return false;
+}
+}
+
+bool Service::unitEnabled(const QString &name, const QString &state, bool isUserService)
+{
+    if (!isUserService && state == "generated") {
+        QProcess process;
+        process.start("systemctl", {"show", "-p", "SourcePath", "--value", "--", name});
+        if (process.waitForFinished() && process.exitStatus() == QProcess::NormalExit && process.exitCode() == 0) {
+            const QFileInfo source(QString::fromUtf8(process.readAllStandardOutput()).trimmed());
+            return source.absolutePath() == "/etc/init.d" && source.isFile() && sysvEnabled(source.fileName());
+        }
+    }
+    return state == "enabled";
+}
+
+bool Service::isEnabled(const QString &name, bool isUserService)
+{
+    return initSystem == "systemd" ? unitEnabled(name, getUnitFileState(name, isUserService), isUserService)
+                                   : sysvEnabled(name);
 }
 
 QString Service::getUnitFileState(const QString &name, bool isUserService)
@@ -323,7 +336,7 @@ bool Service::enable()
         // Base the rollback decision on the verified unit-file state, not the enable
         // command's raw exit code: systemctl can exit 0 without the unit ending up
         // "enabled" (or the reverse), so trust reality over the return code.
-        if (getUnitFileState(name, userService) != QLatin1String("enabled") && wasMasked) {
+        if (wasMasked && !isEnabled(name, userService)) {
             // Restore the previous masked state rather than leaving the unit unmasked
             // while still reporting that nothing was applied. Verify the rollback itself
             // actually landed -- it can fail too (e.g. a cancelled auth prompt).
