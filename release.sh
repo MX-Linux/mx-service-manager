@@ -161,6 +161,23 @@ create_tag() {
     git show "$version" --stat
 }
 
+# Verify the destination before creating a release tag or editing package metadata.
+check_aur_checkout() {
+    local top
+    top=$(git -C "$AUR_DIR" rev-parse --show-toplevel) || return 1
+    if [ "$top" != "$(realpath "$AUR_DIR")" ] ||
+       [ "$(git -C "$AUR_DIR" branch --show-current)" != "$AUR_LOCAL_BRANCH" ]; then
+        print_error "Expected a separate $AUR_DIR checkout on branch $AUR_LOCAL_BRANCH"
+        return 1
+    fi
+    if ! git -C "$AUR_DIR" ls-files --error-unmatch -- PKGBUILD .SRCINFO >/dev/null ||
+       ! git -C "$AUR_DIR" diff --cached --quiet ||
+       ! git -C "$AUR_DIR" diff --quiet -- PKGBUILD .SRCINFO; then
+        print_error "The AUR index must be clean and both tracked package metadata files must match HEAD"
+        return 1
+    fi
+}
+
 # Update AUR package
 update_aur_package() {
     local version=$1
@@ -233,7 +250,7 @@ update_aur_package() {
 
     if [ -z "$checksum" ]; then
         print_error "Failed to download tarball after $retries attempts"
-        print_warning "Nothing was committed; $AUR_DIR/PKGBUILD has uncommitted edits. Re-run once the tag tarball is reachable."
+        print_warning "Nothing was committed; $AUR_DIR/PKGBUILD has uncommitted edits. Review the edits and restore the AUR metadata before retrying."
         exit 1
     fi
 
@@ -256,16 +273,12 @@ update_aur_package() {
     # Check if there are any changes to commit
     print_step "Checking for AUR package changes..."
 
-    if git -C "$AUR_DIR" diff --quiet && git -C "$AUR_DIR" diff --staged --quiet; then
+    if git -C "$AUR_DIR" diff --quiet HEAD -- PKGBUILD .SRCINFO; then
         print_warning "No changes in AUR package - skipping commit"
     else
         print_step "Committing AUR package changes..."
 
-        # Add all changes
-        git -C "$AUR_DIR" add .
-
-        # Commit changes
-        git -C "$AUR_DIR" commit -m "$annotation"
+        git -C "$AUR_DIR" commit --only -m "$annotation" -- PKGBUILD .SRCINFO
 
         print_success "AUR package updated and committed"
         echo
@@ -403,6 +416,7 @@ main() {
         fi
     fi
 
+    check_aur_checkout
     print_step "Checking if tag '$version' already exists..."
     if tag_exists "$version"; then
         print_warning "Tag '$version' already exists; no new tag will be created"
