@@ -56,7 +56,7 @@ package() {
     # Install documentation
     install -dm755 "${pkgdir}/usr/share/doc/mx-service-manager"
 
-    install -Dm644 help/*.1 "${pkgdir}/usr/share/man/man1/" 2>/dev/null || true
+    install -Dm644 -t "${pkgdir}/usr/share/man/man1/" help/*.1
     if [ -d docs ]; then
         cp -r docs/* "${pkgdir}/usr/share/doc/mx-service-manager/" 2>/dev/null || true
     fi
