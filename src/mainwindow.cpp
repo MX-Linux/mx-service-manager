@@ -214,7 +214,10 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
 
     bool running = service->isRunning();
     bool enabled = service->isEnabled();
-    if (running) {
+    if (!service->hasKnownRunState()) {
+        ui->pushStartStop->setText(tr("Status unknown"));
+        ui->pushStartStop->setIcon({});
+    } else if (running) {
         ui->pushStartStop->setText(tr("&Stop"));
         ui->pushStartStop->setIcon(QIcon::fromTheme("stop"));
         current->setForeground(runningColor);
@@ -231,7 +234,7 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     if (enabled) {
         ui->pushEnableDisable->setText(tr("&Disable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("stop"));
-        if (!running) {
+        if (!running && service->hasKnownRunState()) {
             current->setForeground(enabledColor);
         }
     } else {
@@ -502,27 +505,29 @@ QList<QSharedPointer<Service>> MainWindow::buildServiceList()
 // static
 void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &services)
 {
-    static const QRegularExpression dpkgRegex("dpkg-.*$");
-    const auto list = Cmd().getOutAsRoot({"service", "--status-all"}, true).trimmed().split("\n");
-    services.reserve(list.size());
-
-    const QLatin1String sectionDelimiter("]  ");
-    const QLatin1String debian("debian");
-    const QLatin1String runningPrefix("[ + ]");
-
-    for (const auto &item : list) {
-        const QString trimmedItem = item.trimmed();
-        if (item.section(sectionDelimiter, 1) == debian || trimmedItem.contains(dpkgRegex)) {
+    static const QRegularExpression record(QStringLiteral(R"(^\s*\[ ([+?-]) \]\s+([^\s]+)\s*$)"));
+    Cmd cmd;
+    const QString output = cmd.getOutAsRoot({"service", "--status-all"}, true);
+    const QString errors = QString::fromUtf8(cmd.readAllStandardError());
+    const QString records = output + QLatin1Char('\n') + errors;
+    const auto lines = records.split('\n', Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const auto match = record.match(line);
+        if (!match.hasMatch()) {
+            qDebug().noquote() << line;
             continue;
         }
-
-        const QString name = item.section(sectionDelimiter, 1);
-        if (name.isEmpty()) {
+        const QString name = match.captured(2);
+        if (name == "debian" || name.contains("dpkg-")) {
             continue;
         }
-
-        bool enabled = Service::isEnabled(name);
-        services.append(QSharedPointer<Service>::create(name, trimmedItem.startsWith(runningPrefix), enabled, false));
+        auto state = Service::RunState::Unknown;
+        if (match.captured(1) == "+") {
+            state = Service::RunState::Running;
+        } else if (match.captured(1) == "-") {
+            state = Service::RunState::Stopped;
+        }
+        services.append(QSharedPointer<Service>::create(name, state, Service::isEnabled(name)));
     }
 }
 
@@ -580,7 +585,8 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
         const bool isRunning = Service::isRunningSubState(obj.value(subKey).toString());
         const bool isEnabled = enabledServices.contains(name);
 
-        services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
+        const auto state = isRunning ? Service::RunState::Running : Service::RunState::Stopped;
+        services.append(QSharedPointer<Service>::create(name, state, isEnabled, isUserService));
     }
 }
 
@@ -596,7 +602,7 @@ void MainWindow::appendUnloadedServices(QList<QSharedPointer<Service>> &services
             continue;
         }
         names.insert(name);
-        services.append(QSharedPointer<Service>::create(name, false, enabledNames.contains(name), isUserService));
+        services.append(QSharedPointer<Service>::create(name, Service::RunState::Stopped, enabledNames.contains(name), isUserService));
     }
 }
 
@@ -652,7 +658,7 @@ void MainWindow::displayServices() noexcept
         // Update counters
         if (isRunning) {
             ++countActive;
-        } else if (isEnabled) {
+        } else if (isEnabled && service->hasKnownRunState()) {
             ++countEnabled;
         }
 
@@ -663,7 +669,7 @@ void MainWindow::displayServices() noexcept
         }
         auto *item = new QListWidgetItem(displayName, ui->listServices);
         item->setData(Qt::UserRole, QVariant::fromValue(service.get()));
-        item->setForeground(isRunning ? runningColor : (isEnabled ? enabledColor : Qt::black));
+        item->setForeground(isRunning ? runningColor : (isEnabled && service->hasKnownRunState() ? enabledColor : defaultForeground));
     }
 
     // Update status labels
@@ -704,9 +710,10 @@ void MainWindow::updateServiceControls()
 {
     const bool ready = !serviceListLoading && !serviceActionInProgress;
     const auto *item = ui->listServices->currentItem();
-    const bool actionable = ready && item && item->data(Qt::UserRole).value<Service *>();
+    const auto *service = item ? item->data(Qt::UserRole).value<Service *>() : nullptr;
+    const bool actionable = ready && service;
     ui->pushRefresh->setEnabled(ready);
-    ui->pushStartStop->setEnabled(actionable);
+    ui->pushStartStop->setEnabled(actionable && service->hasKnownRunState());
     ui->pushEnableDisable->setEnabled(actionable);
 }
 
@@ -804,7 +811,7 @@ void MainWindow::pushStartStop_clicked()
     const auto *currentItem = ui->listServices->currentItem();
     auto ptrService = currentItem ? findServiceShared(currentItem->data(Qt::UserRole).value<Service *>())
                                   : QSharedPointer<Service>();
-    if (!ptrService) {
+    if (!ptrService || !ptrService->hasKnownRunState()) {
         return;
     }
     serviceActionInProgress = true;

@@ -31,13 +31,16 @@ class Service
     Q_DISABLE_COPY(Service)
 
 public:
+    enum class RunState { Unknown, Stopped, Running };
+
     Service() = default;
-    explicit Service(QString name, bool running = false, bool enabled = false, bool isUserService = false);
+    explicit Service(QString name, RunState state = RunState::Stopped, bool enabled = false, bool isUserService = false);
     [[nodiscard]] QString getDescription() const;
     [[nodiscard]] QString getInfo() const;
     [[nodiscard]] QString getName() const;
     [[nodiscard]] bool isEnabled() const noexcept;
     [[nodiscard]] bool isRunning() const;
+    [[nodiscard]] bool hasKnownRunState() const;
     [[nodiscard]] static bool isRunningSubState(const QString &subState);
     [[nodiscard]] bool isMasked() const;
     [[nodiscard]] bool isUserService() const noexcept;
@@ -61,7 +64,7 @@ private:
     // Written on the GUI thread by start()/stop()/enable()/disable(), read from a
     // background thread by getInfo()/getDescription() during async detail/tooltip
     // fetches (see MainWindow::fetchSelectionInfo/fetchTooltipDescription).
-    std::atomic<bool> running = false;
+    std::atomic<RunState> runState = RunState::Stopped;
     std::atomic<bool> enabled = false;
     std::atomic<bool> unrestoredMaskChange = false;
     bool userService = false;

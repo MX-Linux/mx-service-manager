@@ -38,9 +38,9 @@
 
 inline const QString initSystem {Service::getInit()};
 
-Service::Service(QString name, bool running, bool enabled, bool isUserService)
+Service::Service(QString name, RunState state, bool enabled, bool isUserService)
     : name {std::move(name)},
-      running {running},
+      runState {state},
       enabled {enabled},
       userService {isUserService}
 {
@@ -149,7 +149,12 @@ bool Service::isRunningSubState(const QString &subState)
 
 bool Service::isRunning() const
 {
-    return running;
+    return runState == RunState::Running;
+}
+
+bool Service::hasKnownRunState() const
+{
+    return runState != RunState::Unknown;
 }
 
 QString Service::getDescription() const
@@ -292,7 +297,7 @@ void Service::setEnabled(bool enabled) noexcept
 
 void Service::setRunning(bool running) noexcept
 {
-    this->running = running;
+    runState = running ? RunState::Running : RunState::Stopped;
 }
 
 QString Service::getInfoFromFile(const QString &name)
