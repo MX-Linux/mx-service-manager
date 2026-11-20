@@ -17,9 +17,9 @@ Cmd::Cmd(QObject *parent)
 {
 }
 
-QString Cmd::getOut(const QString &cmd, bool quiet, bool waitForFinish)
+QString Cmd::getOut(const QStringList &command, bool quiet, bool waitForFinish)
 {
-    run(cmd, quiet, waitForFinish);
+    run(command, quiet, waitForFinish);
     return readAll();
 }
 
@@ -29,18 +29,18 @@ QString Cmd::getOutAsRoot(const QStringList &helperArgs, bool quiet, bool waitFo
     return readAll();
 }
 
-bool Cmd::run(const QString &cmd, bool quiet, bool waitForFinish)
+bool Cmd::run(const QStringList &command, bool quiet, bool waitForFinish)
 {
     if (state() != QProcess::NotRunning) {
         qDebug() << "Process already running:" << program() << arguments();
         return false;
     }
     if (!quiet) {
-        qDebug().noquote() << cmd;
+        qDebug().noquote() << command;
     }
     QEventLoop loop;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
-    start(QStringLiteral("/bin/bash"), {QStringLiteral("-c"), cmd});
+    start(command.first(), command.mid(1));
     if (!waitForFinish) {
         loop.exec();
     } else {

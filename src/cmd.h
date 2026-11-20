@@ -10,10 +10,10 @@ class Cmd : public QProcess
 public:
     explicit Cmd(QObject *parent = nullptr);
 
-    [[nodiscard]] QString getOut(const QString &cmd, bool quiet = false, bool waitForFinish = false);
+    [[nodiscard]] QString getOut(const QStringList &command, bool quiet = false, bool waitForFinish = false);
     [[nodiscard]] QString getOutAsRoot(const QStringList &helperArgs, bool quiet = false,
                                        bool waitForFinish = false);
-    bool run(const QString &cmd, bool quiet = false, bool waitForFinish = false);
+    bool run(const QStringList &command, bool quiet = false, bool waitForFinish = false);
     bool runAsRoot(const QStringList &helperArgs, bool quiet = false, bool waitForFinish = false);
 
 signals:

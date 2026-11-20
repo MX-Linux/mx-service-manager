@@ -30,7 +30,6 @@
 #include <QSet>
 
 #include <functional>
-#include <optional>
 
 #include "service.h"
 
@@ -101,10 +100,8 @@ private:
     void fetchTooltipDescription();
     void fetchSelectionInfo();
     void loadServicesAsync(std::function<void()> onLoaded);
-    [[nodiscard]] static std::optional<QString> sanitizeServiceName(const QString &rawName);
-    [[nodiscard]] static QString systemctlCmd(const QString &baseCmd, bool isUserService);
+    [[nodiscard]] static QStringList systemctlCmd(QStringList arguments, bool isUserService);
     static void loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames);
-    static QString decodeEscapeSequences(const QString &input);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
     [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList(const QStringList &dependTargets);

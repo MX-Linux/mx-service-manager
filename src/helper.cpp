@@ -27,6 +27,8 @@
 #include <QRegularExpression>
 #include <QStringList>
 
+#include "serviceunit.h"
+
 #include <cstdio>
 
 namespace
@@ -115,13 +117,18 @@ void printError(const QString &message)
         return false;
     }
 
-    QString &unit = args[unitIndex];
-    if (!scriptName.match(unit).hasMatch()) {
-        return false;
-    }
+    QString unit = args[unitIndex];
     if (!unit.endsWith(".service")) {
+        if (!scriptName.match(unit).hasMatch()) {
+            return false;
+        }
         unit += ".service";
     }
+    if (!isServiceUnit(unit)) {
+        return false;
+    }
+    args.removeAt(unitIndex);
+    args.append({"--", unit});
     return true;
 }
 

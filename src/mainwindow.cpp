@@ -44,6 +44,7 @@
 #include "cmd.h"
 #include "common.h"
 #include "service.h"
+#include "serviceunit.h"
 
 #include <chrono>
 
@@ -449,27 +450,13 @@ void MainWindow::fetchSelectionInfo()
 }
 
 // static
-std::optional<QString> MainWindow::sanitizeServiceName(const QString &rawName)
+QStringList MainWindow::systemctlCmd(QStringList arguments, bool isUserService)
 {
-    const QLatin1String dotSeparator(".");
-    QString name = rawName.section(dotSeparator, 0, 0);
-    name = name.simplified();
-    name = decodeEscapeSequences(name);
-
-    static const QRegularExpression invalidRegex("[^a-zA-Z0-9._@:+-]");
-    if (name.isEmpty() || name.length() > 100 || name.contains(invalidRegex)) {
-        return std::nullopt;
+    if (isUserService) {
+        arguments.prepend("--user");
     }
-
-    return name;
-}
-
-QString MainWindow::systemctlCmd(const QString &baseCmd, bool isUserService)
-{
-    if (isUserService) [[unlikely]] {
-        return QStringLiteral("systemctl --user ") % baseCmd;
-    }
-    return QStringLiteral("systemctl ") % baseCmd;
+    arguments.prepend("systemctl");
+    return arguments;
 }
 
 // static
@@ -477,7 +464,7 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
 {
     // A single call covering both states, instead of one "list-unit-files" call per state.
     const auto out = Cmd().getOut(
-        systemctlCmd(QStringLiteral("list-unit-files --type=service --state=enabled,masked -o json"), isUserService)).trimmed();
+        systemctlCmd({"list-unit-files", "--type=service", "--state=enabled,masked", "-o", "json"}, isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(out.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for enabled/masked services.";
@@ -497,67 +484,18 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
             continue;
         }
         const auto obj = value.toObject();
-        const auto nameOpt = sanitizeServiceName(obj.value(unitFileKey).toString());
-        if (!nameOpt) [[unlikely]] {
+        const QString name = obj.value(unitFileKey).toString();
+        if (!isServiceUnit(name)) [[unlikely]] {
             continue;
         }
 
         const QString state = obj.value(stateKey).toString();
         if (state == enabledValue) {
-            enabledNames.insert(*nameOpt);
+            enabledNames.insert(name);
         } else if (state == maskedValue) {
-            maskedNames.append(*nameOpt);
+            maskedNames.append(name);
         }
     }
-}
-
-// static
-QString MainWindow::decodeEscapeSequences(const QString &input)
-{
-    static const QRegularExpression hexRegex("\\\\x([0-9a-fA-F]{2})");
-    static const QRegularExpression unicodeRegex("\\\\u([0-9a-fA-F]{4})");
-    static const QRegularExpression octalRegex("\\\\([0-7]{1,3})");
-    static const QRegularExpression backslashCleanup("\\\\(?![0-7]{1,3}|[xu][0-9a-fA-F]+)");
-
-    QString result = input;
-
-    // Decode \xXX sequences (hex)
-    QRegularExpressionMatchIterator hexIt = hexRegex.globalMatch(result);
-    while (hexIt.hasNext()) {
-        QRegularExpressionMatch match = hexIt.next();
-        bool ok;
-        int hexValue = match.captured(1).toInt(&ok, 16);
-        if (ok) {
-            result.replace(match.captured(0), QChar(hexValue));
-        }
-    }
-
-    // Decode \uXXXX sequences (Unicode)
-    QRegularExpressionMatchIterator unicodeIt = unicodeRegex.globalMatch(result);
-    while (unicodeIt.hasNext()) {
-        QRegularExpressionMatch match = unicodeIt.next();
-        bool ok;
-        int unicodeValue = match.captured(1).toInt(&ok, 16);
-        if (ok) {
-            result.replace(match.captured(0), QChar(unicodeValue));
-        }
-    }
-
-    // Decode \OOO sequences (octal)
-    QRegularExpressionMatchIterator octalIt = octalRegex.globalMatch(result);
-    while (octalIt.hasNext()) {
-        QRegularExpressionMatch match = octalIt.next();
-        bool ok;
-        int octalValue = match.captured(1).toInt(&ok, 8);
-        if (ok) {
-            result.replace(match.captured(0), QChar(octalValue));
-        }
-    }
-
-    // Remove any remaining backslashes that aren't part of valid escape sequences
-    result = result.remove(backslashCleanup);
-
-    return result;
 }
 
 QString MainWindow::getHtmlColor(const QColor &color) noexcept
@@ -634,7 +572,7 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
                                                       bool isUserService)
 {
     const auto list = Cmd().getOut(
-        systemctlCmd(QStringLiteral("list-units --type=service --all -o json"), isUserService)).trimmed();
+        systemctlCmd({"list-units", "--type=service", "--all", "-o", "json"}, isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(list.toUtf8());
     if (!doc.isArray()) {
         qDebug() << "JSON data is not an array for service units.";
@@ -659,17 +597,16 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
         }
 
         const auto obj = value.toObject();
-        const auto nameOpt = sanitizeServiceName(obj.value(unitKey).toString());
+        const QString name = obj.value(unitKey).toString();
 
-        if (!nameOpt || nameSet.contains(*nameOpt) || obj.value(loadKey).toString() == notFoundValue) [[unlikely]] {
+        if (!isServiceUnit(name) || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) [[unlikely]] {
             continue;
         }
 
-        const QString &name = *nameOpt;
         nameSet.insert(name);
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
-        const bool isEnabled = (!isUserService && dependTargets.contains(name))
+        const bool isEnabled = (!isUserService && dependTargets.contains(name.chopped(8)))
             || enabledServices.contains(name);
 
         services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
@@ -727,14 +664,13 @@ void MainWindow::displayServices() noexcept
         if (serviceName.isNull() || serviceName.isEmpty()) [[unlikely]] {
             continue;
         }
-        serviceName = serviceName.toLower();
         const bool isRunning = service->isRunning();
         const bool isEnabled = service->isEnabled();
         const bool isUserService = service->isUserService();
 
         // Check search criteria
         if (!searchText.isEmpty() && !serviceName.contains(searchText, Qt::CaseInsensitive)
-            && !(serviceName == QLatin1String("smbd") && incrementalSearchPatterns.contains(searchText))) {
+            && !(serviceName.compare(QLatin1String("smbd"), Qt::CaseInsensitive) == 0 && incrementalSearchPatterns.contains(searchText))) {
             continue;
         }
 

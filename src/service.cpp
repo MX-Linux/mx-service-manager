@@ -47,7 +47,7 @@ Service::Service(QString name, bool running, bool enabled, bool isUserService)
 
 QString Service::getName() const
 {
-    return name;
+    return initSystem == QLatin1String("systemd") ? name.chopped(8) : name;
 }
 
 QString Service::getInfo() const
@@ -56,7 +56,7 @@ QString Service::getInfo() const
     if (initSystem == QLatin1String("systemd")) {
         if (userService) {
             Cmd cmd;
-            info = cmd.getOut("systemctl --user status " % name, true).trimmed();
+            info = cmd.getOut({"systemctl", "--user", "status", "--", name}, true).trimmed();
         } else {
             info = Cmd().getOutAsRoot({"systemctl", "status", name}, true).trimmed();
         }
@@ -86,7 +86,7 @@ bool Service::isEnabled(const QString &name, bool isUserService)
 
 QString Service::getUnitFileState(const QString &name, bool isUserService)
 {
-    QStringList args = {QLatin1String("is-enabled"), name + QLatin1String(".service")};
+    QStringList args = {QLatin1String("is-enabled"), QLatin1String("--"), name};
     if (isUserService) [[unlikely]] {
         args.insert(0, QLatin1String("--user"));
     }
@@ -126,20 +126,18 @@ QString Service::getDescription() const
         }
         return {};
     } else {
-        const QString unitName = name % QLatin1String(".service");
-
         // Prefer systemctl show which works for inactive/disabled units
         Cmd cmd;
         QString out = userService
-                          ? cmd.getOut("systemctl --user show -p Description --value " + unitName, true, true)
-                          : Cmd().getOutAsRoot({"systemctl", "show", "-p", "Description", "--value", unitName}, true, true);
+                          ? cmd.getOut({"systemctl", "--user", "show", "-p", "Description", "--value", "--", name}, true, true)
+                          : Cmd().getOutAsRoot({"systemctl", "show", "-p", "Description", "--value", name}, true, true);
         out = out.trimmed();
 
         // Try list-units (covers active units; empty for inactive)
         if (out.isEmpty()) {
             const QString jsonOutput = userService
-                                           ? cmd.getOut("systemctl --user list-units " + unitName + " -o json", true, true).trimmed()
-                                           : Cmd().getOutAsRoot({"systemctl", "list-units", unitName, "-o", "json"}, true, true).trimmed();
+                                           ? cmd.getOut({"systemctl", "--user", "list-units", "-o", "json", "--", name}, true, true).trimmed()
+                                           : Cmd().getOutAsRoot({"systemctl", "list-units", name, "-o", "json"}, true, true).trimmed();
 
             if (!jsonOutput.isEmpty()) {
                 QJsonParseError error;
@@ -157,8 +155,8 @@ QString Service::getDescription() const
         // If that fails, try systemctl status
         if (out.isEmpty()) {
             const QString statusOutput = userService
-                                             ? cmd.getOut("systemctl --user status " % unitName, true, true).trimmed()
-                                             : Cmd().getOutAsRoot({"systemctl", "status", unitName}, true, true).trimmed();
+                                             ? cmd.getOut({"systemctl", "--user", "status", "--", name}, true, true).trimmed()
+                                             : Cmd().getOutAsRoot({"systemctl", "status", name}, true, true).trimmed();
 
             // Parse the first line to extract description after " - "
             if (!statusOutput.isEmpty()) {
@@ -175,9 +173,9 @@ QString Service::getDescription() const
 
         // If still empty, try to get from init file
         if (out.isEmpty()) {
-            QRegularExpressionMatch match = shortDescRegex.match(getInfoFromFile(name));
+            QRegularExpressionMatch match = shortDescRegex.match(getInfoFromFile(getName()));
             if (match.captured(1).isEmpty()) {
-                match = descRegex.match(getInfoFromFile(name));
+                match = descRegex.match(getInfoFromFile(getName()));
             }
             out = match.hasMatch() ? match.captured(1) : QObject::tr("Could not find service description");
         }
@@ -199,7 +197,7 @@ bool Service::start()
 {
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
-        if (userService ? cmd.run("systemctl --user start " % name) : Cmd().runAsRoot({"systemctl", "start", name})) {
+        if (userService ? cmd.run({"systemctl", "--user", "start", "--", name}) : Cmd().runAsRoot({"systemctl", "start", name})) {
             setRunning(true);
             return true;
         }
@@ -216,7 +214,7 @@ bool Service::stop()
 {
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
-        if (userService ? cmd.run("systemctl --user stop " % name) : Cmd().runAsRoot({"systemctl", "stop", name})) {
+        if (userService ? cmd.run({"systemctl", "--user", "stop", "--", name}) : Cmd().runAsRoot({"systemctl", "stop", name})) {
             setRunning(false);
             return true;
         }
@@ -254,13 +252,15 @@ QString Service::getInfoFromFile(const QString &name)
 
     if (filePath.isEmpty()) {
         qDebug() << "Could not find unit file for" << name;
-        return Cmd().getOutAsRoot({"systemctl", "status", name}, false, true);
+        return initSystem == QLatin1String("systemd") ? QString()
+                                                      : Cmd().getOutAsRoot({"systemctl", "status", name}, false, true);
     }
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Could not open file" << filePath;
-        return Cmd().getOutAsRoot({"systemctl", "status", name}, false, true);
+        return initSystem == QLatin1String("systemd") ? QString()
+                                                      : Cmd().getOutAsRoot({"systemctl", "status", name}, false, true);
     }
 
     QString info;
@@ -307,10 +307,10 @@ bool Service::enable()
         const bool wasRuntimeMasked = initialMaskState == QLatin1String("masked-runtime");
         const bool wasMasked = wasRuntimeMasked || initialMaskState == QLatin1String("masked");
         if (wasMasked) {
-            (userService ? cmd.run("systemctl --user unmask " % name) : Cmd().runAsRoot({"systemctl", "unmask", name}));
+            (userService ? cmd.run({"systemctl", "--user", "unmask", "--", name}) : Cmd().runAsRoot({"systemctl", "unmask", name}));
         }
 
-        (userService ? cmd.run("systemctl --user enable " % name) : Cmd().runAsRoot({"systemctl", "enable", name}));
+        (userService ? cmd.run({"systemctl", "--user", "enable", "--", name}) : Cmd().runAsRoot({"systemctl", "enable", name}));
 
         // Base the rollback decision on the verified unit-file state, not the enable
         // command's raw exit code: systemctl can exit 0 without the unit ending up
@@ -319,8 +319,11 @@ bool Service::enable()
             // Restore the previous masked state rather than leaving the unit unmasked
             // while still reporting that nothing was applied. Verify the rollback itself
             // actually landed -- it can fail too (e.g. a cancelled auth prompt).
-            const QString maskUserCmd = wasRuntimeMasked ? QString("systemctl --user mask --runtime " % name)
-                                                          : QString("systemctl --user mask " % name);
+            QStringList maskUserCmd {"systemctl", "--user", "mask"};
+            if (wasRuntimeMasked) {
+                maskUserCmd.append("--runtime");
+            }
+            maskUserCmd.append({"--", name});
             const bool remaskOk = (userService
                                         ? cmd.run(maskUserCmd)
                                         : Cmd().runAsRoot(wasRuntimeMasked
@@ -354,9 +357,9 @@ bool Service::disable()
 {
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
-        if (userService ? cmd.run("systemctl --user disable " % name) : Cmd().runAsRoot({"systemctl", "disable", name})) {
+        if (userService ? cmd.run({"systemctl", "--user", "disable", "--", name}) : Cmd().runAsRoot({"systemctl", "disable", name})) {
             // Mask the service to prevent it from being started indirectly
-            (userService ? cmd.run("systemctl --user mask " % name) : Cmd().runAsRoot({"systemctl", "mask", name}));
+            (userService ? cmd.run({"systemctl", "--user", "mask", "--", name}) : Cmd().runAsRoot({"systemctl", "mask", name}));
             setEnabled(false);
             return true;
         }
