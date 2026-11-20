@@ -32,6 +32,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QScopeGuard>
 #include <QScreen>
 #include <QScrollBar>
 #include <QShortcut>
@@ -107,17 +108,10 @@ MainWindow::MainWindow(QWidget *parent)
     });
     loadingTimer->start(300);
 
-    // Block Refresh until the initial load finishes: loadServicesAsync() ignores an
-    // overlapping request rather than queuing it, so a Refresh click during startup
-    // must not be allowed to fire (it would otherwise disable the button and never
-    // get a completion callback to re-enable it).
-    ui->pushRefresh->setEnabled(false);
-
     // Load services on a background thread to keep the UI responsive
     loadServicesAsync([this, loadingTimer] {
         loadingTimer->stop();
         loadingTimer->deleteLater();
-        ui->pushRefresh->setEnabled(true);
         displayServices();
         ui->listServices->setFocus();
     });
@@ -216,6 +210,7 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     Q_UNUSED(previous);
     cancelPendingSelectionInfo();
 
+    updateServiceControls();
     if (!current) {
         return;
     }
@@ -296,15 +291,19 @@ void MainWindow::loadServicesAsync(std::function<void()> onLoaded)
         return;
     }
 
+    serviceListLoading = true;
+    updateServiceControls();
     onServicesLoaded = std::move(onLoaded);
 
     if (!servicesWatcher) {
         servicesWatcher = new QFutureWatcher<QList<QSharedPointer<Service>>>(this);
         connect(servicesWatcher, &QFutureWatcher<QList<QSharedPointer<Service>>>::finished, this, [this]() {
             services = servicesWatcher->result();
+            serviceListLoading = false;
             if (onServicesLoaded) {
                 onServicesLoaded();
             }
+            updateServiceControls();
         });
     }
 
@@ -792,20 +791,34 @@ void MainWindow::pushAbout_clicked()
         docPath(QStringLiteral("license.html")), tr("%1 License").arg(windowTitle()));
 }
 
+void MainWindow::updateServiceControls()
+{
+    const bool ready = !serviceListLoading && !serviceActionInProgress;
+    const auto *item = ui->listServices->currentItem();
+    const bool actionable = ready && item && item->data(Qt::UserRole).value<Service *>();
+    ui->pushRefresh->setEnabled(ready);
+    ui->pushStartStop->setEnabled(actionable);
+    ui->pushEnableDisable->setEnabled(actionable);
+}
+
 void MainWindow::pushEnableDisable_clicked()
 {
-    ui->pushEnableDisable->setEnabled(false);
+    if (serviceActionInProgress || serviceListLoading) {
+        return;
+    }
     savedRow = ui->listServices->currentRow();
     const auto *currentItem = ui->listServices->currentItem();
-    if (currentItem == nullptr) {
-        ui->pushEnableDisable->setEnabled(true);
+    auto ptrService = currentItem ? findServiceShared(currentItem->data(Qt::UserRole).value<Service *>())
+                                  : QSharedPointer<Service>();
+    if (!ptrService) {
         return;
     }
-    auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
-    if (ptrService == nullptr) {
-        ui->pushEnableDisable->setEnabled(true);
-        return;
-    }
+    serviceActionInProgress = true;
+    updateServiceControls();
+    const auto restoreControls = qScopeGuard([this] {
+        serviceActionInProgress = false;
+        updateServiceControls();
+    });
     auto service = currentItem->text();
     if (ui->pushEnableDisable->text() == tr("&Enable at boot")) {
         if (!ptrService->enable()) {
@@ -838,7 +851,6 @@ void MainWindow::pushEnableDisable_clicked()
             QMessageBox::information(this, tr("Success"), tr("%1 was disabled.").arg(service));
         }
     }
-    ui->pushEnableDisable->setEnabled(true);
 }
 
 void MainWindow::pushHelp_clicked()
@@ -848,7 +860,9 @@ void MainWindow::pushHelp_clicked()
 
 void MainWindow::pushRefresh_clicked()
 {
-    ui->pushRefresh->setEnabled(false);
+    if (serviceActionInProgress || serviceListLoading) {
+        return;
+    }
     const auto *currentItem = ui->listServices->currentItem();
     const QString selectedService = currentItem ? currentItem->text() : QString();
     savedRow = ui->listServices->currentRow();
@@ -866,24 +880,27 @@ void MainWindow::pushRefresh_clicked()
                 ui->listServices->setCurrentItem(matches.first());
             }
         }
-        ui->pushRefresh->setEnabled(true);
     });
 }
 
 void MainWindow::pushStartStop_clicked()
 {
-    ui->pushStartStop->setEnabled(false);
+    if (serviceActionInProgress || serviceListLoading) {
+        return;
+    }
     savedRow = ui->listServices->currentRow();
     const auto *currentItem = ui->listServices->currentItem();
-    if (currentItem == nullptr) {
-        ui->pushStartStop->setEnabled(true);
+    auto ptrService = currentItem ? findServiceShared(currentItem->data(Qt::UserRole).value<Service *>())
+                                  : QSharedPointer<Service>();
+    if (!ptrService) {
         return;
     }
-    auto *ptrService = currentItem->data(Qt::UserRole).value<Service *>();
-    if (ptrService == nullptr) {
-        ui->pushStartStop->setEnabled(true);
-        return;
-    }
+    serviceActionInProgress = true;
+    updateServiceControls();
+    const auto restoreControls = qScopeGuard([this] {
+        serviceActionInProgress = false;
+        updateServiceControls();
+    });
     auto service = currentItem->text();
     if (ui->pushStartStop->text() == tr("S&tart")) {
         if (!ptrService->start()) {
@@ -904,5 +921,4 @@ void MainWindow::pushStartStop_clicked()
             QMessageBox::information(this, tr("Success"), tr("%1 was stopped.").arg(service));
         }
     }
-    ui->pushStartStop->setEnabled(true);
 }

@@ -68,6 +68,8 @@ private:
     QColor runningColor {Qt::darkGreen};
     QColor enabledColor {Qt::darkYellow};
     QList<QSharedPointer<Service>> services;
+    bool serviceActionInProgress = false;
+    bool serviceListLoading = false;
     int savedRow = 0;
     QTimer *searchTimer = nullptr;
 
@@ -91,6 +93,7 @@ private:
     Service *activeSelectionService = nullptr;
     bool selectionInfoInProgress = false;
 
+    void updateServiceControls();
     void cancelPendingTooltip();
     void cancelPendingSelectionInfo();
     [[nodiscard]] QString docPath(const QString &fileName) const;
