@@ -443,14 +443,14 @@ QStringList MainWindow::systemctlCmd(QStringList arguments, bool isUserService)
 }
 
 // static
-void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames)
+void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &installedNames)
 {
-    // A single call covering both states, instead of one "list-unit-files" call per state.
     const auto out = Cmd().getOut(
-        systemctlCmd({"list-unit-files", "--type=service", "--state=enabled,masked,generated", "-o", "json"}, isUserService)).trimmed();
+        systemctlCmd({"list-unit-files", "--type=service",
+                      "--state=enabled,enabled-runtime,disabled,masked,masked-runtime,generated", "-o", "json"}, isUserService)).trimmed();
     auto doc = QJsonDocument::fromJson(out.toUtf8());
     if (!doc.isArray()) {
-        qDebug() << "JSON data is not an array for enabled/masked services.";
+        qDebug() << "Could not read the systemd unit-file list.";
         return;
     }
 
@@ -459,7 +459,6 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
 
     const QLatin1String unitFileKey("unit_file");
     const QLatin1String stateKey("state");
-    const QLatin1String maskedValue("masked");
 
     for (const auto &value : jsonArray) {
         if (!value.isObject()) [[unlikely]] {
@@ -472,10 +471,11 @@ void MainWindow::loadSystemdUnitFileStates(bool isUserService, QSet<QString> &en
         }
 
         const QString state = obj.value(stateKey).toString();
+        if (!name.endsWith("@.service")) {
+            installedNames.append(name);
+        }
         if (Service::unitEnabled(name, state, isUserService)) {
             enabledNames.insert(name);
-        } else if (state == maskedValue) {
-            maskedNames.append(name);
         }
     }
 }
@@ -533,17 +533,17 @@ void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services
     QStringList names;
 
     QSet<QString> enabledSystemServices;
-    QStringList maskedSystemServices;
-    loadSystemdUnitFileStates(false, enabledSystemServices, maskedSystemServices);
+    QStringList installedSystemServices;
+    loadSystemdUnitFileStates(false, enabledSystemServices, installedSystemServices);
 
     QSet<QString> enabledUserServices;
-    QStringList maskedUserServices;
-    loadSystemdUnitFileStates(true, enabledUserServices, maskedUserServices);
+    QStringList installedUserServices;
+    loadSystemdUnitFileStates(true, enabledUserServices, installedUserServices);
 
     processSystemdActiveInactiveServices(services, names, enabledSystemServices, false); // System services
-    appendMaskedServices(services, names, maskedSystemServices, false); // System services
+    appendUnloadedServices(services, names, installedSystemServices, enabledSystemServices, false); // System services
     processSystemdActiveInactiveServices(services, names, enabledUserServices, true); // User services
-    appendMaskedServices(services, names, maskedUserServices, true); // User services
+    appendUnloadedServices(services, names, installedUserServices, enabledUserServices, true); // User services
 }
 
 // static
@@ -595,19 +595,19 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
 }
 
 // static
-void MainWindow::appendMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
-                                     const QStringList &maskedNames, bool isUserService)
+void MainWindow::appendUnloadedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+                                     const QStringList &installedNames, const QSet<QString> &enabledNames, bool isUserService)
 {
     QSet<QString> nameSet(names.begin(), names.end());
-    services.reserve(services.size() + maskedNames.size());
-    nameSet.reserve(nameSet.size() + maskedNames.size());
+    services.reserve(services.size() + installedNames.size());
+    nameSet.reserve(nameSet.size() + installedNames.size());
 
-    for (const auto &name : maskedNames) {
+    for (const auto &name : installedNames) {
         if (nameSet.contains(name)) [[unlikely]] {
             continue;
         }
         nameSet.insert(name);
-        services.append(QSharedPointer<Service>::create(name, false, false, isUserService));
+        services.append(QSharedPointer<Service>::create(name, false, enabledNames.contains(name), isUserService));
     }
     names = QStringList(nameSet.begin(), nameSet.end());
 }

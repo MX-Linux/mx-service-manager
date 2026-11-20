@@ -100,7 +100,7 @@ private:
     void fetchSelectionInfo();
     void loadServicesAsync(std::function<void()> onLoaded);
     [[nodiscard]] static QStringList systemctlCmd(QStringList arguments, bool isUserService);
-    static void loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &maskedNames);
+    static void loadSystemdUnitFileStates(bool isUserService, QSet<QString> &enabledNames, QStringList &installedNames);
     QString getHtmlColor(const QColor &color) noexcept;
     void displayServices() noexcept;
     [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList();
@@ -109,7 +109,7 @@ private:
                                               QStringList &names,
                                               const QSet<QString> &enabledServices,
                                               bool isUserService = false);
-    static void appendMaskedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
-                                    const QStringList &maskedNames, bool isUserService = false);
+    static void appendUnloadedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+                                    const QStringList &installedNames, const QSet<QString> &enabledNames, bool isUserService = false);
     static void processSystemdServices(QList<QSharedPointer<Service>> &services);
 };
