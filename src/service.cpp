@@ -59,10 +59,17 @@ QString Service::getInfo() const
             Cmd cmd;
             info = cmd.getOut({"systemctl", "--user", "status", "--", name}, true).trimmed();
         } else {
-            info = Cmd().getOutAsRoot({"systemctl", "status", name}, true).trimmed();
+            Cmd cmd;
+            info = cmd.getOutAsRoot({"systemctl", "status", name}, true).trimmed();
+            if (cmd.elevationUnavailable()) {
+                return QObject::tr("Administrator access was unavailable for this request.");
+            }
         }
         if (!isEnabled() && !info.isEmpty()) {
-            info.append("\nDescription: " % getDescription());
+            const QString description = getDescription();
+            if (!description.isEmpty()) {
+                info.append("\nDescription: " % description);
+            }
         }
     } else {
         info = getInfoFromFile(name);
@@ -159,21 +166,27 @@ QString Service::getDescription() const
         if (match.hasMatch()) {
             return match.captured(1);
         }
-        return {};
+        return QStringLiteral("");
     } else {
         // Prefer systemctl show which works for inactive/disabled units
         Cmd cmd;
         QString out = userService
                           ? cmd.getOut({"systemctl", "--user", "show", "-p", "Description", "--value", "--", name}, true, true)
-                          : Cmd().getOutAsRoot({"systemctl", "show", "-p", "Description", "--value", name}, true, true);
+                          : cmd.getOutAsRoot({"systemctl", "show", "-p", "Description", "--value", name}, true, true);
+        if (cmd.elevationUnavailable()) {
+            return {};
+        }
         out = out.trimmed();
 
         // Try list-units (covers active units; empty for inactive)
         if (out.isEmpty()) {
             const QString jsonOutput = userService
                                            ? cmd.getOut({"systemctl", "--user", "list-units", "-o", "json", "--", name}, true, true).trimmed()
-                                           : Cmd().getOutAsRoot({"systemctl", "list-units", name, "-o", "json"}, true, true).trimmed();
+                                           : cmd.getOutAsRoot({"systemctl", "list-units", name, "-o", "json"}, true, true).trimmed();
 
+            if (cmd.elevationUnavailable()) {
+                return {};
+            }
             if (!jsonOutput.isEmpty()) {
                 QJsonParseError error;
                 QJsonDocument doc = QJsonDocument::fromJson(jsonOutput.toUtf8(), &error);
@@ -191,8 +204,11 @@ QString Service::getDescription() const
         if (out.isEmpty()) {
             const QString statusOutput = userService
                                              ? cmd.getOut({"systemctl", "--user", "status", "--", name}, true, true).trimmed()
-                                             : Cmd().getOutAsRoot({"systemctl", "status", name}, true, true).trimmed();
+                                             : cmd.getOutAsRoot({"systemctl", "status", name}, true, true).trimmed();
 
+            if (cmd.elevationUnavailable()) {
+                return {};
+            }
             // Parse the first line to extract description after " - "
             if (!statusOutput.isEmpty()) {
                 QStringList lines = statusOutput.split('\n');
@@ -349,7 +365,10 @@ bool Service::enable()
         const bool wasRuntimeMasked = initialMaskState == QLatin1String("masked-runtime");
         const bool wasMasked = wasRuntimeMasked || initialMaskState == QLatin1String("masked");
         if (wasMasked) {
-            (userService ? cmd.run({"systemctl", "--user", "unmask", "--", name}) : Cmd().runAsRoot({"systemctl", "unmask", name}));
+            (userService ? cmd.run({"systemctl", "--user", "unmask", "--", name}) : cmd.runAsRoot({"systemctl", "unmask", name}));
+            if (cmd.elevationUnavailable()) {
+                return false;
+            }
         }
 
         (userService ? cmd.run({"systemctl", "--user", "enable", "--", name}) : Cmd().runAsRoot({"systemctl", "enable", name}));
@@ -383,7 +402,11 @@ bool Service::enable()
         // For SysV init, first set defaults then enable. `defaults` alone can already
         // enable the service (it creates the runlevel symlinks), so a failure of the
         // later `enable` step doesn't necessarily mean nothing was applied.
-        Cmd().runAsRoot({"update-rc.d", name, "defaults"});
+        Cmd cmd;
+        cmd.runAsRoot({"update-rc.d", name, "defaults"});
+        if (cmd.elevationUnavailable()) {
+            return false;
+        }
 
         Cmd().runAsRoot({"update-rc.d", name, "enable"});
     }

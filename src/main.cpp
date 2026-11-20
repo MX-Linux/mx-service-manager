@@ -29,6 +29,7 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include "cmd.h"
 #include "common.h"
 #include "mainwindow.h"
 
@@ -101,6 +102,12 @@ int main(int argc, char *argv[])
                                   QObject::tr("You must run this program with admin access."));
             exit(EXIT_FAILURE);
         }
+    }
+    if (!Cmd().runAsRoot({"true"}, true)) {
+        QMessageBox::critical(nullptr, Cmd::tr("Administrator Access Required"),
+                              Cmd::tr("This operation requires administrator privileges. Please restart the application "
+                                      "and enter your password when prompted."));
+        return EXIT_FAILURE;
     }
     MainWindow w;
     w.show();

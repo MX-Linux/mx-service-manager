@@ -61,9 +61,6 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::Window); // Enable close, minimize, and maximize buttons
     setGeneralConnections();
 
-    // Cache authentication for elevated commands
-    Cmd().runAsRoot({"true"}, true);
-
     const auto size = this->size();
     if (settings.contains("geometry")) {
         restoreGeometry(settings.value("geometry").toByteArray());
@@ -358,7 +355,7 @@ void MainWindow::fetchTooltipDescription()
                 if (!description.isEmpty()) {
                     activeItem->setToolTip(description);
                 }
-                activeItem->setData(kTooltipFetchedRole, true);
+                activeItem->setData(kTooltipFetchedRole, !description.isNull());
             }
 
             tooltipInProgress = false;
