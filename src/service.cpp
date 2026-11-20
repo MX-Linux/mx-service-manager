@@ -23,6 +23,7 @@
 #include "service.h"
 
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonArray>
@@ -78,9 +79,16 @@ bool Service::isEnabled(const QString &name, bool isUserService)
         // was actually enabled by us.
         return getUnitFileState(name, isUserService) == QLatin1String("enabled");
     } else {
-        // Check both runlevel 5 (multi-user with GUI) and runlevel S (single-user/boot)
-        QString command = QString(QLatin1String("[[ -e /etc/rc5.d/S*%1 || -e /etc/rcS.d/S*%1 ]]")).arg(name);
-        return QProcess::execute(QLatin1String("/bin/bash"), {QLatin1String("-c"), command}) == 0;
+        for (const QChar level : QStringLiteral("S2345")) {
+            const QDir directory(QStringLiteral("/etc/rc%1.d").arg(level));
+            const auto entries = directory.entryInfoList({QStringLiteral("S[0-9][0-9]*")}, QDir::Files | QDir::CaseSensitive);
+            for (const QFileInfo &entry : entries) {
+                if (entry.isSymLink() && entry.fileName().mid(3) == name) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
