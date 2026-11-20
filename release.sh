@@ -61,14 +61,6 @@ validate_version() {
     echo "$version"
 }
 
-# Check if tag already exists locally or on the remote
-tag_exists() {
-    local version=$1
-    if git tag -l | grep -q "^${version}$"; then return 0; fi
-    if git ls-remote --tags origin 2>/dev/null | grep -q "refs/tags/${version}$"; then return 0; fi
-    return 1
-}
-
 # Get latest numeric release tag for comparison
 get_latest_tag() {
     {
@@ -417,9 +409,21 @@ main() {
     fi
 
     check_aur_checkout
-    print_step "Checking if tag '$version' already exists..."
-    if tag_exists "$version"; then
-        print_warning "Tag '$version' already exists; no new tag will be created"
+    print_step "Checking local and origin tags for '$version'..."
+    local tag_ref="refs/tags/$version"
+    local local_oid remote_oid remote_ref
+    local_oid=$(git rev-parse --verify --quiet "$tag_ref") || local_oid=""
+    if ! remote_ref=$(git ls-remote --refs origin "$tag_ref"); then
+        print_error "Could not read $tag_ref from origin"
+        exit 1
+    fi
+    remote_oid=${remote_ref%%[[:space:]]*}
+    if [ -n "$local_oid" ] && [ -n "$remote_oid" ] && [ "$local_oid" != "$remote_oid" ]; then
+        print_error "Local and origin tags differ for '$version'"
+        exit 1
+    fi
+    if [ -n "$local_oid" ] || [ -n "$remote_oid" ]; then
+        print_step "Reusing existing tag '$version'"
         tag_status="existing"
         ANNOTATION=$(get_tag_annotation "$version")
         if [ -z "$ANNOTATION" ]; then
@@ -454,8 +458,10 @@ main() {
             exit 0
         fi
         create_tag "$version" "$annotation"
-        print_step "Pushing tag to GitHub..."
-        git push origin "$version"
+    fi
+    if [ -z "$remote_oid" ]; then
+        print_step "Publishing $tag_ref to origin..."
+        git push origin "$tag_ref:$tag_ref"
         print_success "Tag pushed to GitHub"
     fi
 
