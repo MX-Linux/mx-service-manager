@@ -530,25 +530,19 @@ void MainWindow::processNonSystemdServices(QList<QSharedPointer<Service>> &servi
 // static
 void MainWindow::processSystemdServices(QList<QSharedPointer<Service>> &services)
 {
-    QStringList names;
-
-    QSet<QString> enabledSystemServices;
-    QStringList installedSystemServices;
-    loadSystemdUnitFileStates(false, enabledSystemServices, installedSystemServices);
-
-    QSet<QString> enabledUserServices;
-    QStringList installedUserServices;
-    loadSystemdUnitFileStates(true, enabledUserServices, installedUserServices);
-
-    processSystemdActiveInactiveServices(services, names, enabledSystemServices, false); // System services
-    appendUnloadedServices(services, names, installedSystemServices, enabledSystemServices, false); // System services
-    processSystemdActiveInactiveServices(services, names, enabledUserServices, true); // User services
-    appendUnloadedServices(services, names, installedUserServices, enabledUserServices, true); // User services
+    for (const bool userScope : {false, true}) {
+        QSet<QString> names;
+        QSet<QString> enabledServices;
+        QStringList installedServices;
+        loadSystemdUnitFileStates(userScope, enabledServices, installedServices);
+        processSystemdActiveInactiveServices(services, names, enabledServices, userScope);
+        appendUnloadedServices(services, names, installedServices, enabledServices, userScope);
+    }
 }
 
 // static
 void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Service>> &services,
-                                                      QStringList &names,
+                                                      QSet<QString> &names,
                                                       const QSet<QString> &enabledServices,
                                                       bool isUserService)
 {
@@ -562,9 +556,8 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
 
     auto jsonArray = doc.array();
 
-    QSet<QString> nameSet(names.begin(), names.end());
     services.reserve(services.size() + jsonArray.size());
-    nameSet.reserve(nameSet.size() + jsonArray.size());
+    names.reserve(names.size() + jsonArray.size());
 
     const QLatin1String unitKey("unit");
     const QLatin1String loadKey("load");
@@ -580,36 +573,33 @@ void MainWindow::processSystemdActiveInactiveServices(QList<QSharedPointer<Servi
         const auto obj = value.toObject();
         const QString name = obj.value(unitKey).toString();
 
-        if (!isServiceUnit(name) || nameSet.contains(name) || obj.value(loadKey).toString() == notFoundValue) [[unlikely]] {
+        if (!isServiceUnit(name) || names.contains(name) || obj.value(loadKey).toString() == notFoundValue) [[unlikely]] {
             continue;
         }
 
-        nameSet.insert(name);
+        names.insert(name);
 
         const bool isRunning = (obj.value(subKey).toString() == runningValue);
         const bool isEnabled = enabledServices.contains(name);
 
         services.append(QSharedPointer<Service>::create(name, isRunning, isEnabled, isUserService));
     }
-    names = QStringList(nameSet.begin(), nameSet.end());
 }
 
 // static
-void MainWindow::appendUnloadedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+void MainWindow::appendUnloadedServices(QList<QSharedPointer<Service>> &services, QSet<QString> &names,
                                      const QStringList &installedNames, const QSet<QString> &enabledNames, bool isUserService)
 {
-    QSet<QString> nameSet(names.begin(), names.end());
     services.reserve(services.size() + installedNames.size());
-    nameSet.reserve(nameSet.size() + installedNames.size());
+    names.reserve(names.size() + installedNames.size());
 
     for (const auto &name : installedNames) {
-        if (nameSet.contains(name)) [[unlikely]] {
+        if (names.contains(name)) [[unlikely]] {
             continue;
         }
-        nameSet.insert(name);
+        names.insert(name);
         services.append(QSharedPointer<Service>::create(name, false, enabledNames.contains(name), isUserService));
     }
-    names = QStringList(nameSet.begin(), nameSet.end());
 }
 
 void MainWindow::displayServices() noexcept

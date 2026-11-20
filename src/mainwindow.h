@@ -106,10 +106,10 @@ private:
     [[nodiscard]] static QList<QSharedPointer<Service>> buildServiceList();
     static void processNonSystemdServices(QList<QSharedPointer<Service>> &services);
     static void processSystemdActiveInactiveServices(QList<QSharedPointer<Service>> &services,
-                                              QStringList &names,
+                                              QSet<QString> &names,
                                               const QSet<QString> &enabledServices,
                                               bool isUserService = false);
-    static void appendUnloadedServices(QList<QSharedPointer<Service>> &services, QStringList &names,
+    static void appendUnloadedServices(QList<QSharedPointer<Service>> &services, QSet<QString> &names,
                                     const QStringList &installedNames, const QSet<QString> &enabledNames, bool isUserService = false);
     static void processSystemdServices(QList<QSharedPointer<Service>> &services);
 };
