@@ -229,6 +229,9 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
             current->setForeground(defaultForeground);
         }
     }
+    ui->pushEnableDisable->setToolTip(enabled && initSystem == "systemd"
+        ? tr("Disabling also masks this service. Manual and dependency starts are blocked until it is unmasked.")
+        : QString());
     if (enabled) {
         ui->pushEnableDisable->setText(tr("&Disable at boot"));
         ui->pushEnableDisable->setIcon(QIcon::fromTheme("stop"));
@@ -749,8 +752,11 @@ void MainWindow::pushEnableDisable_clicked()
         }
     } else {
         if (!ptrService->disable()) {
+            itemUpdated();
             QMessageBox::warning(this, tr("Error"),
-                                  tr("Could not disable %1. Settings were not applied.").arg(service));
+                                 ptrService->isEnabled()
+                                     ? tr("Could not verify that %1 was disabled. Check its status.").arg(service)
+                                     : tr("%1 was disabled at boot, but its mask could not be verified.").arg(service));
         } else {
             itemUpdated();
             emit ui->listServices->currentItemChanged(ui->listServices->currentItem(), ui->listServices->currentItem());
@@ -810,7 +816,10 @@ void MainWindow::pushStartStop_clicked()
     auto service = currentItem->text();
     if (ui->pushStartStop->text() == tr("S&tart")) {
         if (!ptrService->start()) {
-            QMessageBox::warning(this, tr("Error"), tr("Could not start %1").arg(service));
+            QMessageBox::warning(this, tr("Error"),
+                                 ptrService->isMasked()
+                                     ? tr("%1 is masked. Unmask it before starting it manually.").arg(service)
+                                     : tr("Could not start %1").arg(service));
         } else {
             ptrService->setRunning(true);
             itemUpdated();

@@ -126,6 +126,15 @@ QString Service::getInit()
     return QString::fromUtf8(file.readAll()).trimmed();
 }
 
+bool Service::isMasked() const
+{
+    if (initSystem != "systemd") {
+        return false;
+    }
+    const QString state = getUnitFileState(name, userService);
+    return state == "masked" || state == "masked-runtime";
+}
+
 bool Service::isRunning() const
 {
     return running;
@@ -379,10 +388,13 @@ bool Service::disable()
     if (initSystem == QLatin1String("systemd")) {
         Cmd cmd;
         if (userService ? cmd.run({"systemctl", "--user", "disable", "--", name}) : Cmd().runAsRoot({"systemctl", "disable", name})) {
-            // Mask the service to prevent it from being started indirectly
-            (userService ? cmd.run({"systemctl", "--user", "mask", "--", name}) : Cmd().runAsRoot({"systemctl", "mask", name}));
-            setEnabled(false);
-            return true;
+            const bool maskOk = userService ? cmd.run({"systemctl", "--user", "mask", "--", name})
+                                            : Cmd().runAsRoot({"systemctl", "mask", name});
+            const QString state = getUnitFileState(name, userService);
+            if (!state.isEmpty()) {
+                setEnabled(unitEnabled(name, state, userService));
+            }
+            return maskOk && state == "masked";
         }
     } else {
         Cmd().runAsRoot({"update-rc.d", name, "disable"});
