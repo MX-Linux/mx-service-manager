@@ -192,11 +192,10 @@ void MainWindow::onSelectionChanged(QListWidgetItem *current, QListWidgetItem *p
     cancelPendingSelectionInfo();
 
     updateServiceControls();
-    if (!current) {
-        return;
-    }
-    const auto *service = current->data(Qt::UserRole).value<Service *>();
+    const auto *service = current ? current->data(Qt::UserRole).value<Service *>() : nullptr;
     if (!service) {
+        ui->textBrowser->clear();
+        ui->pushEnableDisable->setToolTip({});
         return;
     }
 
@@ -680,6 +679,11 @@ void MainWindow::displayServices() noexcept
     ui->listServices->sortItems();
     ui->listServices->setUpdatesEnabled(true);
     ui->listServices->blockSignals(false);
+    if (ui->listServices->count() == 0) {
+        savedRow = 0;
+        onSelectionChanged(nullptr, nullptr);
+        return;
+    }
     savedRow = qBound(0, savedRow, ui->listServices->count() - 1);
     ui->listServices->setCurrentRow(savedRow);
 }
