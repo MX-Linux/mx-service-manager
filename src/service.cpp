@@ -372,10 +372,10 @@ bool Service::disable()
             return true;
         }
     } else {
-        if (Cmd().runAsRoot({"update-rc.d", name, "remove"})) {
-            setEnabled(false);
-            return true;
-        }
+        Cmd().runAsRoot({"update-rc.d", name, "disable"});
+        const bool nowEnabled = isEnabled(name);
+        setEnabled(nowEnabled);
+        return !nowEnabled;
     }
     return false;
 }

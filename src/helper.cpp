@@ -97,7 +97,7 @@ void printError(const QString &message)
     }
     if (command == "update-rc.d") {
         return args.size() == 2 && scriptName.match(args[0]).hasMatch()
-               && (args[1] == "defaults" || args[1] == "enable" || args[1] == "remove");
+               && (args[1] == "defaults" || args[1] == "enable" || args[1] == "disable");
     }
     if (command != "systemctl" || args.isEmpty()) {
         return false;
