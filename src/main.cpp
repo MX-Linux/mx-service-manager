@@ -23,6 +23,7 @@
 #define QT_USE_QSTRINGBUILDER
 #include <QApplication>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QIcon>
 #include <QLibraryInfo>
@@ -78,8 +79,10 @@ int main(int argc, char *argv[])
     }
 
     QTranslator appTran;
-    if (appTran.load(QApplication::applicationName() + "_" + QLocale::system().name(),
-                     "/usr/share/" + QApplication::applicationName() + "/locale")) {
+    const QString catalog = QApplication::applicationName() + "_" + QLocale::system().name();
+    const QDir binaryDir(QCoreApplication::applicationDirPath());
+    if (appTran.load(catalog, binaryDir.filePath(QStringLiteral(APP_LOCALE_DIR)))
+        || appTran.load(catalog, binaryDir.absolutePath())) {
         QApplication::installTranslator(&appTran);
     }
 

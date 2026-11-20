@@ -152,13 +152,14 @@ void MainWindow::centerWindow()
 
 QString MainWindow::docPath(const QString &fileName) const
 {
-    const QString installedPath = QStringLiteral("/usr/share/doc/mx-service-manager/") + fileName;
     const QString appDirPath = QCoreApplication::applicationDirPath();
+    const QString installedPath = QDir(appDirPath).filePath(QStringLiteral(APP_DOC_DIR "/") + fileName);
     const QStringList candidates {
         QDir(appDirPath).filePath(QStringLiteral("../docs/") + fileName),
         QDir(appDirPath).filePath(QStringLiteral("../../docs/") + fileName),
         QDir::current().filePath(QStringLiteral("docs/") + fileName),
         installedPath,
+        QStringLiteral("/usr/share/doc/mx-service-manager/") + fileName,
     };
 
     for (const QString &candidate : candidates) {
