@@ -10,8 +10,8 @@
 # Keep pkgver in step with debian/changelog: it names the tarball.
 
 pkgname=mx-service-manager
-pkgver=26.08
-pkgrel=2
+pkgver=26.11
+pkgrel=1
 pkgdesc="GUI service management tool"
 arch=('x86_64' 'i686')
 url="https://github.com/mx-linux/mx-service-manager"

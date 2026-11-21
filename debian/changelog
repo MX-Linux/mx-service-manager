@@ -1,3 +1,29 @@
+mx-service-manager (26.11) mx; urgency=medium
+
+  * List installed systemd services that are disabled and currently unloaded
+    so they can be enabled from the service list.
+  * Show system and user services separately when they share a name, and
+    use the full service name for actions so they reach the selected service.
+  * Show the current SysV boot settings after a refresh and keep disabled
+    services disabled across package upgrades.
+  * Let users change SysV boot settings even when a service cannot report
+    whether it is running.
+  * Confirm that boot settings took effect before reporting success, and
+    explain when disabling a systemd service also blocks manual starts.
+  * Report it correctly when enabling a systemd service does not take
+    effect, and keep a blocked service blocked if enabling it fails.
+  * Show the correct status after starting a systemd service that runs
+    once and exits.
+  * Keep the window open when a password prompt is cancelled after startup.
+  * Prevent crashes when refreshing during a service action or searching
+    for a name that has no matches.
+  * Report an error instead of waiting forever when a needed system tool
+    cannot be started.
+  * Show a clear message when started without a graphical display.
+  * Install the manual page and changelog in Arch Linux packages.
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 20 Nov 2026 14:54:13 -0500
+
 mx-service-manager (26.08) mx; urgency=medium
 
   * Keep the application responsive while loading or refreshing the service

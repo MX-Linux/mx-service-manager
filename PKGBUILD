@@ -1,6 +1,6 @@
 # Maintainer: Adrian <adrian@mxlinux.org>
 pkgname=mx-service-manager
-pkgver=${PKGVER:-26.08}
+pkgver=${PKGVER:-26.11}
 pkgrel=1
 pkgdesc="Service Manager - MX Linux service management tool"
 arch=('x86_64' 'i686')
@@ -37,8 +37,7 @@ package() {
     install -Dm755 build/mx-service-manager "${pkgdir}/usr/bin/mx-service-manager"
 
     # Install translations
-    install -dm755 "${pkgdir}/usr/share/mx-service-manager/locale"
-    install -Dm644 build/*.qm "${pkgdir}/usr/share/mx-service-manager/locale/" 2>/dev/null || true
+    install -Dm644 -t "${pkgdir}/usr/share/mx-service-manager/locale/" build/*.qm
 
     # Install helper and polkit policy
     install -dm755 "${pkgdir}/usr/lib/mx-service-manager"
@@ -60,6 +59,7 @@ package() {
     if [ -d docs ]; then
         cp -r docs/* "${pkgdir}/usr/share/doc/mx-service-manager/" 2>/dev/null || true
     fi
+    gzip -c debian/changelog > "${pkgdir}/usr/share/doc/mx-service-manager/changelog.gz"
 
     # Install license
     install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
