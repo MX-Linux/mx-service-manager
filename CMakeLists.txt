@@ -212,6 +212,12 @@ endif()
 option(BUILD_TESTS "Build tests" OFF)
 if(BUILD_TESTS)
     enable_testing()
+    foreach(option IN ITEMS -h --help --help-all -v --version)
+        add_test(NAME cli${option} COMMAND ${CMAKE_COMMAND} -E env
+            --unset=DISPLAY --unset=WAYLAND_DISPLAY --unset=QT_QPA_PLATFORM
+            $<TARGET_FILE:mx-service-manager> ${option})
+        set_tests_properties(cli${option} PROPERTIES TIMEOUT 10)
+    endforeach()
     add_test(NAME helper_smoke COMMAND helper true)
 endif()
 
