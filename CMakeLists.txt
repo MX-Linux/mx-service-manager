@@ -181,6 +181,11 @@ else()
 endif()
 
 # Set compile definitions
+option(APPIMAGE_BUILD "Build the relocatable AppImage" OFF)
+if(APPIMAGE_BUILD)
+    target_compile_definitions(mx-service-manager PRIVATE APPIMAGE_BUILD)
+endif()
+
 target_compile_definitions(mx-service-manager PRIVATE
     HELPER_PATH="${HELPER_PATH}"
     APP_LOCALE_DIR="${APP_LOCALE_DIR}"

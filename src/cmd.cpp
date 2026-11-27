@@ -1,6 +1,7 @@
 #define QT_USE_QSTRINGBUILDER
 #include "cmd.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QEventLoop>
 #include <QFile>
@@ -10,7 +11,11 @@
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
       elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"},
+#ifdef APPIMAGE_BUILD
+      helper {QCoreApplication::applicationDirPath() + QStringLiteral("/../libexec/mx-service-manager/helper")}
+#else
       helper {QStringLiteral(HELPER_PATH)}
+#endif
 {
 }
 
@@ -63,6 +68,9 @@ bool Cmd::runAsRoot(const QStringList &helperArgs, bool quiet, bool waitForFinis
 {
     QStringList command {helper};
     if (getuid() != 0) {
+#ifdef APPIMAGE_BUILD
+        command = {qEnvironmentVariable("APPIMAGE"), QStringLiteral("--run-helper")};
+#endif
         command.prepend(elevate);
     }
     const bool ok = run(command + helperArgs, quiet, waitForFinish);

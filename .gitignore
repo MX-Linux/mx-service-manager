@@ -51,3 +51,4 @@ mx-service-manager
 
 # Generated version file
 src/version.h
+/build-appimage/
